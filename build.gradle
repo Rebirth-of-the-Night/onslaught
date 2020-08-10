@@ -1,0 +1,110 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url = "http://files.minecraftforge.net/maven" }
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath 'com.wynprice.cursemaven:CurseMaven:2.1.1'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'com.wynprice.cursemaven'
+
+apply from: 'project.gradle'
+
+def getVersionName = { String workTree ->
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', "--git-dir=\"${workTree}/.git\"", "--work-tree=\"${workTree}\"", 'describe', '--tags'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
+}
+
+version = getVersionName("${project.projectDir}")
+group = 'com.codetaylor.mc.' + project.ext.modid
+archivesBaseName = project.ext.modid
+
+println()
+println("-------------------------------------------------------------")
+println("- Mod Id: " + project.ext.modid)
+println("- Version: " + version)
+println("- Forge Version: " + project.ext.forge.version)
+println("- Mappings: " + project.ext.mappings.channel + " " + project.ext.mappings.version)
+println("-------------------------------------------------------------")
+println()
+
+compileJava.doFirst {
+    project.sourceSets.main.java.srcDirs.each { dir ->
+        copy {
+            from dir
+            into "${project.buildDir}/modifiedSrc"
+            include "**/*.java"
+            filter {
+                it.replaceAll('@@VERSION@@', project.version)
+            }
+            project.ext.replace.each{entry -> 
+                filter {
+                    it.replaceAll(entry.key, entry.value)
+                }
+            }
+            duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        }
+        println "   [OK] Preprocessed [${dir}]"
+    }
+}
+compileJava.doFirst {
+    source = "${project.buildDir}/modifiedSrc"
+    classpath = project.sourceSets.main.compileClasspath
+    //destinationDir = file("${project.buildDir}/classes")
+}
+compileJava.doLast {
+    println "   [OK] Compiled [${project.name}]"
+}
+
+sourceCompatibility = targetCompatibility = "1.8"
+compileJava {
+    sourceCompatibility = targetCompatibility = "1.8"
+}
+
+minecraft {
+    version = project.ext.forge.version
+    runDir = "run"
+    mappings = project.ext.mappings.version
+}
+
+repositories {}
+
+dependencies {}
+
+jar {
+    from sourceSets.api.output
+}
+
+processResources {
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+
+        // replace version and mcversion
+        expand 'version': project.version, 'mcversion': project.minecraft.version
+    }
+
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
+/**
+ * This task creates the wrapper files.
+ */
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.1'
+}

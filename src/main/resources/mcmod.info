@@ -1,0 +1,16 @@
+[
+{
+  "modid": "onslaught",
+  "name": "Onslaught",
+  "description": "An onslaught of mobs!",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["codetaylor"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
