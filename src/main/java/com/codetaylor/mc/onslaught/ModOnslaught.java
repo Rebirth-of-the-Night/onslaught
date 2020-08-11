@@ -2,6 +2,7 @@ package com.codetaylor.mc.onslaught;
 
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
 import com.codetaylor.mc.athenaeum.module.ModuleManager;
+import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaught;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -51,14 +52,9 @@ public class ModOnslaught {
 
     // --- MODULES ---
 
-    // register optional modules like this
-    // this.registerModule(...)
-
-    /*
     this.moduleManager.registerModules(
-        // register required modules here
+        ModuleOnslaught.class
     );
-    */
 
     // --- POST ---
 
