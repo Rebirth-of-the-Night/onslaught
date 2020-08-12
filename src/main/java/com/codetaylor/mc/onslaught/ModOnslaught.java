@@ -3,14 +3,19 @@ package com.codetaylor.mc.onslaught;
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
 import com.codetaylor.mc.athenaeum.module.ModuleManager;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaught;
+import com.codetaylor.mc.onslaught.modules.onslaught.lib.LogFormatter;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.*;
+import org.apache.logging.log4j.LogManager;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
 
 @Mod(
     modid = ModOnslaught.MOD_ID,
@@ -24,6 +29,8 @@ public class ModOnslaught {
   public static final String VERSION = "@@VERSION@@";
   public static final String NAME = "Onslaught";
   public static final String DEPENDENCIES = "";
+
+  public static Logger LOG;
 
   @SuppressWarnings("unused")
   @Mod.Instance
@@ -75,6 +82,18 @@ public class ModOnslaught {
 
   @Mod.EventHandler
   public void onPreInitializationEvent(FMLPreInitializationEvent event) {
+
+    try {
+      LOG = Logger.getLogger(ModOnslaught.class.getName());
+      FileHandler handler = new FileHandler("logs/" + MOD_ID + ".log", 1024 * 256, 5, true);
+      handler.setFormatter(new LogFormatter());
+      LOG.addHandler(handler);
+      LOG.setUseParentHandlers(false);
+      LOG.info("Initialized logger");
+
+    } catch (IOException e) {
+      LogManager.getLogger(ModOnslaught.class.getName()).error("Error initializing Onslaught log", e);
+    }
 
     this.moduleManager.routeFMLStateEvent(event);
   }
