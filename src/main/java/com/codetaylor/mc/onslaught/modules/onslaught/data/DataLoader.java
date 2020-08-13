@@ -24,12 +24,12 @@ public class DataLoader {
     this.path = path;
   }
 
-  public void load() {
+  public boolean load() {
 
-    this.loadMobTemplateData();
+    return this.loadMobTemplateData();
   }
 
-  private void loadMobTemplateData() {
+  private boolean loadMobTemplateData() {
 
     Path mobTemplatePath = this.path.resolve(ModuleOnslaught.MOD_ID + "/templates/mob");
     JsonFileLocator jsonFileLocator = new JsonFileLocator();
@@ -44,10 +44,13 @@ public class DataLoader {
       this.dataStore.setMobTemplateRegistry(mobTemplateRegistry);
       long elapsed = System.currentTimeMillis() - start;
       ModOnslaught.LOG.info(String.format("Loaded %d mob templates in %d ms", mobTemplateMap.size(), elapsed));
+      return true;
 
     } catch (Exception e) {
       ModOnslaught.LOG.log(Level.SEVERE, "Error loading mob template data");
       ModOnslaught.LOG.log(Level.SEVERE, e.getMessage(), e);
     }
+
+    return false;
   }
 }

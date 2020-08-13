@@ -2,6 +2,7 @@ package com.codetaylor.mc.onslaught.modules.onslaught;
 
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
 import com.codetaylor.mc.onslaught.ModOnslaught;
+import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandReload;
 import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandSummonMobFromTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.DataLoader;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.DataStore;
@@ -33,7 +34,7 @@ public class ModuleOnslaught
     File modConfigurationDirectory = event.getModConfigurationDirectory();
     Path path = modConfigurationDirectory.toPath();
     this.dataLoader = new DataLoader(this.dataStore, path);
-    this.reloadData();
+    this.dataLoader.load();
   }
 
   @Override
@@ -42,10 +43,6 @@ public class ModuleOnslaught
     super.onServerStartingEvent(event);
 
     event.registerServerCommand(new CommandSummonMobFromTemplate(this.dataStore));
-  }
-
-  public void reloadData() {
-
-    this.dataLoader.load();
+    event.registerServerCommand(new CommandReload(this.dataLoader));
   }
 }

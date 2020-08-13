@@ -1,1 +1,4 @@
+commands.onslaught.reload.usage=/oreload
+commands.onslaught.reload.success=Templates successfully reloaded
+commands.onslaught.reload.failed=Failed to reload templates, see log for details
 commands.onslaught.summon.usage=/osummon <template_id> [x] [y] [z]

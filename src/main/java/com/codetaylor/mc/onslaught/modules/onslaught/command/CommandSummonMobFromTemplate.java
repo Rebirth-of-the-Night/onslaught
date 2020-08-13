@@ -9,11 +9,9 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
@@ -65,7 +63,7 @@ public class CommandSummonMobFromTemplate
   public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 
     if (args.length < 1) {
-      throw new WrongUsageException(I18n.translateToLocal(USAGE));
+      throw new WrongUsageException(USAGE);
 
     } else {
       String templateId = args[0];
