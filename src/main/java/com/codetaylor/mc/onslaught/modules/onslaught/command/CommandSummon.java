@@ -1,7 +1,7 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.command;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.data.DataStore;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.MobTemplate;
+import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.factory.MobTemplateEntityFactory;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * Responsible for spawning a mob from a mob template.
  */
-public class CommandSummonMobFromTemplate
+public class CommandSummon
     extends CommandBase {
 
   private static final String USAGE = "commands.onslaught.summon.usage";
@@ -33,10 +33,12 @@ public class CommandSummonMobFromTemplate
   private static final String INVALID_ID = "commands.onslaught.summon.invalid.template.id";
 
   private final DataStore dataStore;
+  private final MobTemplateEntityFactory mobTemplateEntityFactory;
 
-  public CommandSummonMobFromTemplate(DataStore dataStore) {
+  public CommandSummon(DataStore dataStore, MobTemplateEntityFactory mobTemplateEntityFactory) {
 
     this.dataStore = dataStore;
+    this.mobTemplateEntityFactory = mobTemplateEntityFactory;
   }
 
   @Nonnull
@@ -93,7 +95,7 @@ public class CommandSummonMobFromTemplate
           throw new CommandException(INVALID_ID, templateId);
         }
 
-        Entity entity = MobTemplateEntityFactory.INSTANCE.create(mobTemplate, world);
+        Entity entity = this.mobTemplateEntityFactory.create(mobTemplate, world);
 
         if (entity == null) {
           throw new CommandException(FAILED);

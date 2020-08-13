@@ -1,5 +1,7 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.data;
 
+import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplateRegistry;
+
 import java.util.Collections;
 
 /**

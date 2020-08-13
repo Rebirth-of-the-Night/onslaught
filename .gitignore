@@ -28,4 +28,4 @@ run
 /libs-disabled/
 
 *.log
-cloc-1.80.exe
+cloc-1.86.exe

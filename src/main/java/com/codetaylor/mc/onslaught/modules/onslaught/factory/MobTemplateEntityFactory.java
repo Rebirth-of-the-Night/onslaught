@@ -1,6 +1,6 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.factory;
 
-import com.codetaylor.mc.onslaught.modules.onslaught.data.MobTemplate;
+import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -14,15 +14,16 @@ import javax.annotation.Nullable;
  */
 public class MobTemplateEntityFactory {
 
-  public static final MobTemplateEntityFactory INSTANCE = new MobTemplateEntityFactory(
-      new MobTemplateEntityEffectApplicator()
-  );
+  private final MobTemplateEntityFactoryEffectApplicator effectApplicator;
+  private final MobTemplateEntityFactoryLootTableApplicator lootTableApplicator;
 
-  private final MobTemplateEntityEffectApplicator effectApplicator;
-
-  private MobTemplateEntityFactory(MobTemplateEntityEffectApplicator effectApplicator) {
+  public MobTemplateEntityFactory(
+      MobTemplateEntityFactoryEffectApplicator effectApplicator,
+      MobTemplateEntityFactoryLootTableApplicator lootTableApplicator
+  ) {
 
     this.effectApplicator = effectApplicator;
+    this.lootTableApplicator = lootTableApplicator;
   }
 
   @Nullable
@@ -33,8 +34,10 @@ public class MobTemplateEntityFactory {
     Entity entity = EntityList.createEntityFromNBT(tagCompound, world);
 
     if (entity instanceof EntityLiving) {
-      this.effectApplicator.applyEffects(template.effects, (EntityLiving) entity);
+      this.effectApplicator.apply(template.effects, (EntityLiving) entity);
     }
+
+    this.lootTableApplicator.apply(template.extraLootTables, entity);
 
     return entity;
   }

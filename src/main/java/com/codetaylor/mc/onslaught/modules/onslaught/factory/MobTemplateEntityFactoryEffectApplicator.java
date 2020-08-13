@@ -1,7 +1,7 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.factory;
 
 import com.codetaylor.mc.onslaught.ModOnslaught;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.MobTemplateEffect;
+import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplateEffect;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -13,16 +13,16 @@ import java.util.logging.Level;
 /**
  * Responsible for applying mob template effects to an {@link EntityLiving}.
  */
-public class MobTemplateEntityEffectApplicator {
+public class MobTemplateEntityFactoryEffectApplicator {
 
-  public void applyEffects(MobTemplateEffect[] effects, EntityLiving entity) {
+  public void apply(MobTemplateEffect[] effects, EntityLiving entity) {
 
     for (MobTemplateEffect mobTemplateEffect : effects) {
-      this.applyEffect(mobTemplateEffect, entity);
+      this.apply(mobTemplateEffect, entity);
     }
   }
 
-  private void applyEffect(MobTemplateEffect effect, EntityLiving entity) {
+  private void apply(MobTemplateEffect effect, EntityLiving entity) {
 
     if (effect.id == null) {
       ModOnslaught.LOG.log(Level.SEVERE, "Missing mob template effect id");
