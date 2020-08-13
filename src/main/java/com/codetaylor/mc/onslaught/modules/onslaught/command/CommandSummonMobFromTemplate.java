@@ -30,6 +30,7 @@ public class CommandSummonMobFromTemplate
   private static final String OUT_OF_WORLD = "commands.summon.outOfWorld";
   private static final String FAILED = "commands.summon.failed";
   private static final String SUCCESS = "commands.summon.success";
+  private static final String INVALID_ID = "commands.onslaught.summon.invalid.template.id";
 
   private final DataStore dataStore;
 
@@ -87,8 +88,12 @@ public class CommandSummonMobFromTemplate
 
       } else {
         MobTemplate mobTemplate = this.dataStore.getMobTemplateRegistry().get(templateId);
-        MobTemplateEntityFactory entityFactory = new MobTemplateEntityFactory(mobTemplate);
-        Entity entity = entityFactory.create(world);
+
+        if (mobTemplate == null) {
+          throw new CommandException(INVALID_ID, templateId);
+        }
+
+        Entity entity = MobTemplateEntityFactory.INSTANCE.create(mobTemplate, world);
 
         if (entity == null) {
           throw new CommandException(FAILED);

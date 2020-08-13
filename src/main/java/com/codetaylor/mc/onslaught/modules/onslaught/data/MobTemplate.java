@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class MobTemplate {
 
   public String id;
-  public String[] effects = {};
+  public MobTemplateEffect[] effects = {};
   public String extraLoot;
   public NBTTagCompound nbt;
 

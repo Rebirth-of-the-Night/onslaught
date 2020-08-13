@@ -3,6 +3,7 @@ package com.codetaylor.mc.onslaught.modules.onslaught.factory;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.MobTemplate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
@@ -13,18 +14,28 @@ import javax.annotation.Nullable;
  */
 public class MobTemplateEntityFactory {
 
-  private final MobTemplate template;
+  public static final MobTemplateEntityFactory INSTANCE = new MobTemplateEntityFactory(
+      new MobTemplateEntityEffectApplicator()
+  );
 
-  public MobTemplateEntityFactory(MobTemplate template) {
+  private final MobTemplateEntityEffectApplicator effectApplicator;
 
-    this.template = template;
+  private MobTemplateEntityFactory(MobTemplateEntityEffectApplicator effectApplicator) {
+
+    this.effectApplicator = effectApplicator;
   }
 
   @Nullable
-  public Entity create(World world) {
+  public Entity create(MobTemplate template, World world) {
 
-    NBTTagCompound tagCompound = this.template.nbt.copy();
-    tagCompound.setString("id", this.template.id);
-    return EntityList.createEntityFromNBT(tagCompound, world);
+    NBTTagCompound tagCompound = template.nbt.copy();
+    tagCompound.setString("id", template.id);
+    Entity entity = EntityList.createEntityFromNBT(tagCompound, world);
+
+    if (entity instanceof EntityLiving) {
+      this.effectApplicator.applyEffects(template.effects, (EntityLiving) entity);
+    }
+
+    return entity;
   }
 }
