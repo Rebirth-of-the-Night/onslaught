@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.data;
+package com.codetaylor.mc.onslaught.modules.onslaught.data.mob;
 
 public class MobTemplateEffect {
 

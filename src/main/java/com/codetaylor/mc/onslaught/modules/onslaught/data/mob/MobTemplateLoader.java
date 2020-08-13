@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.data;
+package com.codetaylor.mc.onslaught.modules.onslaught.data.mob;
 
 import java.io.IOException;
 import java.nio.file.Files;

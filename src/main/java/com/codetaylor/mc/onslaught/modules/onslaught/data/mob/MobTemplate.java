@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.data;
+package com.codetaylor.mc.onslaught.modules.onslaught.data.mob;
 
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -9,7 +9,7 @@ public class MobTemplate {
 
   public String id;
   public MobTemplateEffect[] effects = {};
-  public String extraLoot;
-  public NBTTagCompound nbt;
+  public String[] extraLootTables;
+  public NBTTagCompound nbt = new NBTTagCompound();
 
 }
