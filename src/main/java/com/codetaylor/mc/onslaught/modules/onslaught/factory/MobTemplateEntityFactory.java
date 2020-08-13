@@ -6,15 +6,25 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 /**
  * Responsible for consuming a mob template and producing an entity.
  */
 public class MobTemplateEntityFactory {
 
-  public Entity create(MobTemplate template, World world) {
+  private final MobTemplate template;
 
-    NBTTagCompound tagCompound = template.nbt.copy();
-    tagCompound.setString("id", template.id);
+  public MobTemplateEntityFactory(MobTemplate template) {
+
+    this.template = template;
+  }
+
+  @Nullable
+  public Entity create(World world) {
+
+    NBTTagCompound tagCompound = this.template.nbt.copy();
+    tagCompound.setString("id", this.template.id);
     return EntityList.createEntityFromNBT(tagCompound, world);
   }
 }
