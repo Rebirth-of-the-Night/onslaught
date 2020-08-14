@@ -25,6 +25,11 @@ public class ExtraLootInjectionEventHandler {
   public void on(LivingDropsEvent event) {
 
     Entity entity = event.getEntity();
+
+    if (entity.world.isRemote) {
+      return;
+    }
+
     DamageSource source = event.getSource();
     boolean recentlyHit = event.isRecentlyHit();
     List<EntityItem> drops = event.getDrops();

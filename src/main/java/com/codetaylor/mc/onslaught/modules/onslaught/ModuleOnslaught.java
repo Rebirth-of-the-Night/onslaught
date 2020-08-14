@@ -2,6 +2,7 @@ package com.codetaylor.mc.onslaught.modules.onslaught;
 
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
 import com.codetaylor.mc.onslaught.ModOnslaught;
+import com.codetaylor.mc.onslaught.modules.onslaught.ai.EntityAiMiningInjector;
 import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandReload;
 import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandSummon;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.DataLoader;
@@ -9,6 +10,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.data.DataStore;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplateAdapter;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplateLoader;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.CustomLootTableManagerInjectionEventHandler;
+import com.codetaylor.mc.onslaught.modules.onslaught.event.EntityAiInjectionEventHandler;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.ExtraLootInjectionEventHandler;
 import com.codetaylor.mc.onslaught.modules.onslaught.factory.MobTemplateEntityFactory;
 import com.codetaylor.mc.onslaught.modules.onslaught.factory.MobTemplateEntityFactoryEffectApplicator;
@@ -85,6 +87,14 @@ public class ModuleOnslaught
 
     MinecraftForge.EVENT_BUS.register(new ExtraLootInjectionEventHandler(
         new ExtraLootInjector()
+    ));
+
+    // -------------------------------------------------------------------------
+    // - AI Injection
+    // -------------------------------------------------------------------------
+
+    MinecraftForge.EVENT_BUS.register(new EntityAiInjectionEventHandler(
+        new EntityAiMiningInjector()
     ));
   }
 

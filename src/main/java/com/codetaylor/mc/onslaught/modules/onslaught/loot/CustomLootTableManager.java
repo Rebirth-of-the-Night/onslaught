@@ -8,6 +8,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
 
+/**
+ * Responsible for checking a custom folder for loot tables and deferring to
+ * the default MC {@link LootTableManager} if no loot table is found.
+ */
 public class CustomLootTableManager
     extends LootTableManager {
 

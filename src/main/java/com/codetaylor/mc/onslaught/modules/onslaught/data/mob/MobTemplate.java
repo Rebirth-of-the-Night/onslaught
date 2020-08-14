@@ -9,7 +9,7 @@ public class MobTemplate {
 
   public String id;
   public MobTemplateEffect[] effects = {};
-  public String[] extraLootTables;
+  public String[] extraLootTables = {};
   public NBTTagCompound nbt = new NBTTagCompound();
 
 }
