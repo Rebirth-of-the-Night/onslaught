@@ -19,7 +19,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class EntityAiMining
+public class EntityAIMining
     extends EntityAIBase {
 
   private static final int BLOCK_DIG_RANGE_SQ = 16;
@@ -31,7 +31,7 @@ public class EntityAiMining
   private BlockPos blockTarget;
   private int blockBreakTickCounter;
 
-  public EntityAiMining(EntityLiving entity) {
+  public EntityAIMining(EntityLiving entity) {
 
     this.entity = entity;
   }

@@ -4,7 +4,10 @@ import com.codetaylor.mc.onslaught.modules.onslaught.data.Tag;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class EntityAiMiningInjector {
+/**
+ * Responsible for injecting the AI mining task into entities with the tag.
+ */
+public class EntityAIMiningInjector {
 
   public void inject(EntityLiving entity, NBTTagCompound tag) {
 
@@ -12,6 +15,6 @@ public class EntityAiMiningInjector {
       return;
     }
 
-    entity.tasks.addTask(1, new EntityAiMining(entity));
+    entity.tasks.addTask(1, new EntityAIMining(entity));
   }
 }
