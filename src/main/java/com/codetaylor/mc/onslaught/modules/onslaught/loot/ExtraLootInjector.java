@@ -2,6 +2,7 @@ package com.codetaylor.mc.onslaught.modules.onslaught.loot;
 
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.Tag;
+import com.codetaylor.mc.onslaught.modules.onslaught.lib.MethodHandleHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -15,10 +16,8 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -30,27 +29,14 @@ public class ExtraLootInjector {
   private static final MethodHandle entityLiving$attackingPlayerGetter;
 
   static {
-
-    MethodHandle methodHandle;
-
-    try {
-      methodHandle = MethodHandles.lookup().unreflectGetter(
-          /*
-          MC 1.12: net/minecraft/entity/EntityLivingBase.attackingPlayer
-          Name: aS => field_70717_bb => attackingPlayer
-          Comment: The most recent player that has attacked this entity
-          Side: BOTH
-          AT: public net.minecraft.entity.EntityLivingBase field_70717_bb # attackingPlayer
-           */
-          ObfuscationReflectionHelper.findField(EntityLivingBase.class, "field_70717_bb")
-      );
-
-    } catch (Exception e) {
-      ModOnslaught.LOG.log(Level.SEVERE, "Error unreflecting getter for field_70717_bb");
-      methodHandle = null;
-    }
-
-    entityLiving$attackingPlayerGetter = methodHandle;
+    /*
+    MC 1.12: net/minecraft/entity/EntityLivingBase.attackingPlayer
+    Name: aS => field_70717_bb => attackingPlayer
+    Comment: The most recent player that has attacked this entity
+    Side: BOTH
+    AT: public net.minecraft.entity.EntityLivingBase field_70717_bb # attackingPlayer
+     */
+    entityLiving$attackingPlayerGetter = MethodHandleHelper.unreflectGetter(EntityLivingBase.class, "field_70717_bb");
   }
 
   public void inject(Entity entity, DamageSource source, boolean recentlyHit, List<EntityItem> drops) {
@@ -79,8 +65,7 @@ public class ExtraLootInjector {
 
       try {
 
-        if (recentlyHit
-            && entityLiving$attackingPlayerGetter != null) {
+        if (recentlyHit) {
           EntityPlayer attackingPlayer = (EntityPlayer) entityLiving$attackingPlayerGetter.invokeExact((EntityLivingBase) entity);
 
           if (attackingPlayer != null) {
