@@ -2,9 +2,9 @@ package com.codetaylor.mc.onslaught.modules.onslaught;
 
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
 import com.codetaylor.mc.onslaught.ModOnslaught;
-import com.codetaylor.mc.onslaught.modules.onslaught.ai.EntityAIChaseLongDistanceInjector;
-import com.codetaylor.mc.onslaught.modules.onslaught.ai.EntityAIMiningInjector;
-import com.codetaylor.mc.onslaught.modules.onslaught.ai.EntityAIPlayerTargetInjector;
+import com.codetaylor.mc.onslaught.modules.onslaught.ai.injector.EntityAIChaseLongDistanceInjector;
+import com.codetaylor.mc.onslaught.modules.onslaught.ai.injector.EntityAIMiningInjector;
+import com.codetaylor.mc.onslaught.modules.onslaught.ai.injector.EntityAIPlayerTargetInjector;
 import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandReload;
 import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandSummon;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.DataLoader;

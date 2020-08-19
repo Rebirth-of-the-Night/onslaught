@@ -1,8 +1,8 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.event;
 
-import com.codetaylor.mc.onslaught.modules.onslaught.ai.EntityAIChaseLongDistanceInjector;
-import com.codetaylor.mc.onslaught.modules.onslaught.ai.EntityAIMiningInjector;
-import com.codetaylor.mc.onslaught.modules.onslaught.ai.EntityAIPlayerTargetInjector;
+import com.codetaylor.mc.onslaught.modules.onslaught.ai.injector.EntityAIChaseLongDistanceInjector;
+import com.codetaylor.mc.onslaught.modules.onslaught.ai.injector.EntityAIMiningInjector;
+import com.codetaylor.mc.onslaught.modules.onslaught.ai.injector.EntityAIPlayerTargetInjector;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.Tag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;

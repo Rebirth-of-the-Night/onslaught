@@ -25,21 +25,21 @@ public class EntityAIMining
   private static final int BLOCK_DIG_RANGE_SQ = 16;
   private static final float BASE_DESTROY_SPEED = 1;
 
-  private final EntityLiving entity;
+  private final EntityLiving taskOwner;
 
   private EntityLivingBase attackTarget;
   private BlockPos blockTarget;
   private int blockBreakTickCounter;
 
-  public EntityAIMining(EntityLiving entity) {
+  public EntityAIMining(EntityLiving taskOwner) {
 
-    this.entity = entity;
+    this.taskOwner = taskOwner;
   }
 
   @Override
   public boolean shouldExecute() {
 
-    this.attackTarget = this.entity.getAttackTarget();
+    this.attackTarget = this.taskOwner.getAttackTarget();
 
     if (this.attackTarget == null) {
       return false;
@@ -47,10 +47,10 @@ public class EntityAIMining
     } else if (!this.attackTarget.isEntityAlive()) {
       return false;
 
-    } else if (!this.entity.getNavigator().noPath()) {
+    } else if (!this.taskOwner.getNavigator().noPath()) {
       return false;
 
-    } else if (this.entity.getDistanceSq(this.attackTarget) < 1) {
+    } else if (this.taskOwner.getDistanceSq(this.attackTarget) < 1) {
       return false;
     }
 
@@ -62,7 +62,7 @@ public class EntityAIMining
   @Override
   public void startExecuting() {
 
-    this.entity.getNavigator().clearPath();
+    this.taskOwner.getNavigator().clearPath();
   }
 
   @Override
@@ -76,21 +76,21 @@ public class EntityAIMining
   public boolean shouldContinueExecuting() {
 
     return (this.blockTarget != null)
-        && (this.entity.getDistanceSq(this.blockTarget) <= BLOCK_DIG_RANGE_SQ);
+        && (this.taskOwner.getDistanceSq(this.blockTarget) <= BLOCK_DIG_RANGE_SQ);
   }
 
   @Override
   public void updateTask() {
 
-    this.entity.getLookHelper().setLookPosition(
+    this.taskOwner.getLookHelper().setLookPosition(
         this.attackTarget.posX, this.attackTarget.posY + this.attackTarget.getEyeHeight(), this.attackTarget.posZ,
-        this.entity.getHorizontalFaceSpeed(), this.entity.getVerticalFaceSpeed()
+        this.taskOwner.getHorizontalFaceSpeed(), this.taskOwner.getVerticalFaceSpeed()
     );
 
-    PathNavigate navigator = this.entity.getNavigator();
+    PathNavigate navigator = this.taskOwner.getNavigator();
     navigator.clearPath();
 
-    World world = this.entity.world;
+    World world = this.taskOwner.world;
 
     if (world.isAirBlock(this.blockTarget)) {
       this.resetTask();
@@ -100,25 +100,25 @@ public class EntityAIMining
     this.blockBreakTickCounter += 1;
 
     IBlockState blockState = world.getBlockState(this.blockTarget);
-    float blockStrength = this.getBlockStrength(blockState, this.entity, world, this.blockTarget) * (this.blockBreakTickCounter + 1);
+    float blockStrength = this.getBlockStrength(blockState, this.taskOwner, world, this.blockTarget) * (this.blockBreakTickCounter + 1);
 
     if (blockStrength >= 1) {
-      boolean canHarvest = this.canHarvest(blockState, this.entity);
+      boolean canHarvest = this.canHarvest(blockState, this.taskOwner);
       world.destroyBlock(this.blockTarget, canHarvest);
-      navigator.setPath(navigator.getPathToEntityLiving(this.attackTarget), this.entity.getMoveHelper().getSpeed());
+      navigator.setPath(navigator.getPathToEntityLiving(this.attackTarget), this.taskOwner.getMoveHelper().getSpeed());
       this.resetTask();
 
     } else if (this.blockBreakTickCounter % 5 == 0) {
-      world.playSound(null, this.blockTarget, blockState.getBlock().getSoundType(blockState, world, this.blockTarget, this.entity).getHitSound(), SoundCategory.BLOCKS, 1, 1);
-      this.entity.swingArm(EnumHand.MAIN_HAND);
-      world.sendBlockBreakProgress(this.entity.getEntityId(), this.blockTarget, (int) (blockStrength * 10));
+      world.playSound(null, this.blockTarget, blockState.getBlock().getSoundType(blockState, world, this.blockTarget, this.taskOwner).getHitSound(), SoundCategory.BLOCKS, 1, 1);
+      this.taskOwner.swingArm(EnumHand.MAIN_HAND);
+      world.sendBlockBreakProgress(this.taskOwner.getEntityId(), this.blockTarget, (int) (blockStrength * 10));
     }
   }
 
   private void updateBlockTarget() {
 
-    World world = this.entity.world;
-    Vec3d origin = new Vec3d(this.entity.posX, this.entity.posY + 1, this.entity.posZ);
+    World world = this.taskOwner.world;
+    Vec3d origin = new Vec3d(this.taskOwner.posX, this.taskOwner.posY + 1, this.taskOwner.posZ);
     Vec3d target = new Vec3d(this.attackTarget.posX, this.attackTarget.posY, this.attackTarget.posZ);
 
     RayTraceResult rayTraceResult = world.rayTraceBlocks(origin, target, false);

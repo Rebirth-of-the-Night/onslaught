@@ -19,16 +19,21 @@ public class LogFormatter
 
     this.date.setTime(record.getMillis());
     String source;
+
     if (record.getSourceClassName() != null) {
       source = record.getSourceClassName();
+
       if (record.getSourceMethodName() != null) {
         source += " " + record.getSourceMethodName();
       }
+
     } else {
       source = record.getLoggerName();
     }
+
     String message = formatMessage(record);
     String throwable = "";
+
     if (record.getThrown() != null) {
       StringWriter sw = new StringWriter();
       PrintWriter pw = new PrintWriter(sw);
@@ -37,6 +42,7 @@ public class LogFormatter
       pw.close();
       throwable = sw.toString();
     }
+
     return String.format(
         LOG_FORMAT,
         this.dateFormat.format(this.date),
