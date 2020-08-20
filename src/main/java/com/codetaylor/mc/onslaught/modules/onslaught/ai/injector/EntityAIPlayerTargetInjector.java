@@ -1,5 +1,6 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.ai.injector;
 
+import com.codetaylor.mc.onslaught.modules.onslaught.ai.DefaultPriority;
 import com.codetaylor.mc.onslaught.modules.onslaught.ai.EntityAIPlayerTarget;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.Tag;
 import net.minecraft.entity.EntityLiving;
@@ -32,7 +33,7 @@ public class EntityAIPlayerTargetInjector
     String playerUUIDString = aiTag.getString(Tag.AI_PARAM_UUID);
     UUID playerUUID = UUID.fromString(playerUUIDString);
 
-    int priority = this.getPriority(aiTag, EntityAIPlayerTarget.DEFAULT_PRIORITY);
+    int priority = this.getPriority(aiTag, DefaultPriority.PLAYER_TARGET);
 
     entity.targetTasks.addTask(priority, new EntityAIPlayerTarget(entity, () -> {
       WorldServer world = (WorldServer) entity.world;

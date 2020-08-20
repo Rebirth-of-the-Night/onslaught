@@ -12,9 +12,11 @@ public final class Tag {
   public static final String AI_TARGET_PLAYER = "TargetPlayer";
   public static final String AI_CHASE_LONG_DISTANCE = "ChaseLongDistance";
 
-  public static final String AI_PARAM_UUID = "UUID";
-  public static final String AI_PARAM_SPEED = "Speed";
   public static final String AI_PARAM_PRIORITY = "Priority";
+  public static final String AI_PARAM_RANGE = "Range";
+  public static final String AI_PARAM_SPEED = "Speed";
+  public static final String AI_PARAM_SPEED_MODIFIER = "SpeedModifier";
+  public static final String AI_PARAM_UUID = "UUID";
 
   private Tag() {
     //

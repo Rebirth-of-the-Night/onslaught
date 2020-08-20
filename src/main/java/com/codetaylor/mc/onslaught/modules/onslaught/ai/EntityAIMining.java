@@ -13,27 +13,37 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+import java.util.List;
+
 public class EntityAIMining
     extends EntityAIBase {
 
-  private static final int BLOCK_DIG_RANGE_SQ = 16;
-  private static final float BASE_DESTROY_SPEED = 1;
+  public static final int DEFAULT_RANGE = 4;
+  public static final double DEFAULT_SPEED_MODIFIER = 1;
 
   private final EntityLiving taskOwner;
+  private final int rangeSq;
+  private final double speedModifier;
+  private final float defaultSpeed;
 
   private EntityLivingBase attackTarget;
   private BlockPos blockTarget;
   private int blockBreakTickCounter;
 
-  public EntityAIMining(EntityLiving taskOwner) {
+  public EntityAIMining(EntityLiving taskOwner, int range, double speedModifier) {
 
     this.taskOwner = taskOwner;
+    this.rangeSq = range * range;
+    this.speedModifier = speedModifier;
+    this.defaultSpeed = 1;
+    this.setMutexBits(0);
   }
 
   @Override
@@ -54,7 +64,7 @@ public class EntityAIMining
       return false;
     }
 
-    this.updateBlockTarget();
+    this.blockTarget = this.getBlockTarget();
 
     return (this.blockTarget != null);
   }
@@ -68,6 +78,10 @@ public class EntityAIMining
   @Override
   public void resetTask() {
 
+    if (this.blockTarget != null) {
+      this.taskOwner.world.sendBlockBreakProgress(this.taskOwner.getEntityId(), this.blockTarget, -1);
+    }
+
     this.blockBreakTickCounter = 0;
     this.blockTarget = null;
   }
@@ -75,8 +89,16 @@ public class EntityAIMining
   @Override
   public boolean shouldContinueExecuting() {
 
-    return (this.blockTarget != null)
-        && (this.taskOwner.getDistanceSq(this.blockTarget) <= BLOCK_DIG_RANGE_SQ);
+    BlockPos blockTarget = this.getBlockTarget();
+
+    if (blockTarget == null) {
+      return false;
+
+    } else if (!blockTarget.equals(this.blockTarget)) {
+      return false;
+    }
+
+    return (this.taskOwner.getDistanceSq(this.blockTarget) <= this.rangeSq);
   }
 
   @Override
@@ -115,17 +137,35 @@ public class EntityAIMining
     }
   }
 
-  private void updateBlockTarget() {
+  @Nullable
+  private BlockPos getBlockTarget() {
 
     World world = this.taskOwner.world;
-    Vec3d origin = new Vec3d(this.taskOwner.posX, this.taskOwner.posY + 1, this.taskOwner.posZ);
+    Vec3d origin = new Vec3d(this.taskOwner.posX, this.taskOwner.posY, this.taskOwner.posZ);
     Vec3d target = new Vec3d(this.attackTarget.posX, this.attackTarget.posY, this.attackTarget.posZ);
 
-    RayTraceResult rayTraceResult = world.rayTraceBlocks(origin, target, false);
+    Vec3d center = target.subtract(origin).normalize().scale(1);
+    AxisAlignedBB boundingBox = this.taskOwner.getEntityBoundingBox().offset(center).grow(0.5);
+    List<AxisAlignedBB> collisionBoxes = world.getCollisionBoxes(this.taskOwner, boundingBox);
 
-    if (rayTraceResult != null && rayTraceResult.typeOfHit == RayTraceResult.Type.BLOCK) {
-      this.blockTarget = rayTraceResult.getBlockPos();
+    for (AxisAlignedBB collisionBox : collisionBoxes) {
+      BlockPos pos = new BlockPos(collisionBox.getCenter());
+
+      if (!world.isAirBlock(pos)) {
+
+        // If the target is above the mob, don't mine the block at the same
+        // level as the mob's feet. This ensures that the logic will try to
+        // stair up to the target.
+        if (this.taskOwner.posY < this.attackTarget.posY
+            && this.taskOwner.posY >= pos.getY()) {
+          continue;
+        }
+
+        return pos;
+      }
     }
+
+    return null;
   }
 
   /**
@@ -141,7 +181,7 @@ public class EntityAIMining
       return 0;
     }
 
-    return this.getDigSpeed(entity, blockState, pos) / hardness / (this.canHarvest(blockState, entity) ? 30f : 100f);
+    return this.getMiningSpeed(entity, blockState) / hardness / (this.canHarvest(blockState, entity) ? 30f : 100f);
   }
 
   /**
@@ -178,10 +218,12 @@ public class EntityAIMining
    *
    * @see net.minecraft.entity.player.EntityPlayer#getDigSpeed(IBlockState, BlockPos)
    */
-  private float getDigSpeed(EntityLivingBase entity, IBlockState blockState, BlockPos pos) {
+  private float getMiningSpeed(EntityLivingBase entity, IBlockState blockState) {
 
     ItemStack heldItemMainHand = entity.getHeldItemMainhand();
-    float f = heldItemMainHand.isEmpty() ? BASE_DESTROY_SPEED : heldItemMainHand.getDestroySpeed(blockState);
+    float f = heldItemMainHand.isEmpty() ? this.defaultSpeed : heldItemMainHand.getDestroySpeed(blockState);
+
+    f *= this.speedModifier;
 
     if (f > 1) {
       int i = EnchantmentHelper.getEfficiencyModifier(entity);

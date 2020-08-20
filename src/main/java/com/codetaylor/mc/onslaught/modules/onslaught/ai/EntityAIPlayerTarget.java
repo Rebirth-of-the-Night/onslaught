@@ -10,8 +10,6 @@ import java.util.function.Supplier;
 public class EntityAIPlayerTarget
     extends EntityAIBase {
 
-  public static final int DEFAULT_PRIORITY = 10;
-
   private final EntityLiving taskOwner;
   private final Supplier<EntityPlayer> playerSupplier;
 

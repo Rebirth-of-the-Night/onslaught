@@ -1,5 +1,6 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.ai.injector;
 
+import com.codetaylor.mc.onslaught.modules.onslaught.ai.DefaultPriority;
 import com.codetaylor.mc.onslaught.modules.onslaught.ai.EntityAIChaseLongDistance;
 import com.codetaylor.mc.onslaught.modules.onslaught.ai.EntityAIChaseLongDistanceGhast;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.Tag;
@@ -27,16 +28,8 @@ public class EntityAIChaseLongDistanceInjector
 
     NBTTagCompound aiTag = tag.getCompoundTag(Tag.AI_CHASE_LONG_DISTANCE);
 
-    int priority = this.getPriority(aiTag, EntityAIChaseLongDistance.DEFAULT_PRIORITY);
-
-    double speed;
-
-    if (aiTag.hasKey(Tag.AI_PARAM_SPEED)) {
-      speed = aiTag.getDouble(Tag.AI_PARAM_SPEED);
-
-    } else {
-      speed = EntityAIChaseLongDistance.DEFAULT_SPEED;
-    }
+    int priority = this.getPriority(aiTag, DefaultPriority.CHASE_LONG_DISTANCE);
+    double speed = this.getDouble(aiTag, Tag.AI_PARAM_SPEED, EntityAIChaseLongDistance.DEFAULT_SPEED);
 
     if (entity.getClass() == EntityGhast.class) {
       entity.tasks.addTask(priority, new EntityAIChaseLongDistanceGhast((EntityGhast) entity, speed));

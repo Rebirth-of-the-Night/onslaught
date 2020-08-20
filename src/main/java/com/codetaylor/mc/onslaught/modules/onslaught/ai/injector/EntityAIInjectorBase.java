@@ -12,4 +12,22 @@ public abstract class EntityAIInjectorBase {
 
     return aiTag.hasKey(Tag.AI_PARAM_PRIORITY) ? aiTag.getInteger(Tag.AI_PARAM_PRIORITY) : defaultPriority;
   }
+
+  protected double getDouble(NBTTagCompound aiTag, String key, double defaultValue) {
+
+    if (aiTag.hasKey(key)) {
+      return aiTag.getDouble(key);
+    }
+
+    return defaultValue;
+  }
+
+  protected int getInteger(NBTTagCompound aiTag, String key, int defaultValue) {
+
+    if (aiTag.hasKey(key)) {
+      return aiTag.getInteger(key);
+    }
+
+    return defaultValue;
+  }
 }

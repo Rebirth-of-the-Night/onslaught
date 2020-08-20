@@ -22,7 +22,6 @@ public class EntityAIChaseLongDistance
     extends EntityAIBase {
 
   public static final double DEFAULT_SPEED = 1.0;
-  public static final int DEFAULT_PRIORITY = -10;
 
   private final EntityLiving taskOwner;
   private final double speed;
