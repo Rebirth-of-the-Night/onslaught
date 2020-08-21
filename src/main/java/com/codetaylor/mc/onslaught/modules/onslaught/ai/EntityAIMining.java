@@ -148,6 +148,32 @@ public class EntityAIMining
     AxisAlignedBB boundingBox = this.taskOwner.getEntityBoundingBox().offset(center).grow(0.5);
     List<AxisAlignedBB> collisionBoxes = world.getCollisionBoxes(this.taskOwner, boundingBox);
 
+    // Sort the boxes into an ordered list, closest to farthest. This will
+    // ensure that the mob mines the closest blocks first.
+    collisionBoxes.sort((b1, b2) -> {
+
+      double x1 = b1.minX + (b1.maxX - b1.minX) * 0.5;
+      double y1 = b1.minY + (b1.maxY - b1.minY) * 0.5;
+      double z1 = b1.minZ + (b1.maxZ - b1.minZ) * 0.5;
+
+      double x2 = b2.minX + (b2.maxX - b2.minX) * 0.5;
+      double y2 = b2.minY + (b2.maxY - b2.minY) * 0.5;
+      double z2 = b2.minZ + (b2.maxZ - b2.minZ) * 0.5;
+
+      double dx1 = x1 - center.x;
+      double dy1 = y1 - center.y;
+      double dz1 = z1 - center.z;
+
+      double dx2 = x2 - center.x;
+      double dy2 = y2 - center.y;
+      double dz2 = z2 - center.z;
+
+      double d1 = dx1 * dx1 + dy1 * dy1 + dz1 * dz1;
+      double d2 = dx2 * dx2 + dy2 * dy2 + dz2 * dz2;
+
+      return Double.compare(d1, d2);
+    });
+
     for (AxisAlignedBB collisionBox : collisionBoxes) {
       BlockPos pos = new BlockPos(collisionBox.getCenter());
 
