@@ -1,5 +1,6 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.event;
 
+import com.codetaylor.mc.onslaught.modules.onslaught.ai.injector.EntityAIAttackMeleeInjector;
 import com.codetaylor.mc.onslaught.modules.onslaught.ai.injector.EntityAIChaseLongDistanceInjector;
 import com.codetaylor.mc.onslaught.modules.onslaught.ai.injector.EntityAIMiningInjector;
 import com.codetaylor.mc.onslaught.modules.onslaught.ai.injector.EntityAIPlayerTargetInjector;
@@ -15,16 +16,19 @@ public class EntityAiInjectionEventHandler {
   private final EntityAIPlayerTargetInjector playerTargetInjector;
   private final EntityAIChaseLongDistanceInjector chaseLongDistanceInjector;
   private final EntityAIMiningInjector miningInjector;
+  private final EntityAIAttackMeleeInjector attackMeleeInjector;
 
   public EntityAiInjectionEventHandler(
       EntityAIPlayerTargetInjector playerTargetInjector,
       EntityAIChaseLongDistanceInjector chaseLongDistanceInjector,
-      EntityAIMiningInjector miningInjector
+      EntityAIMiningInjector miningInjector,
+      EntityAIAttackMeleeInjector attackMeleeInjector
   ) {
 
     this.playerTargetInjector = playerTargetInjector;
     this.chaseLongDistanceInjector = chaseLongDistanceInjector;
     this.miningInjector = miningInjector;
+    this.attackMeleeInjector = attackMeleeInjector;
   }
 
   @SubscribeEvent
@@ -56,6 +60,7 @@ public class EntityAiInjectionEventHandler {
       this.playerTargetInjector.inject(entityLiving, customAiTag);
       this.chaseLongDistanceInjector.inject(entityLiving, customAiTag);
       this.miningInjector.inject(entityLiving, customAiTag);
+      this.attackMeleeInjector.inject(entityLiving, customAiTag);
     }
   }
 }

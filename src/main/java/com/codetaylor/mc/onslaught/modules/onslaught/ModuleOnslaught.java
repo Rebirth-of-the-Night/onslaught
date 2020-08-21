@@ -2,6 +2,7 @@ package com.codetaylor.mc.onslaught.modules.onslaught;
 
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
 import com.codetaylor.mc.onslaught.ModOnslaught;
+import com.codetaylor.mc.onslaught.modules.onslaught.ai.injector.EntityAIAttackMeleeInjector;
 import com.codetaylor.mc.onslaught.modules.onslaught.ai.injector.EntityAIChaseLongDistanceInjector;
 import com.codetaylor.mc.onslaught.modules.onslaught.ai.injector.EntityAIMiningInjector;
 import com.codetaylor.mc.onslaught.modules.onslaught.ai.injector.EntityAIPlayerTargetInjector;
@@ -98,7 +99,8 @@ public class ModuleOnslaught
     MinecraftForge.EVENT_BUS.register(new EntityAiInjectionEventHandler(
         new EntityAIPlayerTargetInjector(),
         new EntityAIChaseLongDistanceInjector(),
-        new EntityAIMiningInjector()
+        new EntityAIMiningInjector(),
+        new EntityAIAttackMeleeInjector()
     ));
   }
 
