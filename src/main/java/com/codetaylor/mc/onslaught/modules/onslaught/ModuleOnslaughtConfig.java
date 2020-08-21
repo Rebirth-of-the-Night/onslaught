@@ -5,11 +5,11 @@ import net.minecraftforge.common.config.Config;
 @Config(modid = ModuleOnslaught.MOD_ID, name = ModuleOnslaught.MOD_ID + "/" + "onslaught")
 public class ModuleOnslaughtConfig {
 
-  public static CustomAI.AttackMelee CUSTOM_AI_ATTACK_MELEE = new CustomAI.AttackMelee();
-  public static CustomAI.LongDistanceChase CUSTOM_AI_LONG_DISTANCE_CHASE = new CustomAI.LongDistanceChase();
-  public static CustomAI.Mining CUSTOM_AI_MINING = new CustomAI.Mining();
+  public static CustomAI CUSTOM_AI = new CustomAI();
 
   public static class CustomAI {
+
+    public AttackMelee ATTACK_MELEE = new AttackMelee();
 
     public static class AttackMelee {
 
@@ -28,6 +28,8 @@ public class ModuleOnslaughtConfig {
       public double DEFAULT_ATTACK_DAMAGE = 1;
     }
 
+    public LongDistanceChase LONG_DISTANCE_CHASE = new LongDistanceChase();
+
     public static class LongDistanceChase {
 
       @Config.Comment({
@@ -37,6 +39,8 @@ public class ModuleOnslaughtConfig {
       })
       public double DEFAULT_SPEED = 1;
     }
+
+    public Mining MINING = new Mining();
 
     public static class Mining {
 

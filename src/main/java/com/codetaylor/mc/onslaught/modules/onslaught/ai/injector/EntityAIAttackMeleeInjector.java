@@ -32,8 +32,8 @@ public class EntityAIAttackMeleeInjector
     NBTTagCompound aiTag = tag.getCompoundTag(Tag.AI_ATTACK_MELEE);
 
     int priority = this.getPriority(aiTag, DefaultPriority.ATTACK_MELEE);
-    double speed = this.getDouble(aiTag, Tag.AI_PARAM_SPEED, ModuleOnslaughtConfig.CUSTOM_AI_ATTACK_MELEE.DEFAULT_SPEED);
-    float attackDamage = (float) this.getDouble(aiTag, Tag.AI_PARAM_ATTACK_DAMAGE, ModuleOnslaughtConfig.CUSTOM_AI_ATTACK_MELEE.DEFAULT_ATTACK_DAMAGE);
+    double speed = this.getDouble(aiTag, Tag.AI_PARAM_SPEED, ModuleOnslaughtConfig.CUSTOM_AI.ATTACK_MELEE.DEFAULT_SPEED);
+    float attackDamage = (float) this.getDouble(aiTag, Tag.AI_PARAM_ATTACK_DAMAGE, ModuleOnslaughtConfig.CUSTOM_AI.ATTACK_MELEE.DEFAULT_ATTACK_DAMAGE);
 
     entity.tasks.addTask(priority, new EntityAIAttackMelee((EntityCreature) entity, speed, attackDamage, false));
   }
