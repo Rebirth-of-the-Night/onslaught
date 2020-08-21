@@ -22,11 +22,11 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
+/**
+ * Responsible for allowing an entity to break blocks to get to their target.
+ */
 public class EntityAIMining
     extends EntityAIBase {
-
-  public static final int DEFAULT_RANGE = 4;
-  public static final double DEFAULT_SPEED_MODIFIER = 1;
 
   private final EntityLiving taskOwner;
   private final int rangeSq;
@@ -184,6 +184,10 @@ public class EntityAIMining
         // stair up to the target.
         if (this.taskOwner.posY < this.attackTarget.posY
             && this.taskOwner.posY >= pos.getY()) {
+          continue;
+        }
+
+        if (this.taskOwner.getDistanceSq(this.blockTarget) > this.rangeSq) {
           continue;
         }
 

@@ -21,8 +21,6 @@ import java.util.Random;
 public class EntityAIChaseLongDistance
     extends EntityAIBase {
 
-  public static final double DEFAULT_SPEED = 1.0;
-
   private final EntityLiving taskOwner;
   private final double speed;
   private Path path;
