@@ -12,6 +12,9 @@ import net.minecraft.util.math.MathHelper;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Responsible for allowing passive entities to attack.
+ */
 public class EntityAIAttackMelee
     extends net.minecraft.entity.ai.EntityAIAttackMelee {
 

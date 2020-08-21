@@ -7,6 +7,9 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.function.Supplier;
 
+/**
+ * Responsible for providing a persistent player target.
+ */
 public class EntityAIPlayerTarget
     extends EntityAIBase {
 

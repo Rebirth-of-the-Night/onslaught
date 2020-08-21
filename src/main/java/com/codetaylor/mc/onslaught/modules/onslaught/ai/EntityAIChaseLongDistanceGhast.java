@@ -5,6 +5,9 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.util.math.AxisAlignedBB;
 
+/**
+ * Responsible for moving a Ghast in the direction of its target.
+ */
 public class EntityAIChaseLongDistanceGhast
     extends EntityAIBase {
 
