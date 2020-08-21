@@ -28,8 +28,8 @@ public class EntityAIPlayerTarget
 
     EntityLivingBase attackTarget = this.taskOwner.getAttackTarget();
 
-    // Don't run if we already have a target
-    if (attackTarget != null) {
+    // Don't run if we already have a target and the target is alive
+    if (attackTarget != null && attackTarget.isEntityAlive()) {
       return false;
     }
 
