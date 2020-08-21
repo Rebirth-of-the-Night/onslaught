@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 /**
- * Responsible for adding loot from the extra tables to the loot list when a mob dies.
+ * Responsible for adding loot from the extra tables to the given loot list.
  */
 public class ExtraLootInjector {
 

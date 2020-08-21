@@ -1,9 +1,6 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.event;
 
-import com.codetaylor.mc.onslaught.modules.onslaught.ai.injector.EntityAIAttackMeleeInjector;
-import com.codetaylor.mc.onslaught.modules.onslaught.ai.injector.EntityAIChaseLongDistanceInjector;
-import com.codetaylor.mc.onslaught.modules.onslaught.ai.injector.EntityAIMiningInjector;
-import com.codetaylor.mc.onslaught.modules.onslaught.ai.injector.EntityAIPlayerTargetInjector;
+import com.codetaylor.mc.onslaught.modules.onslaught.ai.injector.*;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.Tag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -17,18 +14,21 @@ public class EntityAiInjectionEventHandler {
   private final EntityAIChaseLongDistanceInjector chaseLongDistanceInjector;
   private final EntityAIMiningInjector miningInjector;
   private final EntityAIAttackMeleeInjector attackMeleeInjector;
+  private final EntityAICounterAttackInjector counterAttackInjector;
 
   public EntityAiInjectionEventHandler(
       EntityAIPlayerTargetInjector playerTargetInjector,
       EntityAIChaseLongDistanceInjector chaseLongDistanceInjector,
       EntityAIMiningInjector miningInjector,
-      EntityAIAttackMeleeInjector attackMeleeInjector
+      EntityAIAttackMeleeInjector attackMeleeInjector,
+      EntityAICounterAttackInjector counterAttackInjector
   ) {
 
     this.playerTargetInjector = playerTargetInjector;
     this.chaseLongDistanceInjector = chaseLongDistanceInjector;
     this.miningInjector = miningInjector;
     this.attackMeleeInjector = attackMeleeInjector;
+    this.counterAttackInjector = counterAttackInjector;
   }
 
   @SubscribeEvent
@@ -61,6 +61,7 @@ public class EntityAiInjectionEventHandler {
       this.chaseLongDistanceInjector.inject(entityLiving, customAiTag);
       this.miningInjector.inject(entityLiving, customAiTag);
       this.attackMeleeInjector.inject(entityLiving, customAiTag);
+      this.counterAttackInjector.inject(entityLiving, customAiTag);
     }
   }
 }

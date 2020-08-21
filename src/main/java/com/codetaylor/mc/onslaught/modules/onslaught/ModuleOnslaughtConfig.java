@@ -9,6 +9,45 @@ public class ModuleOnslaughtConfig {
 
   public static class CustomAI {
 
+    public CounterAttack COUNTER_ATTACK = new CounterAttack();
+
+    public static class CounterAttack {
+
+      @Config.Comment({
+          "The default Y motion value when counter attacking.",
+          "For reference the spider's Y leap motion value is 0.4",
+          "Can be overridden in a mob template or with NBT.",
+          "Default: " + 0.4
+      })
+      public double DEFAULT_LEAP_MOTION_Y = 0.4;
+
+      @Config.Comment({
+          "The default XZ motion value when counter attacking.",
+          "For reference the spider's XZ leap motion value is 0.4",
+          "Can be overridden in a mob template or with NBT.",
+          "Default: " + 0.4
+      })
+      public double DEFAULT_LEAP_MOTION_XZ = 0.4;
+
+      @Config.Comment({
+          "The default chance of counter attacking.",
+          "For reference, the spider's leap chance is 0.25.",
+          "Note: The chance will not prevent the task from executing,",
+          "but it may delay, or at least vary, the timing of the execution.",
+          "Can be overridden in a mob template or with NBT.",
+          "Default: " + 0.25
+      })
+      public double DEFAULT_CHANCE = 0.25;
+
+      @Config.Comment({
+          "The default range for allowing a counter attack.",
+          "For reference the spider's leap range is [2,4].",
+          "Can be overridden in a mob template or with NBT.",
+          "Default: [2, 4]"
+      })
+      public double[] DEFAULT_RANGE = {2, 4};
+    }
+
     public AttackMelee ATTACK_MELEE = new AttackMelee();
 
     public static class AttackMelee {
