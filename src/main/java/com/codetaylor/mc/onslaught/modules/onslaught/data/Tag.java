@@ -12,6 +12,7 @@ public final class Tag {
   public static final String AI_CHASE_LONG_DISTANCE = "ChaseLongDistance";
   public static final String AI_COUNTER_ATTACK = "CounterAttack";
   public static final String AI_EXPLODE_WHEN_STUCK = "ExplodeWhenStuck";
+  public static final String AI_LUNGE = "Lunge";
   public static final String AI_MINING = "Mining";
   public static final String AI_TARGET_PLAYER = "TargetPlayer";
 

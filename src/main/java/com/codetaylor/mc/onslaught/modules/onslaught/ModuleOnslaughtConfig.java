@@ -9,6 +9,26 @@ public class ModuleOnslaughtConfig {
 
   public static class CustomAI {
 
+    public Lunge LUNGE = new Lunge();
+
+    public static class Lunge {
+
+      @Config.Comment({
+          "The default range at which a mob will increase its speed.",
+          "Can be overridden in a mob template or with NBT.",
+          "Default: " + 6
+      })
+      public int DEFAULT_RANGE = 6;
+
+      @Config.Comment({
+          "The default speed modifier used.",
+          "For reference, the sprint speed modifier is 0.3.",
+          "Can be overridden in a mob template or with NBT.",
+          "Default: " + 0.3
+      })
+      public double DEFAULT_SPEED_MODIFIER = 0.3;
+    }
+
     public ExplodeWhenStuck EXPLODE_WHEN_STUCK = new ExplodeWhenStuck();
 
     public static class ExplodeWhenStuck {

@@ -99,7 +99,8 @@ public class ModuleOnslaught
         new EntityAIMiningInjector(),
         new EntityAIAttackMeleeInjector(),
         new EntityAICounterAttackInjector(),
-        new EntityAIExplodeWhenStuckInjector()
+        new EntityAIExplodeWhenStuckInjector(),
+        new EntityAILungeInjector()
     ));
   }
 
