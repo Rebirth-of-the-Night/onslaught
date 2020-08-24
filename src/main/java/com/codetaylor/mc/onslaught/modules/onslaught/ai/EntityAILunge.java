@@ -9,6 +9,10 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 
 import java.util.UUID;
 
+/**
+ * Responsible for temporarily increasing an entity's movement speed while within
+ * range of their attack target.
+ */
 public class EntityAILunge
     extends EntityAIBase {
 

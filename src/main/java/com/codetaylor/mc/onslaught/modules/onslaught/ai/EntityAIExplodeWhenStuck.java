@@ -4,6 +4,10 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 
+/**
+ * Responsible for causing a mob to explode when they don't have a path
+ * to their attack target for N ticks.
+ */
 public class EntityAIExplodeWhenStuck
     extends EntityAIBase {
 
