@@ -9,6 +9,63 @@ public class ModuleOnslaughtConfig {
 
   public static class CustomAI {
 
+    public ExplodeWhenStuck EXPLODE_WHEN_STUCK = new ExplodeWhenStuck();
+
+    public static class ExplodeWhenStuck {
+
+      @Config.Comment({
+          "Set to true to require line of sight with target.",
+          "Can be overridden in a mob template or with NBT.",
+          "Default: " + false
+      })
+      public boolean DEFAULT_SIGHT_REQUIRED = false;
+
+      @Config.Comment({
+          "Set to false to ignore the range to target.",
+          "Can be overridden in a mob template or with NBT.",
+          "Default: " + true
+      })
+      public boolean DEFAULT_RANGE_REQUIRED = true;
+
+      @Config.Comment({
+          "The default target range to allow the mob to explode.",
+          "Can be overridden in a mob template or with NBT.",
+          "Default: [2, 16]"
+      })
+      public double[] DEFAULT_RANGE = {2, 16};
+
+      @Config.Comment({
+          "The default explosion delay.",
+          "How long the mob can be stuck before it explodes.",
+          "Can be overridden in a mob template or with NBT.",
+          "Default: " + (3 * 20)
+      })
+      public int DEFAULT_EXPLOSION_DELAY_TICKS = 3 * 20;
+
+      @Config.Comment({
+          "The default explosion strength.",
+          "For reference, an uncharged creeper has an explosion strength of 3",
+          "and a charged creeper has an explosion strength of 6.",
+          "Can be overridden in a mob template or with NBT.",
+          "Default: " + 3
+      })
+      public double DEFAULT_EXPLOSION_STRENGTH = 3;
+
+      @Config.Comment({
+          "Set to true to cause the explosion to start fires.",
+          "Can be overridden in a mob template or with NBT.",
+          "Default: " + false
+      })
+      public boolean DEFAULT_EXPLOSION_CAUSES_FIRE = false;
+
+      @Config.Comment({
+          "Set to false to cause the explosion to be harmless.",
+          "Can be overridden in a mob template or with NBT.",
+          "Default: " + true
+      })
+      public boolean DEFAULT_EXPLOSION_DAMAGING = true;
+    }
+
     public CounterAttack COUNTER_ATTACK = new CounterAttack();
 
     public static class CounterAttack {

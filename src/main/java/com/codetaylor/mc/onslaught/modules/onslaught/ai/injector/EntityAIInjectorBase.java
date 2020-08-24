@@ -30,4 +30,13 @@ public abstract class EntityAIInjectorBase {
 
     return defaultValue;
   }
+
+  protected boolean getBoolean(NBTTagCompound aiTag, String key, boolean defaultValue) {
+
+    if (aiTag.hasKey(key)) {
+      return aiTag.getBoolean(key);
+    }
+
+    return defaultValue;
+  }
 }

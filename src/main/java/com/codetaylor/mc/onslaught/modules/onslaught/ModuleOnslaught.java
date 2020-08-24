@@ -98,7 +98,8 @@ public class ModuleOnslaught
         new EntityAIChaseLongDistanceInjector(),
         new EntityAIMiningInjector(),
         new EntityAIAttackMeleeInjector(),
-        new EntityAICounterAttackInjector()
+        new EntityAICounterAttackInjector(),
+        new EntityAIExplodeWhenStuckInjector()
     ));
   }
 
