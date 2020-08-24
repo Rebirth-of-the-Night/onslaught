@@ -187,7 +187,7 @@ public class EntityAIMining
           continue;
         }
 
-        if (this.taskOwner.getDistanceSq(this.blockTarget) > this.rangeSq) {
+        if (this.taskOwner.getDistanceSq(pos) > this.rangeSq) {
           continue;
         }
 
