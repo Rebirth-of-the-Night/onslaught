@@ -16,7 +16,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.factory.MobTemplateEntityFa
 import com.codetaylor.mc.onslaught.modules.onslaught.factory.MobTemplateEntityFactoryEffectApplicator;
 import com.codetaylor.mc.onslaught.modules.onslaught.factory.MobTemplateEntityFactoryLootTableApplicator;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.JsonFileLocator;
-import com.codetaylor.mc.onslaught.modules.onslaught.lib.PathCreator;
+import com.codetaylor.mc.onslaught.modules.onslaught.lib.FilePathCreator;
 import com.codetaylor.mc.onslaught.modules.onslaught.loot.CustomLootTableManagerInjector;
 import com.codetaylor.mc.onslaught.modules.onslaught.loot.ExtraLootInjector;
 import net.minecraftforge.common.MinecraftForge;
@@ -49,7 +49,7 @@ public class ModuleOnslaught
 
     File modConfigurationDirectory = event.getModConfigurationDirectory();
     Path modConfigurationPath = modConfigurationDirectory.toPath();
-    PathCreator pathCreator = new PathCreator();
+    FilePathCreator filePathCreator = new FilePathCreator();
 
     // -------------------------------------------------------------------------
     // - Json Templates
@@ -58,7 +58,7 @@ public class ModuleOnslaught
     this.dataLoader = new DataLoader(
         this.dataStore,
         modConfigurationPath,
-        pathCreator,
+        filePathCreator,
         new JsonFileLocator(),
         new MobTemplateLoader(
             new MobTemplateAdapter()
@@ -71,7 +71,7 @@ public class ModuleOnslaught
     // -------------------------------------------------------------------------
 
     try {
-      pathCreator.initialize(modConfigurationPath.resolve(MOD_ID + "/loot"));
+      filePathCreator.initialize(modConfigurationPath.resolve(MOD_ID + "/loot"));
 
     } catch (IOException e) {
       ModOnslaught.LOG.log(Level.SEVERE, "Error creating path: " + MOD_ID + "/loot");

@@ -7,7 +7,7 @@ import java.nio.file.Path;
 /**
  * Responsible for creating the given path if it doesn't exist.
  */
-public class PathCreator {
+public class FilePathCreator {
 
   public void initialize(Path path) throws IOException {
 

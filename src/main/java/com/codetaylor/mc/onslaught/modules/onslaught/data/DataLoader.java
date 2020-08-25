@@ -6,7 +6,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplateLoader;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplateRegistry;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.JsonFileLocator;
-import com.codetaylor.mc.onslaught.modules.onslaught.lib.PathCreator;
+import com.codetaylor.mc.onslaught.modules.onslaught.lib.FilePathCreator;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -20,21 +20,21 @@ public class DataLoader {
 
   private final DataStore dataStore;
   private final Path path;
-  private final PathCreator pathCreator;
+  private final FilePathCreator filePathCreator;
   private final JsonFileLocator jsonFileLocator;
   private final MobTemplateLoader mobTemplateLoader;
 
   public DataLoader(
       DataStore dataStore,
       Path path,
-      PathCreator pathCreator,
+      FilePathCreator filePathCreator,
       JsonFileLocator jsonFileLocator,
       MobTemplateLoader mobTemplateLoader
   ) {
 
     this.dataStore = dataStore;
     this.path = path;
-    this.pathCreator = pathCreator;
+    this.filePathCreator = filePathCreator;
     this.jsonFileLocator = jsonFileLocator;
     this.mobTemplateLoader = mobTemplateLoader;
   }
@@ -50,7 +50,7 @@ public class DataLoader {
 
     try {
       long start = System.currentTimeMillis();
-      this.pathCreator.initialize(mobTemplatePath);
+      this.filePathCreator.initialize(mobTemplatePath);
       List<Path> jsonFilePaths = this.jsonFileLocator.locate(mobTemplatePath);
       Map<String, MobTemplate> mobTemplateMap = this.mobTemplateLoader.load(jsonFilePaths);
       MobTemplateRegistry mobTemplateRegistry = new MobTemplateRegistry(mobTemplateMap);
