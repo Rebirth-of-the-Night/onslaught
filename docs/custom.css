@@ -1,0 +1,9 @@
+table {
+    width: 100%;
+    background-color: #dddddd;
+}
+
+td {
+    padding: 8px;
+    background-color: #eeeeee;
+}

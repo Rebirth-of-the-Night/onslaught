@@ -1,0 +1,27 @@
+site_name: Onslaught
+
+pages:
+  - Introduction: index.md
+  - ChangeLog: changelog.md
+  - Commands: commands.md
+  - Mobs:
+      - Templates: mob/template.md
+      - Custom AI:
+          - AntiAir: mob/ai/antiair.md
+          - AttackMelee: mob/ai/attackmelee.md
+          - ChaseLongDistance: mob/ai/chaselongdistance.md
+          - CounterAttack: mob/ai/counterattack.md
+          - ExplodeWhenStuck: mob/ai/explodewhenstuck.md
+          - Lunge: mob/ai/lunge.md
+          - Mining: mob/ai/mining.md
+          - PlayerTarget: mob/ai/playertarget.md
+
+#theme:
+#  name: readthedocs
+#  collapse_navigation: true
+
+markdown_extensions:
+  - admonition
+  - attr_list
+
+extra_css: [custom.css]
