@@ -9,6 +9,49 @@ public class ModuleOnslaughtConfig {
 
   public static class CustomAI {
 
+    public AntiAir ANTI_AIR = new AntiAir();
+
+    public static class AntiAir {
+
+      @Config.Comment({
+          "The default range at which a mob pull its target down.",
+          "Can be overridden in a mob template or with NBT.",
+          "Default: " + 128
+      })
+      public int DEFAULT_RANGE = 128;
+
+      @Config.Comment({
+          "Set to true to require line of sight with target.",
+          "Can be overridden in a mob template or with NBT.",
+          "Default: " + true
+      })
+      public boolean DEFAULT_SIGHT_REQUIRED = true;
+
+      @Config.Comment({
+          "The default Y motion value applied to the mob's target.",
+          "Can be overridden in a mob template or with NBT.",
+          "Default: " + (-0.4)
+      })
+      @Config.RangeInt(max = 0)
+      public double DEFAULT_MOTION_Y = -0.4;
+
+      @Config.Comment({
+          "The number of ticks that the player is allowed to be in the air",
+          "before they are pulled down.",
+          "Default: " + 15
+      })
+      @Config.RangeInt(min = 0)
+      public int DELAY_TICKS = 15;
+
+      @Config.Comment({
+          "If true, the force applied from all nearby AntiAir mobs will be summed",
+          "before application. If false, only the greatest force from all nearby",
+          "AntiAir mobs will be applied.",
+          "Default: " + false
+      })
+      public boolean CUMULATIVE_MOTION_Y = false;
+    }
+
     public Lunge LUNGE = new Lunge();
 
     public static class Lunge {

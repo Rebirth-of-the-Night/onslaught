@@ -17,6 +17,7 @@ public class EntityAiInjectionEventHandler {
   private final EntityAICounterAttackInjector counterAttackInjector;
   private final EntityAIExplodeWhenStuckInjector explodeWhenStuckInjector;
   private final EntityAILungeInjector lungeInjector;
+  private final EntityAIAntiAirInjector antiAirInjector;
 
   public EntityAiInjectionEventHandler(
       EntityAIPlayerTargetInjector playerTargetInjector,
@@ -25,7 +26,8 @@ public class EntityAiInjectionEventHandler {
       EntityAIAttackMeleeInjector attackMeleeInjector,
       EntityAICounterAttackInjector counterAttackInjector,
       EntityAIExplodeWhenStuckInjector explodeWhenStuckInjector,
-      EntityAILungeInjector lungeInjector
+      EntityAILungeInjector lungeInjector,
+      EntityAIAntiAirInjector antiAirInjector
   ) {
 
     this.playerTargetInjector = playerTargetInjector;
@@ -35,6 +37,7 @@ public class EntityAiInjectionEventHandler {
     this.counterAttackInjector = counterAttackInjector;
     this.explodeWhenStuckInjector = explodeWhenStuckInjector;
     this.lungeInjector = lungeInjector;
+    this.antiAirInjector = antiAirInjector;
   }
 
   @SubscribeEvent
@@ -70,6 +73,7 @@ public class EntityAiInjectionEventHandler {
       this.counterAttackInjector.inject(entityLiving, customAiTag);
       this.explodeWhenStuckInjector.inject(entityLiving, customAiTag);
       this.lungeInjector.inject(entityLiving, customAiTag);
+      this.antiAirInjector.inject(entityLiving, customAiTag);
     }
   }
 }

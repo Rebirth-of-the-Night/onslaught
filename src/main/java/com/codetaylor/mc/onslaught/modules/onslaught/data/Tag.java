@@ -8,6 +8,7 @@ public final class Tag {
   public static final String EXTRA_LOOT_TABLES = "ExtraLootTables";
   public static final String ONSLAUGHT = "Onslaught";
 
+  public static final String AI_ANTI_AIR = "AntiAir";
   public static final String AI_ATTACK_MELEE = "AttackMelee";
   public static final String AI_CHASE_LONG_DISTANCE = "ChaseLongDistance";
   public static final String AI_COUNTER_ATTACK = "CounterAttack";
@@ -24,6 +25,7 @@ public final class Tag {
   public static final String AI_PARAM_EXPLOSION_DAMAGING = "ExplosionDamaging";
   public static final String AI_PARAM_LEAP_MOTION_XZ = "LeapMotionXZ";
   public static final String AI_PARAM_LEAP_MOTION_Y = "LeapMotionY";
+  public static final String AI_PARAM_MOTION_Y = "MotionY";
   public static final String AI_PARAM_PRIORITY = "Priority";
   public static final String AI_PARAM_RANGE = "Range";
   public static final String AI_PARAM_RANGE_MIN = "RangeMin";

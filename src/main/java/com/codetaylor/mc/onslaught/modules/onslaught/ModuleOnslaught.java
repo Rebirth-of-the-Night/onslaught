@@ -1,8 +1,12 @@
 package com.codetaylor.mc.onslaught.modules.onslaught;
 
 import com.codetaylor.mc.athenaeum.module.ModuleBase;
+import com.codetaylor.mc.athenaeum.network.IPacketRegistry;
+import com.codetaylor.mc.athenaeum.network.IPacketService;
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.ai.injector.*;
+import com.codetaylor.mc.onslaught.modules.onslaught.capability.AntiAirPlayerData;
+import com.codetaylor.mc.onslaught.modules.onslaught.capability.IAntiAirPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandReload;
 import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandSummon;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.DataLoader;
@@ -10,18 +14,22 @@ import com.codetaylor.mc.onslaught.modules.onslaught.data.DataStore;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplateAdapter;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplateLoader;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.CustomLootTableManagerInjectionEventHandler;
+import com.codetaylor.mc.onslaught.modules.onslaught.event.EntityAIAntiAirEventHandler;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.EntityAiInjectionEventHandler;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.ExtraLootInjectionEventHandler;
 import com.codetaylor.mc.onslaught.modules.onslaught.factory.MobTemplateEntityFactory;
 import com.codetaylor.mc.onslaught.modules.onslaught.factory.MobTemplateEntityFactoryEffectApplicator;
 import com.codetaylor.mc.onslaught.modules.onslaught.factory.MobTemplateEntityFactoryLootTableApplicator;
-import com.codetaylor.mc.onslaught.modules.onslaught.lib.JsonFileLocator;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.FilePathCreator;
+import com.codetaylor.mc.onslaught.modules.onslaught.lib.JsonFileLocator;
 import com.codetaylor.mc.onslaught.modules.onslaught.loot.CustomLootTableManagerInjector;
 import com.codetaylor.mc.onslaught.modules.onslaught.loot.ExtraLootInjector;
+import com.codetaylor.mc.onslaught.modules.onslaught.packet.SCPacketMotion;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +41,8 @@ public class ModuleOnslaught
 
   public static final String MOD_ID = ModOnslaught.MOD_ID;
 
+  public static IPacketService PACKET_SERVICE;
+
   private final DataStore dataStore;
   private DataLoader dataLoader;
 
@@ -40,6 +50,8 @@ public class ModuleOnslaught
 
     super(0, MOD_ID);
     this.dataStore = new DataStore();
+
+    PACKET_SERVICE = this.enableNetwork();
   }
 
   @Override
@@ -100,8 +112,27 @@ public class ModuleOnslaught
         new EntityAIAttackMeleeInjector(),
         new EntityAICounterAttackInjector(),
         new EntityAIExplodeWhenStuckInjector(),
-        new EntityAILungeInjector()
+        new EntityAILungeInjector(),
+        new EntityAIAntiAirInjector()
     ));
+
+    // -------------------------------------------------------------------------
+    // - AntiAir Capability
+    // -------------------------------------------------------------------------
+
+    CapabilityManager.INSTANCE.register(IAntiAirPlayerData.class, new AntiAirPlayerData(), AntiAirPlayerData::new);
+
+    MinecraftForge.EVENT_BUS.register(new EntityAIAntiAirEventHandler());
+  }
+
+  @Override
+  public void onNetworkRegister(IPacketRegistry registry) {
+
+    registry.register(
+        SCPacketMotion.class,
+        SCPacketMotion.class,
+        Side.CLIENT
+    );
   }
 
   @Override
