@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.ai;
+package com.codetaylor.mc.onslaught.modules.onslaught.entity.ai;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.CapabilityAntiAir;

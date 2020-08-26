@@ -1,7 +1,7 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.ai.injector;
+package com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector;
 
-import com.codetaylor.mc.onslaught.modules.onslaught.ai.DefaultPriority;
-import com.codetaylor.mc.onslaught.modules.onslaught.ai.EntityAIPlayerTarget;
+import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.DefaultPriority;
+import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.EntityAIPlayerTarget;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.Tag;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.nbt.NBTTagCompound;

@@ -1,6 +1,6 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.event;
 
-import com.codetaylor.mc.onslaught.modules.onslaught.ai.injector.*;
+import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector.*;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.Tag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;

@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.ai;
+package com.codetaylor.mc.onslaught.modules.onslaught.entity.ai;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;

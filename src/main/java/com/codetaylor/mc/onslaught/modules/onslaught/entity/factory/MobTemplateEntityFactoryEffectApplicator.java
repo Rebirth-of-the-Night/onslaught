@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.factory;
+package com.codetaylor.mc.onslaught.modules.onslaught.entity.factory;
 
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplateEffect;

@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.ai;
+package com.codetaylor.mc.onslaught.modules.onslaught.entity.ai;
 
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
