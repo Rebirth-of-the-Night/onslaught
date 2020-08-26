@@ -18,6 +18,7 @@ public class ModuleOnslaughtConfig {
           "Can be overridden in a mob template or with NBT.",
           "Default: " + 128
       })
+      @Config.RangeInt(min = 1)
       public int DEFAULT_RANGE = 128;
 
       @Config.Comment({
@@ -61,6 +62,7 @@ public class ModuleOnslaughtConfig {
           "Can be overridden in a mob template or with NBT.",
           "Default: " + 6
       })
+      @Config.RangeInt(min = 1)
       public int DEFAULT_RANGE = 6;
 
       @Config.Comment({
@@ -69,6 +71,7 @@ public class ModuleOnslaughtConfig {
           "Can be overridden in a mob template or with NBT.",
           "Default: " + 0.3
       })
+      @Config.RangeDouble(min = 0)
       public double DEFAULT_SPEED_MODIFIER = 0.3;
     }
 
@@ -103,6 +106,7 @@ public class ModuleOnslaughtConfig {
           "Can be overridden in a mob template or with NBT.",
           "Default: " + (3 * 20)
       })
+      @Config.RangeInt(min = 0)
       public int DEFAULT_EXPLOSION_DELAY_TICKS = 3 * 20;
 
       @Config.Comment({
@@ -112,6 +116,7 @@ public class ModuleOnslaughtConfig {
           "Can be overridden in a mob template or with NBT.",
           "Default: " + 3
       })
+      @Config.RangeInt(min = 1)
       public double DEFAULT_EXPLOSION_STRENGTH = 3;
 
       @Config.Comment({
@@ -139,6 +144,7 @@ public class ModuleOnslaughtConfig {
           "Can be overridden in a mob template or with NBT.",
           "Default: " + 0.4
       })
+      @Config.RangeDouble(min = 0)
       public double DEFAULT_LEAP_MOTION_Y = 0.4;
 
       @Config.Comment({
@@ -147,6 +153,7 @@ public class ModuleOnslaughtConfig {
           "Can be overridden in a mob template or with NBT.",
           "Default: " + 0.4
       })
+      @Config.RangeDouble(min = 0)
       public double DEFAULT_LEAP_MOTION_XZ = 0.4;
 
       @Config.Comment({
@@ -157,6 +164,7 @@ public class ModuleOnslaughtConfig {
           "Can be overridden in a mob template or with NBT.",
           "Default: " + 0.25
       })
+      @Config.RangeDouble(min = 0, max = 1)
       public double DEFAULT_CHANCE = 0.25;
 
       @Config.Comment({
@@ -177,6 +185,7 @@ public class ModuleOnslaughtConfig {
           "Can be overridden in a mob template or with NBT.",
           "Default: " + 1
       })
+      @Config.RangeDouble(min = 0)
       public double DEFAULT_SPEED = 1;
 
       @Config.Comment({
@@ -184,6 +193,7 @@ public class ModuleOnslaughtConfig {
           "Can be overridden in a mob template or with NBT.",
           "Default: " + 1
       })
+      @Config.RangeDouble(min = 0)
       public double DEFAULT_ATTACK_DAMAGE = 1;
     }
 
@@ -196,6 +206,7 @@ public class ModuleOnslaughtConfig {
           "Can be overridden in a mob template or with NBT.",
           "Default: " + 1
       })
+      @Config.RangeDouble(min = 0)
       public double DEFAULT_SPEED = 1;
     }
 
@@ -208,6 +219,7 @@ public class ModuleOnslaughtConfig {
           "Can be overridden in a mob template or with NBT.",
           "Default: " + 4
       })
+      @Config.RangeInt(min = 1)
       public int DEFAULT_RANGE = 4;
 
       @Config.Comment({
@@ -215,6 +227,7 @@ public class ModuleOnslaughtConfig {
           "Can be overridden in a mob template or with NBT.",
           "Default: " + 1
       })
+      @Config.RangeDouble(min = 0)
       public double DEFAULT_SPEED_MODIFIER = 1;
     }
   }
