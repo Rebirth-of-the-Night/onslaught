@@ -14,7 +14,7 @@ public class ModuleOnslaughtConfig {
     public static class AntiAir {
 
       @Config.Comment({
-          "The default range at which a mob pull its target down.",
+          "The default range at which a mob will pull its target down.",
           "Can be overridden in a mob template or with NBT.",
           "Default: " + 128
       })
