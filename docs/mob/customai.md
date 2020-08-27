@@ -4,7 +4,7 @@ Onslaught contains several custom AI tasks that can be assigned to entities usin
 
 All custom AI NBT needs to be placed inside the `ForgeData/Onslaught/CustomAI` tag.
 
-Each task exposes some optionally configurable properties. If you omit any of the properties, defaults from the mod's config file will be used.
+Each task exposes some optionally configurable properties. If you omit any of the properties, defaults from the mod's config file will be used: `config/onslaught/onslaught.cfg`.
 
 !!! warning "Task Priority"
     Each task does expose a configurable priority, however, we recommended that you omit the `Priority` tag and let the mod use the defaults. The default priorities should work for most mobs and changing them may result in undesirable behavior and performance hits.
@@ -86,7 +86,7 @@ AttackDamage  | int     | [0,-) | 1  | attack damage in half-hearts
 The `ChaseLongDistance` task operates in tandem with the TargetPlayer task to allow mobs to target the invaded player over a long distance. This task will do nothing without the TargetPlayer task because the mob will never have a long-distance target. 
 
 !!! warning
-    This task is automatically applied to mobs spawned by an invasion and doesn't need to be manually applied unless you want to change the task's default properties. This task can be applied manually along with the `TargetPlayer` task for testing purposes.
+    This task is automatically applied to mobs spawned by an invasion and should not be manually applied unless you want to change the task's default properties. This task can be applied manually along with the `TargetPlayer` task for testing purposes.
     
  key | type | range | default | description
  :-|:-|:-|:-|:-
@@ -127,7 +127,7 @@ RangeMin      | double  | [0,max) | 2    | minimum range required to counteratta
 RangeMax      | double  | (min,-) | 4    | maximum range required to counterattack
 
 !!! note
-    The `Chance` parameter will not prevent the task from executing, but it may delay or vary the timing of its execution.
+    The `Chance` parameter will not prevent the task from executing, but it may delay or vary the timing of its execution. Think of it as more of a random delay than a chance to occur. Each tick after the mob is attacked, the logic rolls against the chance parameter to determine if the counter fires.
 
 ```js
 {

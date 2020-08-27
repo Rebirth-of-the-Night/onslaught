@@ -5,7 +5,7 @@ nav:
   - ChangeLog: changelog.md
   - Commands: commands.md
   - Mobs:
-      - Templates: mob/template.md
+      - Mob Templates: mob/template.md
       - Custom AI: mob/customai.md
 
 theme:
