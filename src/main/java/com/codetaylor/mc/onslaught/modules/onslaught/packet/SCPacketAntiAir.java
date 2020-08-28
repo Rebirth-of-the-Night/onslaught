@@ -1,16 +1,19 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.packet;
 
+import com.codetaylor.mc.onslaught.modules.onslaught.capability.CapabilityAntiAir;
+import com.codetaylor.mc.onslaught.modules.onslaught.capability.IAntiAirPlayerData;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class SCPacketMotion
+public class SCPacketAntiAir
     implements IMessage,
-    IMessageHandler<SCPacketMotion, SCPacketMotion> {
+    IMessageHandler<SCPacketAntiAir, SCPacketAntiAir> {
 
   private int entityId;
   private double motionX;
@@ -18,11 +21,11 @@ public class SCPacketMotion
   private double motionZ;
 
   @SuppressWarnings("unused")
-  public SCPacketMotion() {
+  public SCPacketAntiAir() {
     // serialization
   }
 
-  public SCPacketMotion(int entityId, double motionX, double motionY, double motionZ) {
+  public SCPacketAntiAir(int entityId, double motionX, double motionY, double motionZ) {
 
     this.entityId = entityId;
     this.motionX = motionX;
@@ -49,7 +52,7 @@ public class SCPacketMotion
   }
 
   @Override
-  public SCPacketMotion onMessage(SCPacketMotion message, MessageContext ctx) {
+  public SCPacketAntiAir onMessage(SCPacketAntiAir message, MessageContext ctx) {
 
     WorldClient world = Minecraft.getMinecraft().world;
     Entity entity = world.getEntityByID(message.entityId);
@@ -58,6 +61,11 @@ public class SCPacketMotion
       entity.motionX += message.motionX;
       entity.motionY += message.motionY;
       entity.motionZ += message.motionZ;
+
+      if (entity instanceof EntityPlayer) {
+        IAntiAirPlayerData data = CapabilityAntiAir.get((EntityPlayer) entity);
+        data.setMotionY(message.motionY);
+      }
     }
 
     return null;

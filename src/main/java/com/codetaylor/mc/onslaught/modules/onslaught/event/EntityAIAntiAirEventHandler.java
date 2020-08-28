@@ -5,7 +5,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.AntiAirPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.CapabilityAntiAir;
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.IAntiAirPlayerData;
-import com.codetaylor.mc.onslaught.modules.onslaught.packet.SCPacketMotion;
+import com.codetaylor.mc.onslaught.modules.onslaught.packet.SCPacketAntiAir;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -16,8 +16,8 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -29,33 +29,37 @@ import javax.annotation.Nullable;
 public class EntityAIAntiAirEventHandler {
 
   @SubscribeEvent
-  public void on(LivingEvent.LivingUpdateEvent event) {
+  public void on(TickEvent.PlayerTickEvent event) {
 
-    Entity entity = event.getEntity();
+    if (event.phase == TickEvent.Phase.END) {
 
-    if (entity.world.isRemote) {
-      return;
-    }
+      EntityPlayer entityPlayer = event.player;
 
-    if (!(entity instanceof EntityPlayerMP)) {
-      return;
-    }
-
-    IAntiAirPlayerData data = CapabilityAntiAir.get((EntityPlayer) entity);
-    double dataMotionY = data.getMotionY();
-
-    if (dataMotionY != 0) {
-      data.setTicksOffGround(data.getTicksOffGround() + 1);
-
-      if (data.getTicksOffGround() >= ModuleOnslaughtConfig.CUSTOM_AI.ANTI_AIR.DELAY_TICKS) {
-        SCPacketMotion packet = new SCPacketMotion(entity.getEntityId(), 0, dataMotionY, 0);
-        ModuleOnslaught.PACKET_SERVICE.sendTo(packet, (EntityPlayerMP) entity);
-        data.setMotionY(0);
+      if (entityPlayer.world.isRemote) {
+        return;
       }
-    }
 
-    if (entity.onGround) {
-      data.setTicksOffGround(0);
+      if (!(entityPlayer instanceof EntityPlayerMP)) {
+        return;
+      }
+
+      IAntiAirPlayerData data = CapabilityAntiAir.get(entityPlayer);
+      double dataMotionY = data.getMotionY();
+
+      if (dataMotionY != 0) {
+        data.setTicksOffGround(data.getTicksOffGround() + 1);
+
+        if (data.getTicksOffGround() >= ModuleOnslaughtConfig.CUSTOM_AI.ANTI_AIR.DELAY_TICKS) {
+//          entityPlayer.setSneaking(false);
+          SCPacketAntiAir packet = new SCPacketAntiAir(entityPlayer.getEntityId(), 0, dataMotionY, 0);
+          ModuleOnslaught.PACKET_SERVICE.sendTo(packet, (EntityPlayerMP) entityPlayer);
+          data.setMotionY(0);
+        }
+      }
+
+      if (entityPlayer.onGround) {
+        data.setTicksOffGround(0);
+      }
     }
   }
 
