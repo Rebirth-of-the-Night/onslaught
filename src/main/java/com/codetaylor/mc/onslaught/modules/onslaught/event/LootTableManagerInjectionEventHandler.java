@@ -9,11 +9,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 /**
  * Responsible for injecting a custom loot table manager.
  */
-public class CustomLootTableManagerInjectionEventHandler {
+public class LootTableManagerInjectionEventHandler {
 
   private final CustomLootTableManagerInjector injector;
 
-  public CustomLootTableManagerInjectionEventHandler(CustomLootTableManagerInjector injector) {
+  public LootTableManagerInjectionEventHandler(CustomLootTableManagerInjector injector) {
 
     this.injector = injector;
   }

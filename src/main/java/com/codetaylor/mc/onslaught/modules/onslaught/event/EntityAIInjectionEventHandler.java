@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class EntityAiInjectionEventHandler {
+public class EntityAIInjectionEventHandler {
 
   private final EntityAIPlayerTargetInjector playerTargetInjector;
   private final EntityAIChaseLongDistanceInjector chaseLongDistanceInjector;
@@ -19,7 +19,7 @@ public class EntityAiInjectionEventHandler {
   private final EntityAILungeInjector lungeInjector;
   private final EntityAIAntiAirInjector antiAirInjector;
 
-  public EntityAiInjectionEventHandler(
+  public EntityAIInjectionEventHandler(
       EntityAIPlayerTargetInjector playerTargetInjector,
       EntityAIChaseLongDistanceInjector chaseLongDistanceInjector,
       EntityAIMiningInjector miningInjector,

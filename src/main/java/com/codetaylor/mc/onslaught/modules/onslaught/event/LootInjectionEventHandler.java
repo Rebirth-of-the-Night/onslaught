@@ -12,11 +12,11 @@ import java.util.List;
 /**
  * Responsible for adding loot from the extra tables to the loot list when a mob dies.
  */
-public class ExtraLootInjectionEventHandler {
+public class LootInjectionEventHandler {
 
   private final ExtraLootInjector injector;
 
-  public ExtraLootInjectionEventHandler(ExtraLootInjector injector) {
+  public LootInjectionEventHandler(ExtraLootInjector injector) {
 
     this.injector = injector;
   }

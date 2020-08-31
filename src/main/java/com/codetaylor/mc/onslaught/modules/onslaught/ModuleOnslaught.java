@@ -89,13 +89,13 @@ public class ModuleOnslaught
       throw new RuntimeException(e);
     }
 
-    MinecraftForge.EVENT_BUS.register(new CustomLootTableManagerInjectionEventHandler(
+    MinecraftForge.EVENT_BUS.register(new LootTableManagerInjectionEventHandler(
         new CustomLootTableManagerInjector(
             modConfigurationPath.resolve(MOD_ID + "/loot").toFile()
         )
     ));
 
-    MinecraftForge.EVENT_BUS.register(new ExtraLootInjectionEventHandler(
+    MinecraftForge.EVENT_BUS.register(new LootInjectionEventHandler(
         new ExtraLootInjector()
     ));
 
@@ -103,7 +103,7 @@ public class ModuleOnslaught
     // - AI Injection
     // -------------------------------------------------------------------------
 
-    MinecraftForge.EVENT_BUS.register(new EntityAiInjectionEventHandler(
+    MinecraftForge.EVENT_BUS.register(new EntityAIInjectionEventHandler(
         new EntityAIPlayerTargetInjector(),
         new EntityAIChaseLongDistanceInjector(),
         new EntityAIMiningInjector(),
@@ -120,7 +120,7 @@ public class ModuleOnslaught
 
     CapabilityManager.INSTANCE.register(IAntiAirPlayerData.class, new AntiAirPlayerData(), AntiAirPlayerData::new);
 
-    MinecraftForge.EVENT_BUS.register(new EntityAIAntiAirEventHandler());
+    MinecraftForge.EVENT_BUS.register(new EntityAIAntiAirPlayerTickEventHandler());
   }
 
   @SideOnly(Side.CLIENT)
