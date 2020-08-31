@@ -5,6 +5,24 @@ import net.minecraftforge.common.config.Config;
 @Config(modid = ModuleOnslaught.MOD_ID, name = ModuleOnslaught.MOD_ID + "/" + "onslaught")
 public class ModuleOnslaughtConfig {
 
+  public static Invasion INVASION = new Invasion();
+
+  public static class Invasion {
+
+    @Config.Comment({
+        "The min and max number of ticks between invasions.",
+        "For reference, a Minecraft day is 24000 ticks long.",
+        "Default: [120000, 168000] or 5-7 Minecraft days"
+    })
+    public int[] TIMING_RANGE_TICKS = {5 * 24000, 7 * 24000};
+
+    @Config.Comment({
+        "The maximum number of invasions that can occur at the same time.",
+        "Default: " + 5
+    })
+    public int MAX_CONCURRENT_INVASIONS = 5;
+  }
+
   public static CustomAI CUSTOM_AI = new CustomAI();
 
   public static class CustomAI {

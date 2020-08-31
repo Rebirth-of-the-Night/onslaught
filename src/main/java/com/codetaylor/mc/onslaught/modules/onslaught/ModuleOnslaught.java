@@ -17,6 +17,8 @@ import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateE
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactoryEffectApplicator;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactoryLootTableApplicator;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.*;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.EligiblePlayerQueue;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionManager;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.FilePathCreator;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.JsonFileLocator;
 import com.codetaylor.mc.onslaught.modules.onslaught.loot.CustomLootTableManagerInjector;
@@ -32,6 +34,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayDeque;
 import java.util.logging.Level;
 
 public class ModuleOnslaught
@@ -121,6 +124,24 @@ public class ModuleOnslaught
     CapabilityManager.INSTANCE.register(IAntiAirPlayerData.class, new AntiAirPlayerData(), AntiAirPlayerData::new);
 
     MinecraftForge.EVENT_BUS.register(new EntityAIAntiAirPlayerTickEventHandler());
+
+    // -------------------------------------------------------------------------
+    // - Invasions
+    // -------------------------------------------------------------------------
+
+    InvasionManager invasionManager = new InvasionManager(
+        new EligiblePlayerQueue(
+            new ArrayDeque<>()
+        )
+    );
+
+    MinecraftForge.EVENT_BUS.register(new InvasionPlayerTickEventHandler(
+        invasionManager
+    ));
+
+    MinecraftForge.EVENT_BUS.register(new InvasionUpdateEventHandler(
+        invasionManager
+    ));
   }
 
   @SideOnly(Side.CLIENT)
