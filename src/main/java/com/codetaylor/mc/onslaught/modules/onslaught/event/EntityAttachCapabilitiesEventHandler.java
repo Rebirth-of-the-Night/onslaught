@@ -2,6 +2,7 @@ package com.codetaylor.mc.onslaught.modules.onslaught.event;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.CapabilityAntiAirProvider;
+import com.codetaylor.mc.onslaught.modules.onslaught.capability.CapabilityInvasionProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -21,6 +22,7 @@ public class EntityAttachCapabilitiesEventHandler {
 
     if (entity instanceof EntityPlayer && !(entity instanceof FakePlayer)) {
       event.addCapability(new ResourceLocation(ModuleOnslaught.MOD_ID, "anti_air"), new CapabilityAntiAirProvider());
+      event.addCapability(new ResourceLocation(ModuleOnslaught.MOD_ID, "invasion"), new CapabilityInvasionProvider());
     }
   }
 }
