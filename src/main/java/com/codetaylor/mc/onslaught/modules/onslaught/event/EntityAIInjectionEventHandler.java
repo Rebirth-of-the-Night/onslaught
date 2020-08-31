@@ -8,6 +8,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+/**
+ * Responsible for injecting the custom AI tasks into an entity when it spawns.
+ */
 public class EntityAIInjectionEventHandler {
 
   private final EntityAIPlayerTargetInjector playerTargetInjector;
