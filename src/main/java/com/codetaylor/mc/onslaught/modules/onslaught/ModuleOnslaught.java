@@ -10,6 +10,8 @@ import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandReload;
 import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandSummon;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.DataLoader;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.DataStore;
+import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateAdapter;
+import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateLoader;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplateAdapter;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplateLoader;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector.*;
@@ -75,6 +77,9 @@ public class ModuleOnslaught
         new JsonFileLocator(),
         new MobTemplateLoader(
             new MobTemplateAdapter()
+        ),
+        new InvasionTemplateLoader(
+            new InvasionTemplateAdapter()
         )
     );
     this.dataLoader.load();
@@ -130,6 +135,7 @@ public class ModuleOnslaught
     // -------------------------------------------------------------------------
 
     InvasionManager invasionManager = new InvasionManager(
+        this.dataStore,
         new EligiblePlayerQueue(
             new ArrayDeque<>()
         )

@@ -21,6 +21,15 @@ public class ModuleOnslaughtConfig {
         "Default: " + 5
     })
     public int MAX_CONCURRENT_INVASIONS = 5;
+
+    @Config.Comment({
+        "This is the name of the default invasion that will be selected if no",
+        "invasion qualifies for a player. This invasion's selection qualifiers",
+        "will be ignored. If this is blank and no invasion qualifies for a player,",
+        "no invasion will occur for said player.",
+        "Default: " + ""
+    })
+    public String DEFAULT_FALLBACK_INVASION = "";
   }
 
   public static CustomAI CUSTOM_AI = new CustomAI();

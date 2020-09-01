@@ -29,6 +29,9 @@ public class MobTemplateRegistry {
     return this.templateMap.get(id);
   }
 
+  /**
+   * @return a list of all template ids for command tab completion
+   */
   public List<String> getIdList() {
 
     return this.idList;
