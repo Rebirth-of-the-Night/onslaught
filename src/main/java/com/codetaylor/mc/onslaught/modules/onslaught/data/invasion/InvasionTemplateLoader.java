@@ -39,6 +39,20 @@ public class InvasionTemplateLoader {
           throw new Exception("Invasion must contain at least one wave: " + key);
         }
 
+        for (InvasionTemplateWave wave : template.waves) {
+
+          if (wave.mobs.length == 0) {
+            throw new Exception("Invasion wave must contain at least one mob: " + key);
+          }
+
+          for (InvasionTemplateWaveMobGroup mobGroup : wave.mobs) {
+
+            if (mobGroup.mobs.length == 0) {
+              throw new Exception("Invasion wave must contain at least one mob: " + key);
+            }
+          }
+        }
+
         result.put(key, template);
       }
     }
