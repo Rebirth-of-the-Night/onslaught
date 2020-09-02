@@ -1,6 +1,7 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
 
 import com.codetaylor.mc.athenaeum.util.WeightedPicker;
+import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateRegistry;
@@ -9,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.function.Supplier;
+import java.util.logging.Level;
 
 /**
  * Responsible for selecting an invasion for the given player.
@@ -46,10 +48,21 @@ public class InvasionSelector {
     if (picker.getSize() == 0) {
       // Ensure that the fallback invasion exists else return null
       String fallbackInvasion = ModuleOnslaughtConfig.INVASION.DEFAULT_FALLBACK_INVASION;
-      return (invasionTemplateRegistry.has(fallbackInvasion)) ? fallbackInvasion : null;
+      boolean hasInvasion = invasionTemplateRegistry.has(fallbackInvasion);
+
+      if (hasInvasion) {
+        ModOnslaught.LOG.info(String.format("Selected invasion %s for player %s", fallbackInvasion, player.getName()));
+        return fallbackInvasion;
+
+      } else {
+        ModOnslaught.LOG.log(Level.SEVERE, String.format("Missing fallback invasion in config, skipping invasion for player %s", player.getName()));
+        return null;
+      }
 
     } else {
-      return picker.get().getKey();
+      String invasion = picker.get().getKey();
+      ModOnslaught.LOG.info(String.format("Selected invasion %s for player %s", invasion, player.getName()));
+      return invasion;
     }
   }
 
