@@ -6,4 +6,5 @@ package com.codetaylor.mc.onslaught.modules.onslaught.data.invasion;
 public class InvasionTemplate {
 
   public InvasionTemplateSelector selector = new InvasionTemplateSelector();
+  public InvasionTemplateWave[] waves = new InvasionTemplateWave[0];
 }

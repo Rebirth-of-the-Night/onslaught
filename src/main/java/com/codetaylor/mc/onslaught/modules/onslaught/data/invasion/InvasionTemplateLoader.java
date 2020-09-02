@@ -1,6 +1,5 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.data.invasion;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -19,7 +18,7 @@ public class InvasionTemplateLoader {
     this.adapter = adapter;
   }
 
-  public Map<String, InvasionTemplate> load(List<Path> pathList) throws IOException {
+  public Map<String, InvasionTemplate> load(List<Path> pathList) throws Exception {
 
     Map<String, InvasionTemplate> result = new HashMap<>();
 
@@ -31,10 +30,16 @@ public class InvasionTemplateLoader {
         String key = entry.getKey();
 
         if (result.containsKey(key)) {
-          throw new IOException("Duplicate invasion template key: " + key);
+          throw new Exception("Duplicate invasion template key: " + key);
         }
 
-        result.put(key, entry.getValue());
+        InvasionTemplate template = entry.getValue();
+
+        if (template.waves.length == 0) {
+          throw new Exception("Invasion must contain at least one wave: " + key);
+        }
+
+        result.put(key, template);
       }
     }
 
