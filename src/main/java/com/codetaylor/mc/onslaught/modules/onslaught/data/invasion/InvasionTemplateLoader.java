@@ -8,6 +8,9 @@ import java.util.Map;
 
 /**
  * Responsible for loading {@link InvasionTemplate}s from a list of json file paths.
+ * <p>
+ * Throws exceptions when a duplicate invasion key is used, an invasion contains
+ * no waves, and when an invasion wave contains no mobs.
  */
 public class InvasionTemplateLoader {
 
@@ -47,7 +50,7 @@ public class InvasionTemplateLoader {
 
           for (InvasionTemplateWaveMobGroup mobGroup : wave.mobs) {
 
-            if (mobGroup.mobs.length == 0) {
+            if (mobGroup.ground.length == 0 && mobGroup.air.length == 0) {
               throw new Exception("Invasion wave must contain at least one mob: " + key);
             }
           }
