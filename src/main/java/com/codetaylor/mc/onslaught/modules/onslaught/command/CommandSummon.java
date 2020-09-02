@@ -1,7 +1,7 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.command;
 
-import com.codetaylor.mc.onslaught.modules.onslaught.data.DataStore;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplate;
+import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplateRegistry;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactory;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -19,6 +19,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * Responsible for spawning a mob from a mob template.
@@ -32,12 +33,12 @@ public class CommandSummon
   private static final String SUCCESS = "commands.summon.success";
   private static final String INVALID_ID = "commands.onslaught.summon.invalid.template.id";
 
-  private final DataStore dataStore;
+  private final Supplier<MobTemplateRegistry> mobTemplateRegistrySupplier;
   private final MobTemplateEntityFactory mobTemplateEntityFactory;
 
-  public CommandSummon(DataStore dataStore, MobTemplateEntityFactory mobTemplateEntityFactory) {
+  public CommandSummon(Supplier<MobTemplateRegistry> mobTemplateRegistrySupplier, MobTemplateEntityFactory mobTemplateEntityFactory) {
 
-    this.dataStore = dataStore;
+    this.mobTemplateRegistrySupplier = mobTemplateRegistrySupplier;
     this.mobTemplateEntityFactory = mobTemplateEntityFactory;
   }
 
@@ -89,7 +90,8 @@ public class CommandSummon
         throw new CommandException(OUT_OF_WORLD);
 
       } else {
-        MobTemplate mobTemplate = this.dataStore.getMobTemplateRegistry().get(templateId);
+        MobTemplateRegistry mobTemplateRegistry = this.mobTemplateRegistrySupplier.get();
+        MobTemplate mobTemplate = mobTemplateRegistry.get(templateId);
 
         if (mobTemplate == null) {
           throw new CommandException(INVALID_ID, templateId);
@@ -122,7 +124,8 @@ public class CommandSummon
   public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
 
     if (args.length == 1) {
-      return getListOfStringsMatchingLastWord(args, this.dataStore.getMobTemplateRegistry().getIdList());
+      MobTemplateRegistry mobTemplateRegistry = this.mobTemplateRegistrySupplier.get();
+      return getListOfStringsMatchingLastWord(args, mobTemplateRegistry.getIdList());
 
     } else {
       return args.length > 1 && args.length <= 4 ? getTabCompletionCoordinate(args, 1, targetPos) : Collections.emptyList();

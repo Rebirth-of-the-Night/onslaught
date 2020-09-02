@@ -8,6 +8,10 @@ import java.util.Map;
 import java.util.function.IntSupplier;
 import java.util.function.Predicate;
 
+/**
+ * Responsible for filtering out invasion templates that do not match the
+ * dimension id returned by the given dimension id supplier.
+ */
 public class InvasionFilterDimension
     implements Predicate<Map.Entry<String, InvasionTemplate>> {
 

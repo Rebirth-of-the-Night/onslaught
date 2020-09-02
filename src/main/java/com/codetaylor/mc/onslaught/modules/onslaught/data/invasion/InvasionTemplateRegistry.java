@@ -26,6 +26,11 @@ public class InvasionTemplateRegistry {
     return this.templateMap.get(id);
   }
 
+  public boolean has(String id) {
+
+    return this.templateMap.containsKey(id);
+  }
+
   public Set<Map.Entry<String, InvasionTemplate>> getAll() {
 
     return Collections.unmodifiableMap(this.templateMap).entrySet();

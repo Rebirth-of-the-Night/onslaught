@@ -6,6 +6,9 @@ import net.minecraft.world.WorldProvider;
 
 import java.util.function.IntSupplier;
 
+/**
+ * Responsible for supplying a player's current dimension id.
+ */
 public class DimensionSupplier
     implements IntSupplier {
 

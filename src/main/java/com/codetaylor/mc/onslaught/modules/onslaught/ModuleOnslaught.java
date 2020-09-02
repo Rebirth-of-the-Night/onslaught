@@ -135,7 +135,6 @@ public class ModuleOnslaught
     // -------------------------------------------------------------------------
 
     InvasionManager invasionManager = new InvasionManager(
-        this.dataStore,
         new EligiblePlayerQueue(
             new ArrayDeque<>()
         )
@@ -183,7 +182,7 @@ public class ModuleOnslaught
     // -------------------------------------------------------------------------
 
     event.registerServerCommand(new CommandSummon(
-        this.dataStore,
+        this.dataStore::getMobTemplateRegistry,
         new MobTemplateEntityFactory(
             new MobTemplateEntityFactoryEffectApplicator(),
             new MobTemplateEntityFactoryLootTableApplicator()
