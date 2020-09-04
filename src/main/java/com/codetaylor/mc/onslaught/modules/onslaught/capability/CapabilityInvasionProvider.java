@@ -21,14 +21,14 @@ public class CapabilityInvasionProvider
   @Override
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
 
-    return (capability == CapabilityAntiAir.INSTANCE);
+    return (capability == CapabilityInvasion.INSTANCE);
   }
 
   @Nullable
   @Override
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
 
-    if (capability == CapabilityAntiAir.INSTANCE) {
+    if (capability == CapabilityInvasion.INSTANCE) {
       //noinspection unchecked
       return (T) this.data;
     }
