@@ -19,7 +19,7 @@ public class InvasionSpawnPredicateGroundDark
     this.blockPos.setPos(entity);
 
     // Ensure the light level isn't above the max
-    if (entity.world.getLight(this.blockPos) > this.requiredLightLevelMax) {
+    if (entity.world.getLightFromNeighbors(this.blockPos) > this.requiredLightLevelMax) {
       return false;
     }
 
