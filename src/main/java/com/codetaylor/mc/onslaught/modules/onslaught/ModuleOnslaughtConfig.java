@@ -1,5 +1,6 @@
 package com.codetaylor.mc.onslaught.modules.onslaught;
 
+import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateWave;
 import net.minecraftforge.common.config.Config;
 
 @Config(modid = ModuleOnslaught.MOD_ID, name = ModuleOnslaught.MOD_ID + "/" + "onslaught")
@@ -37,6 +38,62 @@ public class ModuleOnslaughtConfig {
         "Default: " + ""
     })
     public String DEFAULT_FALLBACK_INVASION = "";
+
+  }
+
+  public static Wave WAVE = new Wave();
+
+  public static class Wave {
+
+    public Spawn DEFAULT_SPAWN = new Spawn();
+
+    public Spawn DEFAULT_SECONDARY_SPAWN = new Spawn() {{
+      this.DEFAULT_TYPE = InvasionTemplateWave.EnumSpawnType.air;
+      this.DEFAULT_LIGHT = new int[]{0, 15};
+    }};
+  }
+
+  public static class Spawn {
+
+    @Config.Comment({
+        "The default spawn type."
+    })
+    public InvasionTemplateWave.EnumSpawnType DEFAULT_TYPE = InvasionTemplateWave.EnumSpawnType.ground;
+
+    @Config.Comment({
+        "The default force value."
+    })
+    public boolean DEFAULT_FORCE = true;
+
+    @Config.Comment({
+        "The default light range."
+    })
+    @Config.RangeInt(min = 0, max = 15)
+    public int[] DEFAULT_LIGHT = {0, 7};
+
+    @Config.Comment({
+        "The default minimum and maximum spawn range."
+    })
+    @Config.RangeInt(min = 0)
+    public int[] DEFAULT_RANGE_XZ = {16, 128};
+
+    @Config.Comment({
+        "The default vertical spawn range."
+    })
+    @Config.RangeInt(min = 0)
+    public int DEFAULT_RANGE_Y = 16;
+
+    @Config.Comment({
+        "The default spawn range step radius."
+    })
+    @Config.RangeInt(min = 1)
+    public int DEFAULT_STEP_RADIUS = 4;
+
+    @Config.Comment({
+        "The default spawn sample distance."
+    })
+    @Config.RangeInt(min = 1)
+    public int DEFAULT_SAMPLE_DISTANCE = 2;
   }
 
   public static CustomAI CUSTOM_AI = new CustomAI();
