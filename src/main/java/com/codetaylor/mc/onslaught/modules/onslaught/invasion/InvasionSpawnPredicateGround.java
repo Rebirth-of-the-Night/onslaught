@@ -6,6 +6,9 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.function.Predicate;
 
+/**
+ * Responsible for testing a pillar of blocks for a valid ground spawn location.
+ */
 public class InvasionSpawnPredicateGround
     implements Predicate<EntityLiving> {
 

@@ -82,17 +82,17 @@ public class InvasionTemplateWave {
     public EnumSpawnType type = ModuleOnslaughtConfig.WAVE.DEFAULT_SPAWN.DEFAULT_TYPE;
     public int[] light = ModuleOnslaughtConfig.WAVE.DEFAULT_SPAWN.DEFAULT_LIGHT;
     public boolean force = ModuleOnslaughtConfig.WAVE.DEFAULT_SPAWN.DEFAULT_FORCE;
-    public double[] rangeXZ = ModuleOnslaughtConfig.WAVE.DEFAULT_SPAWN.DEFAULT_RANGE_XZ;
-    public double rangeY = ModuleOnslaughtConfig.WAVE.DEFAULT_SPAWN.DEFAULT_RANGE_Y;
-    public double stepRadius = ModuleOnslaughtConfig.WAVE.DEFAULT_SPAWN.DEFAULT_STEP_RADIUS;
-    public double sampleDistance = ModuleOnslaughtConfig.WAVE.DEFAULT_SPAWN.DEFAULT_SAMPLE_DISTANCE;
+    public int[] rangeXZ = ModuleOnslaughtConfig.WAVE.DEFAULT_SPAWN.DEFAULT_RANGE_XZ;
+    public int rangeY = ModuleOnslaughtConfig.WAVE.DEFAULT_SPAWN.DEFAULT_RANGE_Y;
+    public int stepRadius = ModuleOnslaughtConfig.WAVE.DEFAULT_SPAWN.DEFAULT_STEP_RADIUS;
+    public int sampleDistance = ModuleOnslaughtConfig.WAVE.DEFAULT_SPAWN.DEFAULT_SAMPLE_DISTANCE;
   }
 
   public enum EnumSpawnType {
 
     /*
-     * These are lowercase for consistency between the json templates and the
-     * default config values.
+     * These are lowercase for consistency between the json templates, the
+     * default config values, and the serialized player data NBT.
      */
 
     ground,

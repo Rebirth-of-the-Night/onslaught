@@ -6,6 +6,7 @@ import com.codetaylor.mc.athenaeum.network.IPacketService;
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.AntiAirPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.IAntiAirPlayerData;
+import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandPrototype;
 import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandReload;
 import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandSummon;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.DataLoader;
@@ -19,8 +20,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateE
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactoryEffectApplicator;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactoryLootTableApplicator;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.*;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.EligiblePlayerQueue;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionManager;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.*;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.FilePathCreator;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.JsonFileLocator;
 import com.codetaylor.mc.onslaught.modules.onslaught.loot.CustomLootTableManagerInjector;
@@ -36,7 +36,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayDeque;
+import java.util.LinkedHashSet;
+import java.util.UUID;
 import java.util.logging.Level;
 
 public class ModuleOnslaught
@@ -140,18 +141,24 @@ public class ModuleOnslaught
     // - Invasions
     // -------------------------------------------------------------------------
 
-    InvasionManager invasionManager = new InvasionManager(
-        new EligiblePlayerQueue(
-            new ArrayDeque<>()
-        )
-    );
+    LinkedHashSet<UUID> eligiblePlayers = new LinkedHashSet<>();
 
-    MinecraftForge.EVENT_BUS.register(new InvasionPlayerTickEventHandler(
-        invasionManager
+    MinecraftForge.EVENT_BUS.register(new InvasionStateChangeEventHandlers.WaitingToEligible(
+        new StateChangeWaitingToEligible(
+            eligiblePlayers
+        )
     ));
 
-    MinecraftForge.EVENT_BUS.register(new InvasionUpdateEventHandler(
-        invasionManager
+    MinecraftForge.EVENT_BUS.register(new InvasionStateChangeEventHandlers.EligibleToPending(
+        new StateChangeEligibleToPending(
+            eligiblePlayers,
+            new InvasionSelector(this.dataStore::getInvasionTemplateRegistry),
+            new InvasionDataFactory(this.dataStore::getInvasionTemplateRegistry)
+        )
+    ));
+
+    MinecraftForge.EVENT_BUS.register(new InvasionStateChangeEventHandlers.PendingToActive(
+        new StateChangePendingToActive()
     ));
   }
 
@@ -198,5 +205,7 @@ public class ModuleOnslaught
     event.registerServerCommand(new CommandReload(
         this.dataLoader
     ));
+
+    event.registerServerCommand(new CommandPrototype());
   }
 }

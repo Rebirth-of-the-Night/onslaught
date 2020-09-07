@@ -40,12 +40,12 @@ public class InvasionSpawnSampler {
    * @return valid spawn location
    */
   @Nullable
-  public Vec3d getSpawnLocation(EntityLiving entity, BlockPos origin, double radiusMin, double radiusMax, int stepRadius, double sampleDistance) {
+  public Vec3d getSpawnLocation(EntityLiving entity, BlockPos origin, int radiusMin, int radiusMax, int stepRadius, int sampleDistance) {
 
-//    double radiusMax = 128;
-//    double radiusMin = 16;
+//    int radiusMax = 128;
+//    int radiusMin = 16;
 //    int stepRadius = 4;
-//    double sampleDistance = 2;
+//    int sampleDistance = 2;
 
     if (ModuleOnslaughtConfig.DEBUG.SPAWN_SAMPLER) {
       LOG.fine("Entity: " + entity.getClass().getName());
