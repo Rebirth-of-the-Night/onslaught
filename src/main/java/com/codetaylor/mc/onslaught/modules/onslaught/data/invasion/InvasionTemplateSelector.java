@@ -7,8 +7,6 @@ import com.codetaylor.mc.athenaeum.integration.gamestages.Stages;
  */
 public class InvasionTemplateSelector {
 
-  public transient Stages _stages = null;
-
   public InvasionTemplateSelectorDimension dimension = new InvasionTemplateSelectorDimension();
   public Stages gamestages = null;
   public int weight = 1;
