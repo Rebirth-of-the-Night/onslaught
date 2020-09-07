@@ -5,6 +5,13 @@ import net.minecraftforge.common.config.Config;
 @Config(modid = ModuleOnslaught.MOD_ID, name = ModuleOnslaught.MOD_ID + "/" + "onslaught")
 public class ModuleOnslaughtConfig {
 
+  public static Debug DEBUG = new Debug();
+
+  public static class Debug {
+
+    public boolean SPAWN_SAMPLER = true;
+  }
+
   public static Invasion INVASION = new Invasion();
 
   public static class Invasion {
