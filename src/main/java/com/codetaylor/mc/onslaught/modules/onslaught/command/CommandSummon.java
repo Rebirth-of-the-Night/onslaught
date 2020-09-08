@@ -1,7 +1,6 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.command;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplate;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplateRegistry;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactory;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -19,6 +18,7 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -33,12 +33,18 @@ public class CommandSummon
   private static final String SUCCESS = "commands.summon.success";
   private static final String INVALID_ID = "commands.onslaught.summon.invalid.template.id";
 
-  private final Supplier<MobTemplateRegistry> mobTemplateRegistrySupplier;
+  private final Function<String, MobTemplate> mobTemplateFunction;
+  private final Supplier<List<String>> mobTemplateIdListSupplier;
   private final MobTemplateEntityFactory mobTemplateEntityFactory;
 
-  public CommandSummon(Supplier<MobTemplateRegistry> mobTemplateRegistrySupplier, MobTemplateEntityFactory mobTemplateEntityFactory) {
+  public CommandSummon(
+      Function<String, MobTemplate> mobTemplateFunction,
+      Supplier<List<String>> mobTemplateIdListSupplier,
+      MobTemplateEntityFactory mobTemplateEntityFactory
+  ) {
 
-    this.mobTemplateRegistrySupplier = mobTemplateRegistrySupplier;
+    this.mobTemplateFunction = mobTemplateFunction;
+    this.mobTemplateIdListSupplier = mobTemplateIdListSupplier;
     this.mobTemplateEntityFactory = mobTemplateEntityFactory;
   }
 
@@ -90,8 +96,7 @@ public class CommandSummon
         throw new CommandException(OUT_OF_WORLD);
 
       } else {
-        MobTemplateRegistry mobTemplateRegistry = this.mobTemplateRegistrySupplier.get();
-        MobTemplate mobTemplate = mobTemplateRegistry.get(templateId);
+        MobTemplate mobTemplate = this.mobTemplateFunction.apply(templateId);
 
         if (mobTemplate == null) {
           throw new CommandException(INVALID_ID, templateId);
@@ -124,8 +129,7 @@ public class CommandSummon
   public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
 
     if (args.length == 1) {
-      MobTemplateRegistry mobTemplateRegistry = this.mobTemplateRegistrySupplier.get();
-      return getListOfStringsMatchingLastWord(args, mobTemplateRegistry.getIdList());
+      return getListOfStringsMatchingLastWord(args, this.mobTemplateIdListSupplier.get());
 
     } else {
       return args.length > 1 && args.length <= 4 ? getTabCompletionCoordinate(args, 1, targetPos) : Collections.emptyList();

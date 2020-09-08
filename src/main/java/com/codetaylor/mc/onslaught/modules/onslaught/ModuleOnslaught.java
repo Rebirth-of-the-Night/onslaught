@@ -208,7 +208,8 @@ public class ModuleOnslaught
     // -------------------------------------------------------------------------
 
     event.registerServerCommand(new CommandSummon(
-        this.dataStore::getMobTemplateRegistry,
+        id -> this.dataStore.getMobTemplateRegistry().get(id),
+        () -> this.dataStore.getMobTemplateRegistry().getIdList(),
         new MobTemplateEntityFactory(
             new MobTemplateEntityFactoryEffectApplicator(),
             new MobTemplateEntityFactoryLootTableApplicator()
