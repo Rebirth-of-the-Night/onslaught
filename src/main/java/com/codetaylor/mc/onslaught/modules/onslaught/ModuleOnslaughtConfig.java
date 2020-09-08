@@ -47,6 +47,8 @@ public class ModuleOnslaughtConfig {
 
     public Spawn DEFAULT_SPAWN = new Spawn();
 
+    public String DEFAULT_SECONDARY_MOB_ID = "";
+
     public Spawn DEFAULT_SECONDARY_SPAWN = new Spawn() {{
       this.DEFAULT_TYPE = InvasionTemplateWave.EnumSpawnType.air;
       this.DEFAULT_LIGHT = new int[]{0, 15};

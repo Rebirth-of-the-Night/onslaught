@@ -18,6 +18,11 @@ public class InvasionTemplateWave {
    */
   public Group[] groups = {};
 
+  /**
+   * The fallback mob used if the first spawn fails.
+   */
+  public SecondaryMob secondaryMob = new SecondaryMob();
+
   public static class Group {
 
     /**
@@ -55,7 +60,7 @@ public class InvasionTemplateWave {
     /**
      * The mob template id. Required.
      */
-    public String id;
+    public String id = ModuleOnslaughtConfig.WAVE.DEFAULT_SECONDARY_MOB_ID;
 
     /**
      * The weight of this mob.
