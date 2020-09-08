@@ -4,24 +4,30 @@ import com.codetaylor.mc.athenaeum.util.WeightedPicker;
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplate;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 
 import javax.annotation.Nullable;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.logging.Level;
+import java.util.stream.Stream;
 
 /**
  * Responsible for selecting an invasion for the given player.
  */
 public class InvasionSelector {
 
-  private final Supplier<InvasionTemplateRegistry> templateRegistrySupplier;
+  private final Supplier<Stream<Map.Entry<String, InvasionTemplate>>> invasionTemplateStreamSupplier;
+  private final Predicate<String> invasionTemplateExistsPredicate;
 
-  public InvasionSelector(Supplier<InvasionTemplateRegistry> templateRegistrySupplier) {
+  public InvasionSelector(
+      Supplier<Stream<Map.Entry<String, InvasionTemplate>>> invasionTemplateStreamSupplier,
+      Predicate<String> invasionTemplateExistsPredicate
+  ) {
 
-    this.templateRegistrySupplier = templateRegistrySupplier;
+    this.invasionTemplateStreamSupplier = invasionTemplateStreamSupplier;
+    this.invasionTemplateExistsPredicate = invasionTemplateExistsPredicate;
   }
 
   /**
@@ -35,12 +41,11 @@ public class InvasionSelector {
   public String selectInvasionForPlayer(EntityPlayer player) {
 
     final WeightedPicker<Map.Entry<String, InvasionTemplate>> picker = new WeightedPicker<>(player.getRNG());
-    InvasionTemplateRegistry invasionTemplateRegistry = this.templateRegistrySupplier.get();
 
     // Filter invasions by dimension and gamestage
     // Select remaining invasions by weight
 
-    invasionTemplateRegistry.getAll().stream()
+    this.invasionTemplateStreamSupplier.get()
         .filter(new InvasionFilterDimension(new DimensionSupplier(player)))
         .filter(new InvasionFilterGamestages(player))
         .forEach(entry -> picker.add(entry.getValue().selector.weight, entry));
@@ -48,14 +53,14 @@ public class InvasionSelector {
     if (picker.getSize() == 0) {
       // Ensure that the fallback invasion exists else return null
       String fallbackInvasion = ModuleOnslaughtConfig.INVASION.DEFAULT_FALLBACK_INVASION;
-      boolean hasInvasion = invasionTemplateRegistry.has(fallbackInvasion);
+      boolean invasionTemplateExists = this.invasionTemplateExistsPredicate.test(fallbackInvasion);
 
-      if (hasInvasion) {
+      if (invasionTemplateExists) {
         ModOnslaught.LOG.info(String.format("Selected invasion %s for player %s", fallbackInvasion, player.getName()));
         return fallbackInvasion;
 
       } else {
-        ModOnslaught.LOG.log(Level.SEVERE, String.format("Missing fallback invasion in config, skipping invasion for player %s", player.getName()));
+        ModOnslaught.LOG.log(Level.SEVERE, String.format("Missing the fallback invasion defined in config, skipping invasion for player %s", player.getName()));
         return null;
       }
 

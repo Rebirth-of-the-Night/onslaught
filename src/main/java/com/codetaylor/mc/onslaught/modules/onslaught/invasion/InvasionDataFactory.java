@@ -3,13 +3,12 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
 import com.codetaylor.mc.athenaeum.util.WeightedPicker;
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.InvasionPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplate;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateRegistry;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateWave;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Random;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 /**
  * Responsible for creating {@link InvasionPlayerData.InvasionData} from the
@@ -17,18 +16,17 @@ import java.util.function.Supplier;
  */
 public class InvasionDataFactory {
 
-  public final Supplier<InvasionTemplateRegistry> invasionTemplateRegistrySupplier;
+  public final Function<String, InvasionTemplate> invasionTemplateFunction;
 
-  public InvasionDataFactory(Supplier<InvasionTemplateRegistry> invasionTemplateRegistrySupplier) {
+  public InvasionDataFactory(Function<String, InvasionTemplate> invasionTemplateFunction) {
 
-    this.invasionTemplateRegistrySupplier = invasionTemplateRegistrySupplier;
+    this.invasionTemplateFunction = invasionTemplateFunction;
   }
 
   @Nullable
   public InvasionPlayerData.InvasionData create(String templateId, Random random, long totalWorldTime) {
 
-    InvasionTemplateRegistry invasionTemplateRegistry = this.invasionTemplateRegistrySupplier.get();
-    InvasionTemplate invasionTemplate = invasionTemplateRegistry.get(templateId);
+    InvasionTemplate invasionTemplate = this.invasionTemplateFunction.apply(templateId);
 
     if (invasionTemplate == null) {
       return null;

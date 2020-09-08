@@ -158,10 +158,11 @@ public class ModuleOnslaught
         new StateChangeEligibleToPending(
             eligiblePlayers,
             new InvasionSelector(
-                this.dataStore::getInvasionTemplateRegistry
+                () -> this.dataStore.getInvasionTemplateRegistry().getAll().stream(),
+                id -> this.dataStore.getInvasionTemplateRegistry().has(id)
             ),
             new InvasionDataFactory(
-                this.dataStore::getInvasionTemplateRegistry
+                id -> this.dataStore.getInvasionTemplateRegistry().get(id)
             )
         )
     ));

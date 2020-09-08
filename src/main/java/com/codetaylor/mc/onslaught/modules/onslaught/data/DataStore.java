@@ -19,9 +19,15 @@ public class DataStore {
     this.setInvasionTemplateRegistry(new InvasionTemplateRegistry(Collections.emptyMap()));
   }
 
+  /**
+   * The {@link MobTemplateRegistry} returned by this method should not be cached
+   * as it will change when the templates are reloaded.
+   *
+   * @return the {@link MobTemplateRegistry}
+   */
   public MobTemplateRegistry getMobTemplateRegistry() {
 
-    return mobTemplateRegistry;
+    return this.mobTemplateRegistry;
   }
 
   public void setMobTemplateRegistry(MobTemplateRegistry mobTemplateRegistry) {
@@ -29,6 +35,12 @@ public class DataStore {
     this.mobTemplateRegistry = mobTemplateRegistry;
   }
 
+  /**
+   * The {@link InvasionTemplateRegistry} returned by this method should not be
+   * cached as it will change when the templates are reloaded.
+   *
+   * @return the {@link InvasionTemplateRegistry}
+   */
   public InvasionTemplateRegistry getInvasionTemplateRegistry() {
 
     return this.invasionTemplateRegistry;
