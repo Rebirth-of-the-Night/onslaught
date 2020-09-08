@@ -29,7 +29,7 @@ public class MobTemplateEntityFactory {
   }
 
   @Nullable
-  public Entity create(MobTemplate template, World world) {
+  public EntityLiving create(MobTemplate template, World world) {
 
     NBTTagCompound tagCompound = template.nbt.copy();
     tagCompound.setString("id", template.id);
@@ -41,10 +41,12 @@ public class MobTemplateEntityFactory {
 
     Entity entity = EntityList.createEntityFromNBT(tagCompound, world);
 
-    // Apply additional effects.
-    if (entity instanceof EntityLiving) {
-      this.effectApplicator.apply(template.effects, (EntityLiving) entity);
+    if (!(entity instanceof EntityLiving)) {
+      return null;
     }
+
+    // Apply additional effects.
+    this.effectApplicator.apply(template.effects, (EntityLiving) entity);
 
     // Apply additional loot tables.
     this.lootTableApplicator.apply(template.extraLootTables, entity);
@@ -58,6 +60,6 @@ public class MobTemplateEntityFactory {
       }
     }
 
-    return entity;
+    return (EntityLiving) entity;
   }
 }

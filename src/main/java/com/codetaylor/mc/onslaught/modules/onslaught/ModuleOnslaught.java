@@ -154,6 +154,8 @@ public class ModuleOnslaught
         )
     ));
 
+    InvasionFactorySpawnData invasionFactorySpawnData = new InvasionFactorySpawnData();
+
     MinecraftForge.EVENT_BUS.register(new InvasionStateChangeEventHandlers.EligibleToPending(
         new StateChangeEligibleToPending(
             eligiblePlayers,
@@ -161,8 +163,9 @@ public class ModuleOnslaught
                 () -> this.dataStore.getInvasionTemplateRegistry().getAll().stream(),
                 id -> this.dataStore.getInvasionTemplateRegistry().has(id)
             ),
-            new InvasionDataFactory(
-                id -> this.dataStore.getInvasionTemplateRegistry().get(id)
+            new InvasionFactoryData(
+                id -> this.dataStore.getInvasionTemplateRegistry().get(id),
+                invasionFactorySpawnData::create
             )
         )
     ));

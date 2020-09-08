@@ -6,7 +6,6 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
@@ -102,7 +101,7 @@ public class CommandSummon
           throw new CommandException(INVALID_ID, templateId);
         }
 
-        Entity entity = this.mobTemplateEntityFactory.create(mobTemplate, world);
+        EntityLiving entity = this.mobTemplateEntityFactory.create(mobTemplate, world);
 
         if (entity == null) {
           throw new CommandException(FAILED);
@@ -114,9 +113,7 @@ public class CommandSummon
           throw new CommandException(FAILED);
         }
 
-        if (entity instanceof EntityLiving) {
-          ((EntityLiving) entity).onInitialSpawn(world.getDifficultyForLocation(new BlockPos(entity)), null);
-        }
+        entity.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(entity)), null);
 
         notifyCommandListener(sender, this, SUCCESS);
       }

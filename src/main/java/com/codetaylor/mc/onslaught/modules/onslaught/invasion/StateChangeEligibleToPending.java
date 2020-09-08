@@ -19,17 +19,17 @@ public class StateChangeEligibleToPending {
 
   private final Set<UUID> eligiblePlayers;
   private final InvasionSelector invasionSelector;
-  private final InvasionDataFactory invasionDataFactory;
+  private final InvasionFactoryData invasionFactoryData;
 
   public StateChangeEligibleToPending(
       Set<UUID> eligiblePlayers,
       InvasionSelector invasionSelector,
-      InvasionDataFactory invasionDataFactory
+      InvasionFactoryData invasionFactoryData
   ) {
 
     this.eligiblePlayers = eligiblePlayers;
     this.invasionSelector = invasionSelector;
-    this.invasionDataFactory = invasionDataFactory;
+    this.invasionFactoryData = invasionFactoryData;
   }
 
   public void process(
@@ -64,7 +64,7 @@ public class StateChangeEligibleToPending {
 
         IInvasionPlayerData data = CapabilityInvasion.get(player);
         data.setInvasionState(IInvasionPlayerData.EnumInvasionState.Pending);
-        data.setInvasionData(this.invasionDataFactory.create(invasionTemplateId, player.getRNG(), totalWorldTime));
+        data.setInvasionData(this.invasionFactoryData.create(invasionTemplateId, player.getRNG(), totalWorldTime));
 
         allowedInvasions -= 1;
       }

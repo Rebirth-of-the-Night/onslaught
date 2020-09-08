@@ -6,7 +6,6 @@ import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTempl
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateWave;
 
 import javax.annotation.Nullable;
-import java.util.Arrays;
 import java.util.Random;
 import java.util.function.Function;
 
@@ -14,13 +13,18 @@ import java.util.function.Function;
  * Responsible for creating {@link InvasionPlayerData.InvasionData} from the
  * given template id and PRNG.
  */
-public class InvasionDataFactory {
+public class InvasionFactoryData {
 
-  public final Function<String, InvasionTemplate> invasionTemplateFunction;
+  private final Function<String, InvasionTemplate> invasionTemplateFunction;
+  private final InvasionFactorySpawnData invasionFactorySpawnData;
 
-  public InvasionDataFactory(Function<String, InvasionTemplate> invasionTemplateFunction) {
+  public InvasionFactoryData(
+      Function<String, InvasionTemplate> invasionTemplateFunction,
+      InvasionFactorySpawnData invasionFactorySpawnData
+  ) {
 
     this.invasionTemplateFunction = invasionTemplateFunction;
+    this.invasionFactorySpawnData = invasionFactorySpawnData;
   }
 
   @Nullable
@@ -64,23 +68,9 @@ public class InvasionDataFactory {
     mobData.count = this.evaluateRange(mob.count, random);
     mobData.remainingSpawnCount = mobData.count;
     mobData.killedCount = 0;
-    mobData.spawnData = this.createSpawnData(mob.spawn);
+    mobData.spawnData = this.invasionFactorySpawnData.create(mob.spawn);
 
     return mobData;
-  }
-
-  private InvasionPlayerData.InvasionData.SpawnData createSpawnData(InvasionTemplateWave.Spawn spawn) {
-
-    InvasionPlayerData.InvasionData.SpawnData spawnData = new InvasionPlayerData.InvasionData.SpawnData();
-    spawnData.type = spawn.type;
-    spawnData.light = Arrays.copyOf(spawn.light, spawn.light.length);
-    spawnData.force = spawn.force;
-    spawnData.rangeXZ = Arrays.copyOf(spawn.rangeXZ, spawn.rangeXZ.length);
-    spawnData.rangeY = spawn.rangeY;
-    spawnData.stepRadius = spawn.stepRadius;
-    spawnData.sampleDistance = spawn.sampleDistance;
-
-    return spawnData;
   }
 
   private InvasionTemplateWave.Group selectGroup(InvasionTemplateWave.Group[] groups, Random random) {

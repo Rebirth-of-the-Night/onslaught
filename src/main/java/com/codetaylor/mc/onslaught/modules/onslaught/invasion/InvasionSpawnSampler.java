@@ -1,6 +1,8 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
+import com.codetaylor.mc.onslaught.modules.onslaught.capability.InvasionPlayerData;
+import com.codetaylor.mc.onslaught.modules.onslaught.lib.Util;
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
 import it.unimi.dsi.fastutil.doubles.DoubleLists;
@@ -23,11 +25,32 @@ public class InvasionSpawnSampler {
 
   private static final double TWO_PI = Math.PI * 2;
 
-  private final Predicate<EntityLiving> predicate;
+  private final InvasionFactorySpawnPredicate invasionFactorySpawnPredicate;
 
-  public InvasionSpawnSampler(Predicate<EntityLiving> predicate) {
+  public InvasionSpawnSampler(InvasionFactorySpawnPredicate invasionFactorySpawnPredicate) {
 
-    this.predicate = predicate;
+    this.invasionFactorySpawnPredicate = invasionFactorySpawnPredicate;
+  }
+
+  public Vec3d getSpawnLocation(
+      EntityLiving entity,
+      BlockPos origin,
+      InvasionPlayerData.InvasionData.SpawnData spawnData
+  ) {
+
+    Predicate<EntityLiving> predicate = this.invasionFactorySpawnPredicate.create(spawnData);
+
+    int[] rangeXZ = Util.evaluateRangeArray(spawnData.rangeXZ);
+
+    return this.getSpawnLocation(
+        entity,
+        origin,
+        rangeXZ[0],
+        rangeXZ[1],
+        spawnData.stepRadius,
+        spawnData.sampleDistance,
+        predicate
+    );
   }
 
   /**
@@ -37,10 +60,19 @@ public class InvasionSpawnSampler {
    * @param radiusMax      the maximum radius of the sampler circles
    * @param stepRadius     the radial distance between sample circles
    * @param sampleDistance the linear distance between sample points on a circle
+   * @param predicate      the predicate used to check sampled points
    * @return valid spawn location
    */
   @Nullable
-  public Vec3d getSpawnLocation(EntityLiving entity, BlockPos origin, int radiusMin, int radiusMax, int stepRadius, int sampleDistance) {
+  public Vec3d getSpawnLocation(
+      EntityLiving entity,
+      BlockPos origin,
+      int radiusMin,
+      int radiusMax,
+      int stepRadius,
+      int sampleDistance,
+      Predicate<EntityLiving> predicate
+  ) {
 
 //    int radiusMax = 128;
 //    int radiusMin = 16;
@@ -54,7 +86,7 @@ public class InvasionSpawnSampler {
       LOG.fine("Radius min: " + radiusMin);
       LOG.fine("Radius step: " + stepRadius);
       LOG.fine("Sample distance: " + sampleDistance);
-      LOG.fine("Predicate: " + this.predicate.getClass().getName());
+      LOG.fine("Predicate: " + predicate.getClass().getName());
 
       System.out.println("Entity: " + entity.getClass().getName());
       System.out.println("Origin: " + origin);
@@ -62,7 +94,7 @@ public class InvasionSpawnSampler {
       System.out.println("Radius min: " + radiusMin);
       System.out.println("Radius step: " + stepRadius);
       System.out.println("Sample distance: " + sampleDistance);
-      System.out.println("Predicate: " + this.predicate.getClass().getName());
+      System.out.println("Predicate: " + predicate.getClass().getName());
     }
 
     long start = System.currentTimeMillis();
@@ -106,7 +138,7 @@ public class InvasionSpawnSampler {
         entity.setPosition(x, origin.getY(), z);
 
         // Test if the entity can spawn at its current location.
-        if (this.predicate.test(entity)) {
+        if (predicate.test(entity)) {
           Vec3d result = new Vec3d(x, entity.posY, z);
 
           if (ModuleOnslaughtConfig.DEBUG.SPAWN_SAMPLER) {
