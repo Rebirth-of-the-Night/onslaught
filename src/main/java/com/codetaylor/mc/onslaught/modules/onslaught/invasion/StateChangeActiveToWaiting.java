@@ -21,6 +21,7 @@ public class StateChangeActiveToWaiting {
 
     if (this.isInvasionFinished(invasionData)) {
       data.setInvasionState(IInvasionPlayerData.EnumInvasionState.Waiting);
+      data.setInvasionData(null);
 
       int min = ModuleOnslaughtConfig.INVASION.TIMING_RANGE_TICKS[0];
       int max = ModuleOnslaughtConfig.INVASION.TIMING_RANGE_TICKS[1];
@@ -45,12 +46,12 @@ public class StateChangeActiveToWaiting {
 
       for (InvasionPlayerData.InvasionData.MobData mobData : mobDataList) {
 
-        if (mobData.killedCount == mobData.count) {
-          return true;
+        if (mobData.killedCount != mobData.count) {
+          return false;
         }
       }
     }
 
-    return false;
+    return true;
   }
 }
