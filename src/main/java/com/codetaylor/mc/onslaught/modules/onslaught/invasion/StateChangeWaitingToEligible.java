@@ -19,7 +19,7 @@ public class StateChangeWaitingToEligible {
     this.eligiblePlayers = eligiblePlayers;
   }
 
-  public void process(EntityPlayer entityPlayer, int updateInvervalTicks) {
+  public void process(EntityPlayer entityPlayer, int updateIntervalTicks) {
 
     IInvasionPlayerData data = CapabilityInvasion.get(entityPlayer);
 
@@ -39,7 +39,7 @@ public class StateChangeWaitingToEligible {
     int ticksUntilNextInvasion = data.getTicksUntilEligible();
 
     if (ticksUntilNextInvasion > 0) {
-      data.setTicksUntilEligible(ticksUntilNextInvasion - updateInvervalTicks);
+      data.setTicksUntilEligible(ticksUntilNextInvasion - updateIntervalTicks);
 
     } else {
       this.eligiblePlayers.add(entityPlayer.getUniqueID());

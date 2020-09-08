@@ -72,7 +72,8 @@ public class ModuleOnslaught
     // -------------------------------------------------------------------------
 
     this.dataLoader = new DataLoader(
-        this.dataStore,
+        this.dataStore::setMobTemplateRegistry,
+        this.dataStore::setInvasionTemplateRegistry,
         modConfigurationPath,
         filePathCreator,
         new JsonFileLocator(),
@@ -141,6 +142,10 @@ public class ModuleOnslaught
     // - Invasions
     // -------------------------------------------------------------------------
 
+    /*
+    This is the set of players with an expired invasion timer. A LinkedHashSet is
+    used to ensure retention of insertion order and eliminate duplicate elements.
+     */
     LinkedHashSet<UUID> eligiblePlayers = new LinkedHashSet<>();
 
     MinecraftForge.EVENT_BUS.register(new InvasionStateChangeEventHandlers.WaitingToEligible(
@@ -152,8 +157,12 @@ public class ModuleOnslaught
     MinecraftForge.EVENT_BUS.register(new InvasionStateChangeEventHandlers.EligibleToPending(
         new StateChangeEligibleToPending(
             eligiblePlayers,
-            new InvasionSelector(this.dataStore::getInvasionTemplateRegistry),
-            new InvasionDataFactory(this.dataStore::getInvasionTemplateRegistry)
+            new InvasionSelector(
+                this.dataStore::getInvasionTemplateRegistry
+            ),
+            new InvasionDataFactory(
+                this.dataStore::getInvasionTemplateRegistry
+            )
         )
     ));
 

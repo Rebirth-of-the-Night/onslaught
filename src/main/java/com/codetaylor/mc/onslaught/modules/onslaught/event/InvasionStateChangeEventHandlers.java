@@ -15,7 +15,9 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import java.util.List;
 
 /**
- * Contains all invasion state change event handlers.
+ * Contains all invasion state change event handlers. These are responsible
+ * for determining if the state change processes should run, when they should
+ * run, and for supplying the processes with their required parameters.
  */
 public final class InvasionStateChangeEventHandlers {
 
@@ -105,7 +107,7 @@ public final class InvasionStateChangeEventHandlers {
 
       PlayerList playerList = minecraftServer.getPlayerList();
       long totalWorldTime = event.world.getTotalWorldTime();
-      this.stateChangeEligibleToPending.process(playerList, totalWorldTime);
+      this.stateChangeEligibleToPending.process(playerList::getPlayers, playerList::getPlayerByUUID, totalWorldTime);
     }
   }
 

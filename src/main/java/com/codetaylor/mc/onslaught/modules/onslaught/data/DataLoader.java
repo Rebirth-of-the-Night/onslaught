@@ -14,6 +14,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.lib.JsonFileLocator;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 
 /**
@@ -21,7 +22,8 @@ import java.util.logging.Level;
  */
 public class DataLoader {
 
-  private final DataStore dataStore;
+  private final Consumer<MobTemplateRegistry> mobTemplateRegistryConsumer;
+  private final Consumer<InvasionTemplateRegistry> invasionTemplateRegistryConsumer;
   private final Path path;
   private final FilePathCreator filePathCreator;
   private final JsonFileLocator jsonFileLocator;
@@ -29,7 +31,8 @@ public class DataLoader {
   private final InvasionTemplateLoader invasionTemplateLoader;
 
   public DataLoader(
-      DataStore dataStore,
+      Consumer<MobTemplateRegistry> mobTemplateRegistryConsumer,
+      Consumer<InvasionTemplateRegistry> invasionTemplateRegistryConsumer,
       Path path,
       FilePathCreator filePathCreator,
       JsonFileLocator jsonFileLocator,
@@ -37,7 +40,8 @@ public class DataLoader {
       InvasionTemplateLoader invasionTemplateLoader
   ) {
 
-    this.dataStore = dataStore;
+    this.mobTemplateRegistryConsumer = mobTemplateRegistryConsumer;
+    this.invasionTemplateRegistryConsumer = invasionTemplateRegistryConsumer;
     this.path = path;
     this.filePathCreator = filePathCreator;
     this.jsonFileLocator = jsonFileLocator;
@@ -61,7 +65,7 @@ public class DataLoader {
       List<Path> jsonFilePaths = this.jsonFileLocator.locate(mobTemplatePath);
       Map<String, MobTemplate> mobTemplateMap = this.mobTemplateLoader.load(jsonFilePaths);
       MobTemplateRegistry mobTemplateRegistry = new MobTemplateRegistry(mobTemplateMap);
-      this.dataStore.setMobTemplateRegistry(mobTemplateRegistry);
+      this.mobTemplateRegistryConsumer.accept(mobTemplateRegistry);
       long elapsed = System.currentTimeMillis() - start;
       ModOnslaught.LOG.info(String.format("Loaded %d mob templates in %d ms", mobTemplateMap.size(), elapsed));
       return true;
@@ -84,7 +88,7 @@ public class DataLoader {
       List<Path> jsonFilePaths = this.jsonFileLocator.locate(invasionTemplatePath);
       Map<String, InvasionTemplate> invasionTemplateMap = this.invasionTemplateLoader.load(jsonFilePaths);
       InvasionTemplateRegistry invasionTemplateRegistry = new InvasionTemplateRegistry(invasionTemplateMap);
-      this.dataStore.setInvasionTemplateRegistry(invasionTemplateRegistry);
+      this.invasionTemplateRegistryConsumer.accept(invasionTemplateRegistry);
       long elapsed = System.currentTimeMillis() - start;
       ModOnslaught.LOG.info(String.format("Loaded %d invasion templates in %d ms", invasionTemplateMap.size(), elapsed));
       return true;

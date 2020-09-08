@@ -24,7 +24,7 @@ public class DataStore {
     return mobTemplateRegistry;
   }
 
-  void setMobTemplateRegistry(MobTemplateRegistry mobTemplateRegistry) {
+  public void setMobTemplateRegistry(MobTemplateRegistry mobTemplateRegistry) {
 
     this.mobTemplateRegistry = mobTemplateRegistry;
   }

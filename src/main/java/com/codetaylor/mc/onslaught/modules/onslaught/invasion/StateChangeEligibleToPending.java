@@ -4,12 +4,13 @@ import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.CapabilityInvasion;
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.IInvasionPlayerData;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.management.PlayerList;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Responsible for transitioning a player's invasion state from eligible to pending.
@@ -31,10 +32,15 @@ public class StateChangeEligibleToPending {
     this.invasionDataFactory = invasionDataFactory;
   }
 
-  public void process(PlayerList playerList, long totalWorldTime) {
+  public void process(
+      Supplier<List<EntityPlayerMP>> playerListSupplier,
+      Function<UUID, EntityPlayerMP> playerFromUUIDFunction,
+      long totalWorldTime
+  ) {
 
     // Check that we don't exceed the max concurrent invasion value.
-    int concurrentInvasions = this.countInvasions(playerList.getPlayers());
+    List<EntityPlayerMP> playerList = playerListSupplier.get();
+    int concurrentInvasions = this.countInvasions(playerList);
 
     if (concurrentInvasions >= ModuleOnslaughtConfig.INVASION.MAX_CONCURRENT_INVASIONS) {
       return;
@@ -44,12 +50,11 @@ public class StateChangeEligibleToPending {
     List<UUID> toRemove = new ArrayList<>(this.eligiblePlayers.size());
 
     for (UUID uuid : this.eligiblePlayers) {
-      EntityPlayerMP player = playerList.getPlayerByUUID(uuid);
+      EntityPlayerMP player = playerFromUUIDFunction.apply(uuid);
 
       // This will be null if the player isn't online by the time this executes.
       // If the player isn't online, we need to remove them from the eligible
       // players list.
-      //noinspection ConstantConditions
       if (player != null) {
         String invasionTemplateId = this.invasionSelector.selectInvasionForPlayer(player);
 
