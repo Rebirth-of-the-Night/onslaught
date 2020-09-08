@@ -1,6 +1,7 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.event;
 
 import com.codetaylor.mc.athenaeum.util.TickCounter;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.StateChangeActiveToWaiting;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.StateChangeEligibleToPending;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.StateChangePendingToActive;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.StateChangeWaitingToEligible;
@@ -153,6 +154,47 @@ public final class InvasionStateChangeEventHandlers {
       PlayerList playerList = minecraftServer.getPlayerList();
       List<EntityPlayerMP> players = playerList.getPlayers();
       this.stateChangePendingToActive.process(totalWorldTime, players);
+    }
+  }
+
+  /**
+   * Responsible for timing an invasion state transition from active to waiting.
+   */
+  public static class ActiveToWaiting {
+
+    private static final int UPDATE_INTERVAL_TICKS = 20;
+
+    private final StateChangeActiveToWaiting stateChangeActiveToWaiting;
+    private final TickCounter tickCounter;
+
+    public ActiveToWaiting(StateChangeActiveToWaiting stateChangeActiveToWaiting) {
+
+      this.stateChangeActiveToWaiting = stateChangeActiveToWaiting;
+      this.tickCounter = new TickCounter(UPDATE_INTERVAL_TICKS);
+    }
+
+    @SubscribeEvent
+    public void on(TickEvent.PlayerTickEvent event) {
+
+      if (event.phase != TickEvent.Phase.END) {
+        return;
+      }
+
+      if (!this.tickCounter.increment()) {
+        return;
+      }
+
+      EntityPlayer entityPlayer = event.player;
+
+      if (entityPlayer.world.isRemote) {
+        return;
+      }
+
+      if (!(entityPlayer instanceof EntityPlayerMP)) {
+        return;
+      }
+
+      this.stateChangeActiveToWaiting.process(entityPlayer);
     }
   }
 

@@ -139,7 +139,7 @@ public class ModuleOnslaught
     MinecraftForge.EVENT_BUS.register(new EntityAIAntiAirPlayerTickEventHandler());
 
     // -------------------------------------------------------------------------
-    // - Invasions
+    // - Invasion State
     // -------------------------------------------------------------------------
 
     /*
@@ -168,6 +168,10 @@ public class ModuleOnslaught
 
     MinecraftForge.EVENT_BUS.register(new InvasionStateChangeEventHandlers.PendingToActive(
         new StateChangePendingToActive()
+    ));
+
+    MinecraftForge.EVENT_BUS.register(new InvasionStateChangeEventHandlers.ActiveToWaiting(
+        new StateChangeActiveToWaiting()
     ));
   }
 
