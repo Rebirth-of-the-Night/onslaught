@@ -36,7 +36,8 @@ public class StateChangeEligibleToPending {
       InvasionGlobalSavedData invasionGlobalSavedData,
       List<EntityPlayerMP> playerList,
       Function<UUID, EntityPlayerMP> playerFromUUIDFunction,
-      long totalWorldTime
+      long totalWorldTime,
+      long worldTime
   ) {
 
     // Check that we don't exceed the max concurrent invasion value.
@@ -64,7 +65,7 @@ public class StateChangeEligibleToPending {
 
         InvasionPlayerData data = invasionGlobalSavedData.getPlayerData(uuid);
         data.setInvasionState(InvasionPlayerData.EnumInvasionState.Pending);
-        data.setInvasionData(this.invasionPlayerDataFactory.create(invasionTemplateId, player.getRNG(), totalWorldTime));
+        data.setInvasionData(this.invasionPlayerDataFactory.create(invasionTemplateId, player.getRNG(), totalWorldTime, worldTime));
         invasionGlobalSavedData.markDirty();
 
         allowedInvasions -= 1;

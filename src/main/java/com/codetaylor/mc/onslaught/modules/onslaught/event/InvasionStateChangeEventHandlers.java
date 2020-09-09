@@ -106,7 +106,9 @@ public final class InvasionStateChangeEventHandlers {
         return;
       }
 
-      if (event.world.getWorldTime() >= 1000) {
+      long worldTime = event.world.getWorldTime();
+
+      if (worldTime >= 1000) {
         return;
       }
 
@@ -120,7 +122,7 @@ public final class InvasionStateChangeEventHandlers {
       PlayerList playerList = minecraftServer.getPlayerList();
       long totalWorldTime = event.world.getTotalWorldTime();
       InvasionGlobalSavedData invasionGlobalSavedData = InvasionGlobalSavedData.get(event.world);
-      this.stateChangeEligibleToPending.process(invasionGlobalSavedData, playerList.getPlayers(), playerList::getPlayerByUUID, totalWorldTime);
+      this.stateChangeEligibleToPending.process(invasionGlobalSavedData, playerList.getPlayers(), playerList::getPlayerByUUID, totalWorldTime, worldTime);
     }
   }
 
