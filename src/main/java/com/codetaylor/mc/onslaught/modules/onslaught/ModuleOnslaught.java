@@ -239,7 +239,6 @@ public class ModuleOnslaught
                                 spawnSampler,
                                 idToMobTemplateFunction,
                                 mobTemplateEntityFactory,
-                                entityInvasionDataInjector,
                                 deferredSpawnDataList
                             ),
                             deferredSpawnDataList
@@ -249,13 +248,6 @@ public class ModuleOnslaught
 
                 new InvasionUpdateEventHandler.InvasionTimedUpdateComponent(
                     21,
-                    new DeferredSpawnTimer(
-                        deferredSpawnDataList
-                    )
-                ),
-
-                new InvasionUpdateEventHandler.InvasionTimedUpdateComponent(
-                    22,
                     new DeferredSpawner(
                         entityInvasionDataInjector,
                         deferredSpawnDataList

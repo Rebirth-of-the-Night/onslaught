@@ -37,6 +37,7 @@ public class DeferredSpawner
 
     for (int i = this.deferredSpawnDataList.size() - 1; i >= 0; i--) {
       DeferredSpawnData deferredSpawnData = this.deferredSpawnDataList.get(i);
+      deferredSpawnData.setTicksRemaining(deferredSpawnData.getTicksRemaining() - updateIntervalTicks);
 
       if (deferredSpawnData.getTicksRemaining() <= 0) {
         EntityPlayerMP player = playerList.getPlayerByUUID(deferredSpawnData.getUuid());

@@ -23,7 +23,6 @@ public class SpawnerMobForced {
 
   private final Function<String, MobTemplate> mobTemplateFunction;
   private final MobTemplateEntityFactory mobTemplateEntityFactory;
-  private final EntityInvasionDataInjector entityInvasionDataInjector;
   private final SpawnSampler spawnSampler;
   private final List<DeferredSpawnData> deferredSpawnDataList;
 
@@ -31,13 +30,11 @@ public class SpawnerMobForced {
       SpawnSampler spawnSampler,
       Function<String, MobTemplate> mobTemplateFunction,
       MobTemplateEntityFactory mobTemplateEntityFactory,
-      EntityInvasionDataInjector entityInvasionDataInjector,
       List<DeferredSpawnData> deferredSpawnDataList
   ) {
 
     this.mobTemplateFunction = mobTemplateFunction;
     this.mobTemplateEntityFactory = mobTemplateEntityFactory;
-    this.entityInvasionDataInjector = entityInvasionDataInjector;
     this.spawnSampler = spawnSampler;
     this.deferredSpawnDataList = deferredSpawnDataList;
   }
@@ -90,9 +87,6 @@ public class SpawnerMobForced {
     Create a class to cleanup elements and do player data bookkeeping when a chunk is unloaded.
       - Either this or we just clean them up and do the bookkeeping if they try to spawn in an unloaded chunk.
      */
-
-    // apply player target, chase long distance, and invasion data tags
-    this.entityInvasionDataInjector.inject(entity, uuid, waveIndex, mobIndex);
 
     this.deferredSpawnDataList.add(new DeferredSpawnData(
         entity,
