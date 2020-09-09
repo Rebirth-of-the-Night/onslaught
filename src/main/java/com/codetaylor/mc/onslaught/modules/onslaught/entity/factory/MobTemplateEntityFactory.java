@@ -16,12 +16,12 @@ import javax.annotation.Nullable;
  */
 public class MobTemplateEntityFactory {
 
-  private final MobTemplateEntityFactoryEffectApplicator effectApplicator;
-  private final MobTemplateEntityFactoryLootTableApplicator lootTableApplicator;
+  private final EffectApplicator effectApplicator;
+  private final LootTableApplicator lootTableApplicator;
 
   public MobTemplateEntityFactory(
-      MobTemplateEntityFactoryEffectApplicator effectApplicator,
-      MobTemplateEntityFactoryLootTableApplicator lootTableApplicator
+      EffectApplicator effectApplicator,
+      LootTableApplicator lootTableApplicator
   ) {
 
     this.effectApplicator = effectApplicator;

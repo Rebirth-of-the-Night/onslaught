@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
+package com.codetaylor.mc.onslaught.modules.onslaught.invasion.selector;
 
 import com.codetaylor.mc.athenaeum.util.ArrayHelper;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplate;
@@ -12,12 +12,12 @@ import java.util.function.Predicate;
  * Responsible for filtering out invasion templates that do not match the
  * dimension id returned by the given dimension id supplier.
  */
-public class InvasionFilterDimension
+public class SelectorFilterDimension
     implements Predicate<Map.Entry<String, InvasionTemplate>> {
 
   private final IntSupplier dimensionSupplier;
 
-  public InvasionFilterDimension(IntSupplier dimensionSupplier) {
+  public SelectorFilterDimension(IntSupplier dimensionSupplier) {
 
     this.dimensionSupplier = dimensionSupplier;
   }

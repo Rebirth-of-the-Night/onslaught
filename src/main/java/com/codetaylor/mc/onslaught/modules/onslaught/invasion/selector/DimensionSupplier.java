@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
+package com.codetaylor.mc.onslaught.modules.onslaught.invasion.selector;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;

@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
+package com.codetaylor.mc.onslaught.modules.onslaught.invasion.selector;
 
 import com.codetaylor.mc.athenaeum.util.WeightedPicker;
 import com.codetaylor.mc.onslaught.ModOnslaught;
@@ -46,8 +46,8 @@ public class InvasionSelector {
     // Select remaining invasions by weight
 
     this.invasionTemplateStreamSupplier.get()
-        .filter(new InvasionFilterDimension(new DimensionSupplier(player)))
-        .filter(new InvasionFilterGamestages(player))
+        .filter(new SelectorFilterDimension(new DimensionSupplier(player)))
+        .filter(new SelectorFilterGamestages(player))
         .forEach(entry -> picker.add(entry.getValue().selector.weight, entry));
 
     if (picker.getSize() == 0) {

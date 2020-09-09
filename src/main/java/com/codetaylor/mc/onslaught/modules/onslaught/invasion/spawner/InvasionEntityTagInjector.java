@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
+package com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.Tag;
@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.UUID;
 
-public class InvasionNBTInjector {
+public class InvasionEntityTagInjector {
 
   public void inject(EntityLiving entity, UUID uuid, int waveIndex, int mobIndex) {
 

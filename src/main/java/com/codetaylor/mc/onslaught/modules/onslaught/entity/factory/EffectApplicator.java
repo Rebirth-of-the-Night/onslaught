@@ -13,7 +13,7 @@ import java.util.logging.Level;
 /**
  * Responsible for applying mob template effects to an {@link EntityLiving}.
  */
-public class MobTemplateEntityFactoryEffectApplicator {
+public class EffectApplicator {
 
   public void apply(MobTemplateEffect[] effects, EntityLiving entity) {
 

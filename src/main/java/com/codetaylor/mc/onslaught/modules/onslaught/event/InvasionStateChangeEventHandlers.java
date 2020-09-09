@@ -1,10 +1,10 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.event;
 
 import com.codetaylor.mc.athenaeum.util.TickCounter;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.StateChangeActiveToWaiting;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.StateChangeEligibleToPending;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.StateChangePendingToActive;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.StateChangeWaitingToEligible;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.state.StateChangeActiveToWaiting;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.state.StateChangeEligibleToPending;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.state.StateChangePendingToActive;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.state.StateChangeWaitingToEligible;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;

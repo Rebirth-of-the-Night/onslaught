@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
+package com.codetaylor.mc.onslaught.modules.onslaught.invasion.selector;
 
 import com.codetaylor.mc.athenaeum.integration.gamestages.GameStages;
 import com.codetaylor.mc.athenaeum.integration.gamestages.Stages;
@@ -13,14 +13,14 @@ import java.util.function.Predicate;
  * Responsible for filtering out invasion templates that do not match the
  * given player's gamestages.
  */
-public class InvasionFilterGamestages
+public class SelectorFilterGamestages
     implements Predicate<Map.Entry<String, InvasionTemplate>> {
 
   private static final String GAMESTAGES_MOD_ID = "gamestages";
 
   private final EntityPlayer player;
 
-  public InvasionFilterGamestages(EntityPlayer player) {
+  public SelectorFilterGamestages(EntityPlayer player) {
 
     this.player = player;
   }

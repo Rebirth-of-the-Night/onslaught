@@ -1,7 +1,8 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
+package com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.InvasionPlayerData;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.predicate.SpawnPredicateFactory;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.Util;
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
@@ -21,15 +22,15 @@ import static com.codetaylor.mc.onslaught.ModOnslaught.LOG;
  * evaluating each using the given predicate, and returning the first
  * valid location found.
  */
-public class InvasionSpawnSampler {
+public class SpawnSampler {
 
   private static final double TWO_PI = Math.PI * 2;
 
-  private final InvasionFactorySpawnPredicate invasionFactorySpawnPredicate;
+  private final SpawnPredicateFactory spawnPredicateFactory;
 
-  public InvasionSpawnSampler(InvasionFactorySpawnPredicate invasionFactorySpawnPredicate) {
+  public SpawnSampler(SpawnPredicateFactory spawnPredicateFactory) {
 
-    this.invasionFactorySpawnPredicate = invasionFactorySpawnPredicate;
+    this.spawnPredicateFactory = spawnPredicateFactory;
   }
 
   public Vec3d getSpawnLocation(
@@ -38,7 +39,7 @@ public class InvasionSpawnSampler {
       InvasionPlayerData.InvasionData.SpawnData spawnData
   ) {
 
-    Predicate<EntityLiving> predicate = this.invasionFactorySpawnPredicate.create(spawnData);
+    Predicate<EntityLiving> predicate = this.spawnPredicateFactory.create(spawnData);
 
     int[] rangeXZ = Util.evaluateRangeArray(spawnData.rangeXZ);
 

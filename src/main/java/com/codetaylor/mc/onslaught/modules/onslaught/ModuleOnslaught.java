@@ -17,10 +17,12 @@ import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplateAdapter
 import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplateLoader;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector.*;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactory;
-import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactoryEffectApplicator;
-import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactoryLootTableApplicator;
+import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.EffectApplicator;
+import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.LootTableApplicator;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.*;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.*;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionSpawnDataConverter;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.selector.InvasionSelector;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.state.*;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.FilePathCreator;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.JsonFileLocator;
 import com.codetaylor.mc.onslaught.modules.onslaught.loot.CustomLootTableManagerInjector;
@@ -154,8 +156,6 @@ public class ModuleOnslaught
         )
     ));
 
-    InvasionFactorySpawnData invasionFactorySpawnData = new InvasionFactorySpawnData();
-
     MinecraftForge.EVENT_BUS.register(new InvasionStateChangeEventHandlers.EligibleToPending(
         new StateChangeEligibleToPending(
             eligiblePlayers,
@@ -163,9 +163,9 @@ public class ModuleOnslaught
                 () -> this.dataStore.getInvasionTemplateRegistry().getAll().stream(),
                 id -> this.dataStore.getInvasionTemplateRegistry().has(id)
             ),
-            new InvasionFactoryData(
+            new InvasionPlayerDataFactory(
                 id -> this.dataStore.getInvasionTemplateRegistry().get(id),
-                invasionFactorySpawnData::create
+                new InvasionSpawnDataConverter()
             )
         )
     ));
@@ -215,8 +215,8 @@ public class ModuleOnslaught
         id -> this.dataStore.getMobTemplateRegistry().get(id),
         () -> this.dataStore.getMobTemplateRegistry().getIdList(),
         new MobTemplateEntityFactory(
-            new MobTemplateEntityFactoryEffectApplicator(),
-            new MobTemplateEntityFactoryLootTableApplicator()
+            new EffectApplicator(),
+            new LootTableApplicator()
         )
     ));
 

@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
+package com.codetaylor.mc.onslaught.modules.onslaught.invasion.state;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.CapabilityInvasion;
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.IInvasionPlayerData;

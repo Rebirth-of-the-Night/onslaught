@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
+package com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.EnumFacing;

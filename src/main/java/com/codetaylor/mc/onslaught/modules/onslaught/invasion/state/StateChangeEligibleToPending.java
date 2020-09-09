@@ -1,8 +1,9 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
+package com.codetaylor.mc.onslaught.modules.onslaught.invasion.state;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.CapabilityInvasion;
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.IInvasionPlayerData;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.selector.InvasionSelector;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 import java.util.ArrayList;
@@ -19,17 +20,17 @@ public class StateChangeEligibleToPending {
 
   private final Set<UUID> eligiblePlayers;
   private final InvasionSelector invasionSelector;
-  private final InvasionFactoryData invasionFactoryData;
+  private final InvasionPlayerDataFactory invasionPlayerDataFactory;
 
   public StateChangeEligibleToPending(
       Set<UUID> eligiblePlayers,
       InvasionSelector invasionSelector,
-      InvasionFactoryData invasionFactoryData
+      InvasionPlayerDataFactory invasionPlayerDataFactory
   ) {
 
     this.eligiblePlayers = eligiblePlayers;
     this.invasionSelector = invasionSelector;
-    this.invasionFactoryData = invasionFactoryData;
+    this.invasionPlayerDataFactory = invasionPlayerDataFactory;
   }
 
   public void process(
@@ -64,7 +65,7 @@ public class StateChangeEligibleToPending {
 
         IInvasionPlayerData data = CapabilityInvasion.get(player);
         data.setInvasionState(IInvasionPlayerData.EnumInvasionState.Pending);
-        data.setInvasionData(this.invasionFactoryData.create(invasionTemplateId, player.getRNG(), totalWorldTime));
+        data.setInvasionData(this.invasionPlayerDataFactory.create(invasionTemplateId, player.getRNG(), totalWorldTime));
 
         allowedInvasions -= 1;
       }

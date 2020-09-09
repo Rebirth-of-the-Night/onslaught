@@ -10,7 +10,7 @@ import net.minecraftforge.common.util.Constants;
 /**
  * Responsible for applying additional loot tables to an {@link Entity}.
  */
-public class MobTemplateEntityFactoryLootTableApplicator {
+public class LootTableApplicator {
 
   public void apply(String[] lootTableIds, Entity entity) {
 

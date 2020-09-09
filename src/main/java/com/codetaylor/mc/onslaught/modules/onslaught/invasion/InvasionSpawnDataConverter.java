@@ -5,9 +5,9 @@ import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTempl
 
 import java.util.Arrays;
 
-public class InvasionFactorySpawnData {
+public class InvasionSpawnDataConverter {
 
-  public InvasionPlayerData.InvasionData.SpawnData create(InvasionTemplateWave.Spawn spawn) {
+  public InvasionPlayerData.InvasionData.SpawnData convert(InvasionTemplateWave.Spawn spawn) {
 
     InvasionPlayerData.InvasionData.SpawnData spawnData = new InvasionPlayerData.InvasionData.SpawnData();
     spawnData.type = spawn.type;

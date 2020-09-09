@@ -1,9 +1,10 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
+package com.codetaylor.mc.onslaught.modules.onslaught.invasion.state;
 
 import com.codetaylor.mc.athenaeum.util.WeightedPicker;
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.InvasionPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateWave;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionSpawnDataConverter;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -13,18 +14,18 @@ import java.util.function.Function;
  * Responsible for creating {@link InvasionPlayerData.InvasionData} from the
  * given template id and PRNG.
  */
-public class InvasionFactoryData {
+public class InvasionPlayerDataFactory {
 
   private final Function<String, InvasionTemplate> invasionTemplateFunction;
-  private final InvasionFactorySpawnData invasionFactorySpawnData;
+  private final InvasionSpawnDataConverter invasionSpawnDataConverter;
 
-  public InvasionFactoryData(
+  public InvasionPlayerDataFactory(
       Function<String, InvasionTemplate> invasionTemplateFunction,
-      InvasionFactorySpawnData invasionFactorySpawnData
+      InvasionSpawnDataConverter invasionSpawnDataConverter
   ) {
 
     this.invasionTemplateFunction = invasionTemplateFunction;
-    this.invasionFactorySpawnData = invasionFactorySpawnData;
+    this.invasionSpawnDataConverter = invasionSpawnDataConverter;
   }
 
   @Nullable
@@ -68,7 +69,7 @@ public class InvasionFactoryData {
     mobData.count = this.evaluateRange(mob.count, random);
     mobData.remainingSpawnCount = mobData.count;
     mobData.killedCount = 0;
-    mobData.spawnData = this.invasionFactorySpawnData.create(mob.spawn);
+    mobData.spawnData = this.invasionSpawnDataConverter.convert(mob.spawn);
 
     return mobData;
   }
