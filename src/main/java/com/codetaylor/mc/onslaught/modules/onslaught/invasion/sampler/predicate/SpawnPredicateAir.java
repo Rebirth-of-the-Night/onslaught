@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler;
+package com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.predicate;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.BlockPos;
@@ -8,7 +8,7 @@ import java.util.function.Predicate;
 /**
  * Responsible for testing a pillar of blocks for a valid ground spawn location.
  */
-public class InvasionSpawnPredicateAir
+public class SpawnPredicateAir
     implements Predicate<EntityLiving> {
 
   private final BlockPos.MutableBlockPos blockPos;
@@ -16,7 +16,7 @@ public class InvasionSpawnPredicateAir
   private final int lightMax;
   private final int verticalRange;
 
-  public InvasionSpawnPredicateAir(int lightMin, int lightMax, int verticalRange) {
+  public SpawnPredicateAir(int lightMin, int lightMax, int verticalRange) {
 
     super();
     this.blockPos = new BlockPos.MutableBlockPos();

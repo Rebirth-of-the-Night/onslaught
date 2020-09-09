@@ -1,14 +1,12 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
+package com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.predicate;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.InvasionPlayerData;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.InvasionSpawnPredicateAir;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.InvasionSpawnPredicateGround;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.Util;
 import net.minecraft.entity.EntityLiving;
 
 import java.util.function.Predicate;
 
-public class InvasionFactorySpawnPredicate {
+public class SpawnPredicateFactory {
 
   public Predicate<EntityLiving> create(InvasionPlayerData.InvasionData.SpawnData spawnData) {
 
@@ -16,12 +14,12 @@ public class InvasionFactorySpawnPredicate {
 
       case ground: {
         int[] light = Util.evaluateRangeArray(spawnData.light);
-        return new InvasionSpawnPredicateGround(light[0], light[1], spawnData.rangeY);
+        return new SpawnPredicateGround(light[0], light[1], spawnData.rangeY);
       }
 
       case air: {
         int[] light = Util.evaluateRangeArray(spawnData.light);
-        return new InvasionSpawnPredicateAir(light[0], light[1], spawnData.rangeY);
+        return new SpawnPredicateAir(light[0], light[1], spawnData.rangeY);
       }
 
       default:
