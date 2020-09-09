@@ -1,7 +1,6 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
 
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.function.Predicate;
@@ -9,7 +8,7 @@ import java.util.function.Predicate;
 /**
  * Responsible for testing a pillar of blocks for a valid ground spawn location.
  */
-public class InvasionSpawnPredicateGround
+public class InvasionSpawnPredicateAir
     implements Predicate<EntityLiving> {
 
   private final BlockPos.MutableBlockPos blockPos;
@@ -17,7 +16,7 @@ public class InvasionSpawnPredicateGround
   private final int lightMax;
   private final int verticalRange;
 
-  public InvasionSpawnPredicateGround(int lightMin, int lightMax, int verticalRange) {
+  public InvasionSpawnPredicateAir(int lightMin, int lightMax, int verticalRange) {
 
     super();
     this.blockPos = new BlockPos.MutableBlockPos();
@@ -68,13 +67,6 @@ public class InvasionSpawnPredicateGround
       return false;
     }
 
-    // Ensure the block below the entity has a solid top
-    this.blockPos.move(EnumFacing.DOWN);
-
-    if (this.blockPos.getY() < 0 || this.blockPos.getY() > 255) {
-      return false;
-    }
-
-    return entity.world.isSideSolid(this.blockPos, EnumFacing.UP);
+    return true;
   }
 }

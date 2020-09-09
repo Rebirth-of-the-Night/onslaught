@@ -36,6 +36,11 @@ public final class Tag {
   public static final String AI_PARAM_SPEED_MODIFIER = "SpeedModifier";
   public static final String AI_PARAM_UUID = "UUID";
 
+  public static final String INVASION_DATA = "InvasionData";
+  public static final String INVASION_UUID = "UUID";
+  public static final String INVASION_WAVE_INDEX = "WaveIndex";
+  public static final String INVASION_MOB_INDEX = "MobIndex";
+
   private Tag() {
     //
   }

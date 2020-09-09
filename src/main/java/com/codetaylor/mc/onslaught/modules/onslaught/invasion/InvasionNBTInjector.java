@@ -8,15 +8,30 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.UUID;
 
-public class InvasionSpawnNBTInjector {
+public class InvasionNBTInjector {
 
-  public void inject(EntityLiving entity, UUID uuid) {
+  public void inject(EntityLiving entity, UUID uuid, int waveIndex, int mobIndex) {
 
     NBTTagCompound entityData = entity.getEntityData();
 
     if (!entityData.hasKey(Tag.ONSLAUGHT)) {
       entityData.setTag(Tag.ONSLAUGHT, new NBTTagCompound());
     }
+
+    this.injectCustomAI(uuid, entityData);
+    this.injectInvasionData(uuid, waveIndex, mobIndex, entityData);
+  }
+
+  private void injectInvasionData(UUID uuid, int waveIndex, int mobIndex, NBTTagCompound entityData) {
+
+    NBTTagCompound tag = new NBTTagCompound();
+    tag.setString(Tag.INVASION_UUID, uuid.toString());
+    tag.setInteger(Tag.INVASION_WAVE_INDEX, waveIndex);
+    tag.setInteger(Tag.INVASION_MOB_INDEX, mobIndex);
+    entityData.setTag(Tag.INVASION_DATA, tag);
+  }
+
+  private void injectCustomAI(UUID uuid, NBTTagCompound entityData) {
 
     NBTTagCompound modTag = entityData.getCompoundTag(Tag.ONSLAUGHT);
 

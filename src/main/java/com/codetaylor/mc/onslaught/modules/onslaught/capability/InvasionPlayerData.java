@@ -13,6 +13,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class InvasionPlayerData
@@ -268,6 +269,19 @@ public class InvasionPlayerData
       public int rangeY;
       public int stepRadius;
       public int sampleDistance;
+
+      public SpawnData copy() {
+
+        SpawnData copy = new SpawnData();
+        copy.type = this.type;
+        copy.light = Arrays.copyOf(this.light, this.light.length);
+        copy.force = this.force;
+        copy.rangeXZ = Arrays.copyOf(this.rangeXZ, this.rangeXZ.length);
+        copy.rangeY = this.rangeY;
+        copy.stepRadius = this.stepRadius;
+        copy.sampleDistance = this.sampleDistance;
+        return copy;
+      }
 
       @Override
       public NBTTagCompound serializeNBT() {
