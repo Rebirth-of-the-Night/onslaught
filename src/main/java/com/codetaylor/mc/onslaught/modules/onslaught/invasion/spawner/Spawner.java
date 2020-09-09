@@ -1,31 +1,31 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner;
 
-import com.codetaylor.mc.onslaught.modules.onslaught.capability.CapabilityInvasion;
-import com.codetaylor.mc.onslaught.modules.onslaught.capability.IInvasionPlayerData;
-import com.codetaylor.mc.onslaught.modules.onslaught.capability.InvasionPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateWave;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class InvasionSpawner {
+public class Spawner {
 
   private final Function<String, InvasionTemplate> invasionTemplateFunction;
-  private final InvasionSpawnerWave invasionSpawnerWave;
+  private final SpawnerWave spawnerWave;
 
-  public InvasionSpawner(
+  public Spawner(
       Function<String, InvasionTemplate> invasionTemplateFunction,
-      InvasionSpawnerWave invasionSpawnerWave
+      SpawnerWave spawnerWave
   ) {
 
     this.invasionTemplateFunction = invasionTemplateFunction;
-    this.invasionSpawnerWave = invasionSpawnerWave;
+    this.spawnerWave = spawnerWave;
   }
 
   public void process(
+      InvasionGlobalSavedData invasionGlobalSavedData,
       Supplier<List<EntityPlayerMP>> playerListSupplier
   ) {
 
@@ -33,9 +33,9 @@ public class InvasionSpawner {
     List<EntityPlayerMP> playerList = playerListSupplier.get();
 
     for (EntityPlayerMP player : playerList) {
-      IInvasionPlayerData data = CapabilityInvasion.get(player);
+      InvasionPlayerData data = invasionGlobalSavedData.getPlayerData(player.getUniqueID());
 
-      if (data.getInvasionState() != IInvasionPlayerData.EnumInvasionState.Active) {
+      if (data.getInvasionState() != InvasionPlayerData.EnumInvasionState.Active) {
         continue;
       }
 
@@ -46,7 +46,7 @@ public class InvasionSpawner {
         continue;
       }
 
-      InvasionTemplate invasionTemplate = this.invasionTemplateFunction.apply(invasionData.id);
+      InvasionTemplate invasionTemplate = this.invasionTemplateFunction.apply(invasionData.getInvasionTemplateId());
 
       if (invasionTemplate == null) {
         // If this happens, the invasion id has changed since the invasion data was created.
@@ -56,15 +56,15 @@ public class InvasionSpawner {
         continue;
       }
 
-      List<InvasionPlayerData.InvasionData.WaveData> waveDataList = invasionData.waveDataList;
+      List<InvasionPlayerData.InvasionData.WaveData> waveDataList = invasionData.getWaveDataList();
 
       for (int waveIndex = 0; waveIndex < waveDataList.size(); waveIndex++) {
         InvasionPlayerData.InvasionData.WaveData waveData = waveDataList.get(waveIndex);
         InvasionTemplateWave templateWave = invasionTemplate.waves[waveIndex];
 
-        if (waveData.delayTicks <= 0) {
+        if (waveData.getDelayTicks() <= 0) {
 
-          if (this.invasionSpawnerWave.attemptSpawnWave(start, player, waveIndex, waveData, templateWave.secondaryMob)) {
+          if (this.spawnerWave.attemptSpawnWave(start, player, waveIndex, waveData, templateWave.secondaryMob)) {
             return;
           }
         }

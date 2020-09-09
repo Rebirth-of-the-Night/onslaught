@@ -44,14 +44,14 @@ public class InvasionTemplateLoader {
 
         for (InvasionTemplateWave wave : template.waves) {
 
-          if (wave.mobs.length == 0) {
+          if (wave.groups.length == 0) {
             throw new Exception("Invasion wave must contain at least one mob: " + key);
           }
 
-          for (InvasionTemplateWaveMobGroup mobGroup : wave.mobs) {
+          for (InvasionTemplateWave.Group group : wave.groups) {
 
-            if (mobGroup.ground.length == 0 && mobGroup.air.length == 0) {
-              throw new Exception("Invasion wave must contain at least one mob: " + key);
+            if (group.mobs.length == 0) {
+              throw new Exception("Invasion wave group must contain at least one mob: " + key);
             }
           }
         }

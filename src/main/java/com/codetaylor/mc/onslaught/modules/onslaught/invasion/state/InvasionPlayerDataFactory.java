@@ -1,9 +1,9 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.state;
 
 import com.codetaylor.mc.athenaeum.util.WeightedPicker;
-import com.codetaylor.mc.onslaught.modules.onslaught.capability.InvasionPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateWave;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionSpawnDataConverter;
 
 import javax.annotation.Nullable;
@@ -38,11 +38,11 @@ public class InvasionPlayerDataFactory {
     }
 
     InvasionPlayerData.InvasionData invasionData = new InvasionPlayerData.InvasionData();
-    invasionData.id = templateId;
-    invasionData.timestamp = totalWorldTime + 12000;
+    invasionData.setInvasionTemplateId(templateId);
+    invasionData.setTimestamp(totalWorldTime + 12000); // TODO make more accurate, derive from current day time
 
     for (InvasionTemplateWave waveTemplate : invasionTemplate.waves) {
-      invasionData.waveDataList.add(this.createWaveData(waveTemplate, random));
+      invasionData.getWaveDataList().add(this.createWaveData(waveTemplate, random));
     }
 
     return invasionData;
@@ -51,12 +51,12 @@ public class InvasionPlayerDataFactory {
   private InvasionPlayerData.InvasionData.WaveData createWaveData(InvasionTemplateWave waveTemplate, Random random) {
 
     InvasionPlayerData.InvasionData.WaveData waveData = new InvasionPlayerData.InvasionData.WaveData();
-    waveData.delayTicks = this.evaluateRange(waveTemplate.delayTicks, random);
+    waveData.setDelayTicks(this.evaluateRange(waveTemplate.delayTicks, random));
 
     InvasionTemplateWave.Group group = this.selectGroup(waveTemplate.groups, random);
 
     for (InvasionTemplateWave.Mob mob : group.mobs) {
-      waveData.mobDataList.add(this.createMobData(mob, random));
+      waveData.getMobDataList().add(this.createMobData(mob, random));
     }
 
     return waveData;
@@ -65,12 +65,10 @@ public class InvasionPlayerDataFactory {
   private InvasionPlayerData.InvasionData.MobData createMobData(InvasionTemplateWave.Mob mob, Random random) {
 
     InvasionPlayerData.InvasionData.MobData mobData = new InvasionPlayerData.InvasionData.MobData();
-    mobData.id = mob.id;
-    mobData.count = this.evaluateRange(mob.count, random);
-    mobData.remainingSpawnCount = mobData.count;
-    mobData.killedCount = 0;
-    mobData.spawnData = this.invasionSpawnDataConverter.convert(mob.spawn);
-
+    mobData.setMobTemplateId(mob.id);
+    mobData.setTotalCount(this.evaluateRange(mob.count, random));
+    mobData.setKilledCount(0);
+    mobData.setSpawnData(this.invasionSpawnDataConverter.convert(mob.spawn));
     return mobData;
   }
 

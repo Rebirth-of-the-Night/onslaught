@@ -1,11 +1,11 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.event;
 
 import com.codetaylor.mc.athenaeum.util.TickCounter;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.state.StateChangeActiveToWaiting;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.state.StateChangeEligibleToPending;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.state.StateChangePendingToActive;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.state.StateChangeWaitingToEligible;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerList;
@@ -39,9 +39,21 @@ public final class InvasionStateChangeEventHandlers {
     }
 
     @SubscribeEvent
-    public void on(TickEvent.PlayerTickEvent event) {
+    public void on(TickEvent.WorldTickEvent event) {
+
+      if (event.world.isRemote) {
+        return;
+      }
 
       if (event.phase != TickEvent.Phase.END) {
+        return;
+      }
+
+      if (event.world.provider.getDimension() != 0) {
+        return;
+      }
+
+      if (!(event.world instanceof WorldServer)) {
         return;
       }
 
@@ -49,17 +61,16 @@ public final class InvasionStateChangeEventHandlers {
         return;
       }
 
-      EntityPlayer entityPlayer = event.player;
+      MinecraftServer minecraftServer = event.world.getMinecraftServer();
 
-      if (entityPlayer.world.isRemote) {
+      // We check above if this is instance of WorldServer, shouldn't be null.
+      if (minecraftServer == null) {
         return;
       }
 
-      if (!(entityPlayer instanceof EntityPlayerMP)) {
-        return;
-      }
-
-      this.stateChangeWaitingToEligible.process(entityPlayer, UPDATE_INTERVAL_TICKS);
+      PlayerList playerList = minecraftServer.getPlayerList();
+      InvasionGlobalSavedData invasionGlobalSavedData = InvasionGlobalSavedData.get(event.world);
+      this.stateChangeWaitingToEligible.process(invasionGlobalSavedData, playerList.getPlayers(), UPDATE_INTERVAL_TICKS);
     }
   }
 
@@ -108,7 +119,8 @@ public final class InvasionStateChangeEventHandlers {
 
       PlayerList playerList = minecraftServer.getPlayerList();
       long totalWorldTime = event.world.getTotalWorldTime();
-      this.stateChangeEligibleToPending.process(playerList::getPlayers, playerList::getPlayerByUUID, totalWorldTime);
+      InvasionGlobalSavedData invasionGlobalSavedData = InvasionGlobalSavedData.get(event.world);
+      this.stateChangeEligibleToPending.process(invasionGlobalSavedData, playerList.getPlayers(), playerList::getPlayerByUUID, totalWorldTime);
     }
   }
 
@@ -153,7 +165,8 @@ public final class InvasionStateChangeEventHandlers {
       long totalWorldTime = event.world.getTotalWorldTime();
       PlayerList playerList = minecraftServer.getPlayerList();
       List<EntityPlayerMP> players = playerList.getPlayers();
-      this.stateChangePendingToActive.process(totalWorldTime, players);
+      InvasionGlobalSavedData invasionGlobalSavedData = InvasionGlobalSavedData.get(event.world);
+      this.stateChangePendingToActive.process(invasionGlobalSavedData, totalWorldTime, players);
     }
   }
 
@@ -174,9 +187,21 @@ public final class InvasionStateChangeEventHandlers {
     }
 
     @SubscribeEvent
-    public void on(TickEvent.PlayerTickEvent event) {
+    public void on(TickEvent.WorldTickEvent event) {
+
+      if (event.world.isRemote) {
+        return;
+      }
 
       if (event.phase != TickEvent.Phase.END) {
+        return;
+      }
+
+      if (event.world.provider.getDimension() != 0) {
+        return;
+      }
+
+      if (!(event.world instanceof WorldServer)) {
         return;
       }
 
@@ -184,17 +209,17 @@ public final class InvasionStateChangeEventHandlers {
         return;
       }
 
-      EntityPlayer entityPlayer = event.player;
+      MinecraftServer minecraftServer = event.world.getMinecraftServer();
 
-      if (entityPlayer.world.isRemote) {
+      // We check above if this is instance of WorldServer, shouldn't be null.
+      if (minecraftServer == null) {
         return;
       }
 
-      if (!(entityPlayer instanceof EntityPlayerMP)) {
-        return;
-      }
-
-      this.stateChangeActiveToWaiting.process(entityPlayer);
+      PlayerList playerList = minecraftServer.getPlayerList();
+      List<EntityPlayerMP> players = playerList.getPlayers();
+      InvasionGlobalSavedData invasionGlobalSavedData = InvasionGlobalSavedData.get(event.world);
+      this.stateChangeActiveToWaiting.process(invasionGlobalSavedData, players);
     }
   }
 

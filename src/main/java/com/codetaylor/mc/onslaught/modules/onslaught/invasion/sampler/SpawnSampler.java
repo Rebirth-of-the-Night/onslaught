@@ -1,7 +1,7 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
-import com.codetaylor.mc.onslaught.modules.onslaught.capability.InvasionPlayerData;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.predicate.SpawnPredicateFactory;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.Util;
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;

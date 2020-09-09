@@ -1,9 +1,9 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner;
 
 import com.codetaylor.mc.onslaught.ModOnslaught;
-import com.codetaylor.mc.onslaught.modules.onslaught.capability.InvasionPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactory;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.SpawnSampler;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.BlockPos;
@@ -17,24 +17,24 @@ import java.util.logging.Level;
 /**
  * Responsible for attempting an invasion spawn.
  */
-public class InvasionSpawnerMob {
+public class SpawnerMob {
 
   private final SpawnSampler spawnSampler;
   private final Function<String, MobTemplate> mobTemplateFunction;
   private final MobTemplateEntityFactory mobTemplateEntityFactory;
-  private final InvasionEntityTagInjector invasionEntityTagInjector;
+  private final EntityInvasionDataInjector entityInvasionDataInjector;
 
-  public InvasionSpawnerMob(
+  public SpawnerMob(
       SpawnSampler spawnSampler,
       Function<String, MobTemplate> mobTemplateFunction,
       MobTemplateEntityFactory mobTemplateEntityFactory,
-      InvasionEntityTagInjector invasionEntityTagInjector
+      EntityInvasionDataInjector entityInvasionDataInjector
   ) {
 
     this.spawnSampler = spawnSampler;
     this.mobTemplateFunction = mobTemplateFunction;
     this.mobTemplateEntityFactory = mobTemplateEntityFactory;
-    this.invasionEntityTagInjector = invasionEntityTagInjector;
+    this.entityInvasionDataInjector = entityInvasionDataInjector;
   }
 
   /**
@@ -71,7 +71,7 @@ public class InvasionSpawnerMob {
     }
 
     // apply player target, chase long distance, and invasion data tags
-    this.invasionEntityTagInjector.inject(entity, uuid, waveIndex, mobIndex);
+    this.entityInvasionDataInjector.inject(entity, uuid, waveIndex, mobIndex);
 
     if (!world.spawnEntity(entity)) {
       return false;

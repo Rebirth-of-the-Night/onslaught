@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.UUID;
 
-public class InvasionEntityTagInjector {
+public class EntityInvasionDataInjector {
 
   public void inject(EntityLiving entity, UUID uuid, int waveIndex, int mobIndex) {
 

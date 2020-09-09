@@ -1,8 +1,8 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.state;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
-import com.codetaylor.mc.onslaught.modules.onslaught.capability.CapabilityInvasion;
-import com.codetaylor.mc.onslaught.modules.onslaught.capability.IInvasionPlayerData;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.selector.InvasionSelector;
 import net.minecraft.entity.player.EntityPlayerMP;
 
@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  * Responsible for transitioning a player's invasion state from eligible to pending.
@@ -34,14 +33,14 @@ public class StateChangeEligibleToPending {
   }
 
   public void process(
-      Supplier<List<EntityPlayerMP>> playerListSupplier,
+      InvasionGlobalSavedData invasionGlobalSavedData,
+      List<EntityPlayerMP> playerList,
       Function<UUID, EntityPlayerMP> playerFromUUIDFunction,
       long totalWorldTime
   ) {
 
     // Check that we don't exceed the max concurrent invasion value.
-    List<EntityPlayerMP> playerList = playerListSupplier.get();
-    int concurrentInvasions = this.countInvasions(playerList);
+    int concurrentInvasions = this.countInvasions(invasionGlobalSavedData, playerList);
 
     if (concurrentInvasions >= ModuleOnslaughtConfig.INVASION.MAX_CONCURRENT_INVASIONS) {
       return;
@@ -63,9 +62,10 @@ public class StateChangeEligibleToPending {
           continue;
         }
 
-        IInvasionPlayerData data = CapabilityInvasion.get(player);
-        data.setInvasionState(IInvasionPlayerData.EnumInvasionState.Pending);
+        InvasionPlayerData data = invasionGlobalSavedData.getPlayerData(uuid);
+        data.setInvasionState(InvasionPlayerData.EnumInvasionState.Pending);
         data.setInvasionData(this.invasionPlayerDataFactory.create(invasionTemplateId, player.getRNG(), totalWorldTime));
+        invasionGlobalSavedData.markDirty();
 
         allowedInvasions -= 1;
       }
@@ -82,16 +82,16 @@ public class StateChangeEligibleToPending {
     }
   }
 
-  private int countInvasions(List<EntityPlayerMP> players) {
+  private int countInvasions(InvasionGlobalSavedData invasionGlobalSavedData, List<EntityPlayerMP> players) {
 
     int result = 0;
 
     for (EntityPlayerMP player : players) {
-      IInvasionPlayerData data = CapabilityInvasion.get(player);
-      IInvasionPlayerData.EnumInvasionState invasionState = data.getInvasionState();
+      InvasionPlayerData data = invasionGlobalSavedData.getPlayerData(player.getUniqueID());
+      InvasionPlayerData.EnumInvasionState invasionState = data.getInvasionState();
 
-      if (invasionState == IInvasionPlayerData.EnumInvasionState.Pending
-          || invasionState == IInvasionPlayerData.EnumInvasionState.Active) {
+      if (invasionState == InvasionPlayerData.EnumInvasionState.Pending
+          || invasionState == InvasionPlayerData.EnumInvasionState.Active) {
         result += 1;
       }
     }

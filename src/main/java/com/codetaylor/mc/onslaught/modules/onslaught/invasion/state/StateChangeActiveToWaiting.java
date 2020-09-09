@@ -2,10 +2,9 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion.state;
 
 import com.codetaylor.mc.athenaeum.util.RandomHelper;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
-import com.codetaylor.mc.onslaught.modules.onslaught.capability.CapabilityInvasion;
-import com.codetaylor.mc.onslaught.modules.onslaught.capability.IInvasionPlayerData;
-import com.codetaylor.mc.onslaught.modules.onslaught.capability.InvasionPlayerData;
-import net.minecraft.entity.player.EntityPlayer;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
+import net.minecraft.entity.player.EntityPlayerMP;
 
 import java.util.List;
 
@@ -14,22 +13,25 @@ import java.util.List;
  */
 public class StateChangeActiveToWaiting {
 
-  public void process(EntityPlayer player) {
+  public void process(InvasionGlobalSavedData invasionGlobalSavedData, List<EntityPlayerMP> playerList) {
 
-    IInvasionPlayerData data = CapabilityInvasion.get(player);
-    InvasionPlayerData.InvasionData invasionData = data.getInvasionData();
+    for (EntityPlayerMP player : playerList) {
+      InvasionPlayerData data = invasionGlobalSavedData.getPlayerData(player.getUniqueID());
+      InvasionPlayerData.InvasionData invasionData = data.getInvasionData();
 
-    if (this.isInvasionFinished(invasionData)) {
-      data.setInvasionState(IInvasionPlayerData.EnumInvasionState.Waiting);
-      data.setInvasionData(null);
+      if (this.isInvasionFinished(invasionData)) {
+        data.setInvasionState(InvasionPlayerData.EnumInvasionState.Waiting);
+        data.setInvasionData(null);
 
-      int min = ModuleOnslaughtConfig.INVASION.TIMING_RANGE_TICKS[0];
-      int max = ModuleOnslaughtConfig.INVASION.TIMING_RANGE_TICKS[1];
-      min = Math.min(max, min);
-      max = Math.max(max, min);
-      int ticksUntilEligible = RandomHelper.random().nextInt(max - min + 1) + min;
+        int min = ModuleOnslaughtConfig.INVASION.TIMING_RANGE_TICKS[0];
+        int max = ModuleOnslaughtConfig.INVASION.TIMING_RANGE_TICKS[1];
+        min = Math.min(max, min);
+        max = Math.max(max, min);
+        int ticksUntilEligible = RandomHelper.random().nextInt(max - min + 1) + min;
 
-      data.setTicksUntilEligible(ticksUntilEligible);
+        data.setTicksUntilEligible(ticksUntilEligible);
+        invasionGlobalSavedData.markDirty();
+      }
     }
   }
 
@@ -39,14 +41,14 @@ public class StateChangeActiveToWaiting {
       return true;
     }
 
-    List<InvasionPlayerData.InvasionData.WaveData> waveDataList = invasionData.waveDataList;
+    List<InvasionPlayerData.InvasionData.WaveData> waveDataList = invasionData.getWaveDataList();
 
     for (InvasionPlayerData.InvasionData.WaveData waveData : waveDataList) {
-      List<InvasionPlayerData.InvasionData.MobData> mobDataList = waveData.mobDataList;
+      List<InvasionPlayerData.InvasionData.MobData> mobDataList = waveData.getMobDataList();
 
       for (InvasionPlayerData.InvasionData.MobData mobData : mobDataList) {
 
-        if (mobData.killedCount != mobData.count) {
+        if (mobData.getKilledCount() < mobData.getTotalCount()) {
           return false;
         }
       }

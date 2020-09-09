@@ -1,6 +1,6 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.predicate;
 
-import com.codetaylor.mc.onslaught.modules.onslaught.capability.InvasionPlayerData;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.Util;
 import net.minecraft.entity.EntityLiving;
 

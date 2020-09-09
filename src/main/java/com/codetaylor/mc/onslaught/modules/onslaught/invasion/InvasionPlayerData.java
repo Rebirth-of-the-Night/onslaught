@@ -1,13 +1,13 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.capability;
+package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
 
 import com.codetaylor.mc.athenaeum.util.RandomHelper;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateWave;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -17,8 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class InvasionPlayerData
-    implements IInvasionPlayerData,
-    Capability.IStorage<IInvasionPlayerData> {
+    implements INBTSerializable<NBTTagCompound> {
 
   /**
    * This is the number of ticks left until the player is flagged as pending an
@@ -34,8 +33,64 @@ public class InvasionPlayerData
   /**
    * The data for the player's invasion.
    */
-  @Nullable
   private InvasionData invasionData;
+
+  public enum EnumInvasionState {
+
+    /**
+     * Player's timer is still ticking down.
+     */
+    Waiting(0),
+
+    /**
+     * Player's timer has expired and they have been flagged as eligible for
+     * an invasion.
+     */
+    Eligible(1),
+
+    /**
+     * Player has been selected from the collection of eligible players and their
+     * invasion data has been assigned.
+     */
+    Pending(2),
+
+    /**
+     * Player's invasion has begun and waves are spawning.
+     */
+    Active(3);
+
+    private static final Int2ObjectMap<EnumInvasionState> MAP;
+
+    static {
+      EnumInvasionState[] states = EnumInvasionState.values();
+      MAP = new Int2ObjectOpenHashMap<>(states.length);
+
+      for (EnumInvasionState state : states) {
+        MAP.put(state.id, state);
+      }
+    }
+
+    private final int id;
+
+    EnumInvasionState(int id) {
+
+      this.id = id;
+    }
+
+    public int getId() {
+
+      return this.id;
+    }
+
+    public static EnumInvasionState from(int id) {
+
+      if (!MAP.containsKey(id)) {
+        throw new IllegalArgumentException("Unknown id for state: " + id);
+      }
+
+      return MAP.get(id);
+    }
+  }
 
   public InvasionPlayerData() {
 
@@ -54,44 +109,37 @@ public class InvasionPlayerData
   // - Accessors
   // ---------------------------------------------------------------------------
 
-  @Override
   public int getTicksUntilEligible() {
 
     return this.ticksUntilEligible;
   }
 
-  @Override
   public void setTicksUntilEligible(int ticksUntilEligible) {
 
     this.ticksUntilEligible = ticksUntilEligible;
   }
 
-  @Override
   public EnumInvasionState getInvasionState() {
 
     return this.invasionState;
   }
 
-  @Override
   public void setInvasionState(EnumInvasionState invasionState) {
 
     this.invasionState = invasionState;
   }
 
-  @Override
   @Nullable
   public InvasionData getInvasionData() {
 
-    return invasionData;
+    return this.invasionData;
   }
 
-  @Override
   public void setInvasionData(@Nullable InvasionData invasionData) {
 
     this.invasionData = invasionData;
   }
 
-  @Override
   public boolean hasInvasionData() {
 
     return (this.invasionData != null);
@@ -101,9 +149,8 @@ public class InvasionPlayerData
   // - Serialization
   // ---------------------------------------------------------------------------
 
-  @Nullable
   @Override
-  public NBTBase writeNBT(Capability<IInvasionPlayerData> capability, IInvasionPlayerData instance, EnumFacing side) {
+  public NBTTagCompound serializeNBT() {
 
     NBTTagCompound tag = new NBTTagCompound();
     tag.setInteger("ticksUntilPendingInvasion", this.ticksUntilEligible);
@@ -117,9 +164,8 @@ public class InvasionPlayerData
   }
 
   @Override
-  public void readNBT(Capability<IInvasionPlayerData> capability, IInvasionPlayerData instance, EnumFacing side, NBTBase nbt) {
+  public void deserializeNBT(NBTTagCompound tag) {
 
-    NBTTagCompound tag = (NBTTagCompound) nbt;
     this.ticksUntilEligible = tag.getInteger("ticksUntilPendingInvasion");
     this.invasionState = EnumInvasionState.from(tag.getInteger("invasionState"));
 
@@ -139,23 +185,48 @@ public class InvasionPlayerData
     /**
      * The template id of the invasion.
      */
-    public String id;
+    private String invasionTemplateId;
 
     /**
      * The timestamp after which the invasion becomes active.
      */
-    public long timestamp;
+    private long timestamp;
 
     /**
      * The invasion's wave data.
      */
-    public List<WaveData> waveDataList = new ArrayList<>();
+    private final List<WaveData> waveDataList = new ArrayList<>();
+
+    public String getInvasionTemplateId() {
+
+      return this.invasionTemplateId;
+    }
+
+    public void setInvasionTemplateId(String invasionTemplateId) {
+
+      this.invasionTemplateId = invasionTemplateId;
+    }
+
+    public long getTimestamp() {
+
+      return this.timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+
+      this.timestamp = timestamp;
+    }
+
+    public List<WaveData> getWaveDataList() {
+
+      return this.waveDataList;
+    }
 
     @Override
     public NBTTagCompound serializeNBT() {
 
       NBTTagCompound tag = new NBTTagCompound();
-      tag.setString("id", this.id);
+      tag.setString("invasionTemplateId", this.invasionTemplateId);
       tag.setLong("timestamp", this.timestamp);
 
       NBTTagList tagList = new NBTTagList();
@@ -172,7 +243,7 @@ public class InvasionPlayerData
     @Override
     public void deserializeNBT(NBTTagCompound tag) {
 
-      this.id = tag.getString("id");
+      this.invasionTemplateId = tag.getString("invasionTemplateId");
       this.timestamp = tag.getLong("timestamp");
 
       NBTTagList waveDataList = tag.getTagList("waveDataList", Constants.NBT.TAG_COMPOUND);
@@ -187,9 +258,24 @@ public class InvasionPlayerData
     public static class WaveData
         implements INBTSerializable<NBTTagCompound> {
 
-      public int delayTicks = 0;
+      private int delayTicks = 0;
 
-      public List<MobData> mobDataList = new ArrayList<>();
+      private List<MobData> mobDataList = new ArrayList<>();
+
+      public int getDelayTicks() {
+
+        return this.delayTicks;
+      }
+
+      public void setDelayTicks(int delayTicks) {
+
+        this.delayTicks = delayTicks;
+      }
+
+      public List<MobData> getMobDataList() {
+
+        return this.mobDataList;
+      }
 
       @Override
       public NBTTagCompound serializeNBT() {
@@ -227,21 +313,57 @@ public class InvasionPlayerData
     public static class MobData
         implements INBTSerializable<NBTTagCompound> {
 
-      public String id;
-      public int count;
+      private String mobTemplateId;
+      private int totalCount;
+      private int killedCount;
+      private SpawnData spawnData;
 
-      public int remainingSpawnCount;
-      public int killedCount;
+      public String getMobTemplateId() {
 
-      public SpawnData spawnData;
+        return this.mobTemplateId;
+      }
+
+      public void setMobTemplateId(String mobTemplateId) {
+
+        this.mobTemplateId = mobTemplateId;
+      }
+
+      public int getTotalCount() {
+
+        return this.totalCount;
+      }
+
+      public void setTotalCount(int totalCount) {
+
+        this.totalCount = totalCount;
+      }
+
+      public int getKilledCount() {
+
+        return this.killedCount;
+      }
+
+      public void setKilledCount(int killedCount) {
+
+        this.killedCount = killedCount;
+      }
+
+      public SpawnData getSpawnData() {
+
+        return this.spawnData;
+      }
+
+      public void setSpawnData(SpawnData spawnData) {
+
+        this.spawnData = spawnData;
+      }
 
       @Override
       public NBTTagCompound serializeNBT() {
 
         NBTTagCompound tag = new NBTTagCompound();
-        tag.setString("id", this.id);
-        tag.setInteger("count", this.count);
-        tag.setInteger("remainingSpawnCount", this.remainingSpawnCount);
+        tag.setString("mobTemplateId", this.mobTemplateId);
+        tag.setInteger("totalCount", this.totalCount);
         tag.setInteger("killedCount", this.killedCount);
         tag.setTag("spawnData", this.spawnData.serializeNBT());
         return tag;
@@ -250,9 +372,8 @@ public class InvasionPlayerData
       @Override
       public void deserializeNBT(NBTTagCompound tag) {
 
-        this.id = tag.getString("id");
-        this.count = tag.getInteger("count");
-        this.remainingSpawnCount = tag.getInteger("remainingSpawnCount");
+        this.mobTemplateId = tag.getString("mobTemplateId");
+        this.totalCount = tag.getInteger("totalCount");
         this.killedCount = tag.getInteger("killedCount");
         this.spawnData = new SpawnData();
         this.spawnData.deserializeNBT(tag.getCompoundTag("spawnData"));

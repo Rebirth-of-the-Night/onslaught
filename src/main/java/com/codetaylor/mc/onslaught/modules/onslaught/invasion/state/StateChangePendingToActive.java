@@ -1,8 +1,7 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.state;
 
-import com.codetaylor.mc.onslaught.modules.onslaught.capability.CapabilityInvasion;
-import com.codetaylor.mc.onslaught.modules.onslaught.capability.IInvasionPlayerData;
-import com.codetaylor.mc.onslaught.modules.onslaught.capability.InvasionPlayerData;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 import java.util.List;
@@ -12,12 +11,12 @@ import java.util.List;
  */
 public class StateChangePendingToActive {
 
-  public void process(long totalWorldTime, List<EntityPlayerMP> players) {
+  public void process(InvasionGlobalSavedData invasionGlobalSavedData, long totalWorldTime, List<EntityPlayerMP> playerList) {
 
-    for (EntityPlayerMP player : players) {
-      IInvasionPlayerData data = CapabilityInvasion.get(player);
+    for (EntityPlayerMP player : playerList) {
+      InvasionPlayerData data = invasionGlobalSavedData.getPlayerData(player.getUniqueID());
 
-      if (data.getInvasionState() != IInvasionPlayerData.EnumInvasionState.Pending) {
+      if (data.getInvasionState() != InvasionPlayerData.EnumInvasionState.Pending) {
         continue;
       }
 
@@ -27,8 +26,9 @@ public class StateChangePendingToActive {
         continue;
       }
 
-      if (invasionData.timestamp <= totalWorldTime) {
-        data.setInvasionState(IInvasionPlayerData.EnumInvasionState.Active);
+      if (invasionData.getTimestamp() <= totalWorldTime) {
+        data.setInvasionState(InvasionPlayerData.EnumInvasionState.Active);
+        invasionGlobalSavedData.markDirty();
       }
     }
   }
