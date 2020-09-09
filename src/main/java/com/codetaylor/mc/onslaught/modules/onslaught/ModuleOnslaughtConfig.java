@@ -39,6 +39,12 @@ public class ModuleOnslaughtConfig {
     })
     public String DEFAULT_FALLBACK_INVASION = "";
 
+    @Config.Comment({
+        "The number of ticks to delay the forced spawns.",
+        "Default: " + (10 * 20)
+    })
+    public int FORCED_SPAWN_DELAY_TICKS = 10 * 20;
+
   }
 
   public static Wave WAVE = new Wave();

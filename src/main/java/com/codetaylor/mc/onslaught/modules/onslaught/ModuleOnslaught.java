@@ -11,17 +11,22 @@ import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandReload;
 import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandSummon;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.DataLoader;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.DataStore;
+import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateAdapter;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateLoader;
+import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplateAdapter;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplateLoader;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector.*;
-import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactory;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.EffectApplicator;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.LootTableApplicator;
+import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactory;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.*;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionSpawnDataConverter;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.SpawnSampler;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.predicate.SpawnPredicateFactory;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.selector.InvasionSelector;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner.*;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.state.*;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.FilePathCreator;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.JsonFileLocator;
@@ -38,8 +43,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.logging.Level;
 
 public class ModuleOnslaught
@@ -141,7 +148,7 @@ public class ModuleOnslaught
     MinecraftForge.EVENT_BUS.register(new EntityAIAntiAirPlayerTickEventHandler());
 
     // -------------------------------------------------------------------------
-    // - Invasion State
+    // - Invasion
     // -------------------------------------------------------------------------
 
     /*
@@ -150,33 +157,101 @@ public class ModuleOnslaught
      */
     LinkedHashSet<UUID> eligiblePlayers = new LinkedHashSet<>();
 
-    MinecraftForge.EVENT_BUS.register(new InvasionStateChangeEventHandlers.WaitingToEligible(
-        new StateChangeWaitingToEligible(
-            eligiblePlayers
+    /*
+    In-memory list of deferred spawns.
+     */
+    ArrayList<DeferredSpawn> deferredSpawnList = new ArrayList<>();
+
+    SpawnSampler spawnSampler = new SpawnSampler(
+        new SpawnPredicateFactory()
+    );
+
+    Function<String, InvasionTemplate> idToInvasionTemplateFunction = (id -> this.dataStore.getInvasionTemplateRegistry().get(id));
+    Function<String, MobTemplate> idToMobTemplateFunction = (id -> this.dataStore.getMobTemplateRegistry().get(id));
+
+    MobTemplateEntityFactory mobTemplateEntityFactory = new MobTemplateEntityFactory(
+        new EffectApplicator(),
+        new LootTableApplicator()
+    );
+
+    EntityInvasionDataInjector entityInvasionDataInjector = new EntityInvasionDataInjector();
+
+    MinecraftForge.EVENT_BUS.register(
+        new InvasionUpdateEventHandler(
+            new InvasionUpdateEventHandler.IInvasionUpdateComponent[]{
+
+                // State changes
+
+                new InvasionUpdateEventHandler.InvasionTimedUpdateComponent(
+                    13,
+                    new StateChangeWaitingToEligible(
+                        eligiblePlayers
+                    )
+                ),
+
+                new StateChangeEligibleToPending(
+                    eligiblePlayers,
+                    new InvasionSelector(
+                        () -> this.dataStore.getInvasionTemplateRegistry().getAll().stream(),
+                        id -> this.dataStore.getInvasionTemplateRegistry().has(id)
+                    ),
+                    new InvasionPlayerDataFactory(
+                        idToInvasionTemplateFunction,
+                        new InvasionSpawnDataConverter()
+                    )
+                ),
+
+                new InvasionUpdateEventHandler.InvasionTimedUpdateComponent(
+                    17,
+                    new StateChangePendingToActive()
+                ),
+
+                new InvasionUpdateEventHandler.InvasionTimedUpdateComponent(
+                    18,
+                    new StateChangeActiveToWaiting()
+                ),
+
+                // Wave Timers
+
+                new InvasionUpdateEventHandler.InvasionTimedUpdateComponent(
+                    19,
+                    new WaveDelayTimer()
+                ),
+
+                // Spawns
+
+                new InvasionUpdateEventHandler.InvasionTimedUpdateComponent(
+                    20,
+                    new Spawner(
+                        idToInvasionTemplateFunction,
+                        new SpawnerWave(
+                            new InvasionSpawnDataConverter(),
+                            new SpawnerMob(
+                                spawnSampler,
+                                idToMobTemplateFunction,
+                                mobTemplateEntityFactory,
+                                entityInvasionDataInjector
+                            ),
+                            new SpawnerMobForced(
+                                spawnSampler,
+                                idToMobTemplateFunction,
+                                mobTemplateEntityFactory,
+                                entityInvasionDataInjector,
+                                deferredSpawnList
+                            )
+                        )
+                    )
+                ),
+
+                new InvasionUpdateEventHandler.InvasionTimedUpdateComponent(
+                    21,
+                    new DeferredSpawnTimer(
+                        deferredSpawnList
+                    )
+                )
+            }
         )
-    ));
-
-    MinecraftForge.EVENT_BUS.register(new InvasionStateChangeEventHandlers.EligibleToPending(
-        new StateChangeEligibleToPending(
-            eligiblePlayers,
-            new InvasionSelector(
-                () -> this.dataStore.getInvasionTemplateRegistry().getAll().stream(),
-                id -> this.dataStore.getInvasionTemplateRegistry().has(id)
-            ),
-            new InvasionPlayerDataFactory(
-                id -> this.dataStore.getInvasionTemplateRegistry().get(id),
-                new InvasionSpawnDataConverter()
-            )
-        )
-    ));
-
-    MinecraftForge.EVENT_BUS.register(new InvasionStateChangeEventHandlers.PendingToActive(
-        new StateChangePendingToActive()
-    ));
-
-    MinecraftForge.EVENT_BUS.register(new InvasionStateChangeEventHandlers.ActiveToWaiting(
-        new StateChangeActiveToWaiting()
-    ));
+    );
   }
 
   @SideOnly(Side.CLIENT)

@@ -1,41 +1,47 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner;
 
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
+import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateWave;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.UUID;
 
-public class DeferredSpawnData {
+public class DeferredSpawn {
 
+  private final EntityLiving entityLiving;
   private final int dimensionId;
   private final BlockPos pos;
   private final UUID uuid;
   private final int waveIndex;
   private final int mobIndex;
-  private final String mobTemplateId;
-  private final InvasionPlayerData.InvasionData.SpawnData spawnData;
+  private final InvasionTemplateWave.EnumSpawnType spawnType;
 
   private int ticksRemaining;
 
-  public DeferredSpawnData(
+  public DeferredSpawn(
+      EntityLiving entityLiving,
       int dimensionId,
       BlockPos pos,
       UUID uuid,
       int waveIndex,
       int mobIndex,
-      String mobTemplateId,
-      InvasionPlayerData.InvasionData.SpawnData spawnData,
+      InvasionTemplateWave.EnumSpawnType spawnType,
       int ticksRemaining
   ) {
 
+    this.entityLiving = entityLiving;
     this.dimensionId = dimensionId;
     this.pos = pos;
     this.uuid = uuid;
     this.waveIndex = waveIndex;
     this.mobIndex = mobIndex;
-    this.mobTemplateId = mobTemplateId;
-    this.spawnData = spawnData;
+    this.spawnType = spawnType;
     this.ticksRemaining = ticksRemaining;
+  }
+
+  public EntityLiving getEntityLiving() {
+
+    return this.entityLiving;
   }
 
   public int getDimensionId() {
@@ -63,16 +69,6 @@ public class DeferredSpawnData {
     return this.mobIndex;
   }
 
-  public String getMobTemplateId() {
-
-    return this.mobTemplateId;
-  }
-
-  public InvasionPlayerData.InvasionData.SpawnData getSpawnData() {
-
-    return this.spawnData;
-  }
-
   public int getTicksRemaining() {
 
     return this.ticksRemaining;
@@ -81,5 +77,10 @@ public class DeferredSpawnData {
   public void setTicksRemaining(int ticksRemaining) {
 
     this.ticksRemaining = ticksRemaining;
+  }
+
+  public InvasionTemplateWave.EnumSpawnType getSpawnType() {
+
+    return this.spawnType;
   }
 }

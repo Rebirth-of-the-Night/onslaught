@@ -2,20 +2,25 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion.state;
 
 import com.codetaylor.mc.athenaeum.util.RandomHelper;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
+import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionUpdateEventHandler;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.management.PlayerList;
+import net.minecraft.world.World;
 
 import java.util.List;
 
 /**
  * Responsible for transitioning a player's invasion state from active to waiting.
  */
-public class StateChangeActiveToWaiting {
+public class StateChangeActiveToWaiting
+    implements InvasionUpdateEventHandler.IInvasionUpdateComponent {
 
-  public void process(InvasionGlobalSavedData invasionGlobalSavedData, List<EntityPlayerMP> playerList) {
+  @Override
+  public void update(int updateIntervalTicks, InvasionGlobalSavedData invasionGlobalSavedData, PlayerList playerList, World world) {
 
-    for (EntityPlayerMP player : playerList) {
+    for (EntityPlayerMP player : playerList.getPlayers()) {
       InvasionPlayerData data = invasionGlobalSavedData.getPlayerData(player.getUniqueID());
       InvasionPlayerData.InvasionData invasionData = data.getInvasionData();
 

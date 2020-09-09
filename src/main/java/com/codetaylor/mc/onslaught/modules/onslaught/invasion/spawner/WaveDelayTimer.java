@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.invasion.state;
+package com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionUpdateEventHandler;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
@@ -7,10 +7,12 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.management.PlayerList;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 /**
- * Responsible for executing an invasion state transition from pending to active.
+ * Responsible for updating the wave delay timers for all active invasions.
  */
-public class StateChangePendingToActive
+public class WaveDelayTimer
     implements InvasionUpdateEventHandler.IInvasionUpdateComponent {
 
   @Override
@@ -19,7 +21,7 @@ public class StateChangePendingToActive
     for (EntityPlayerMP player : playerList.getPlayers()) {
       InvasionPlayerData data = invasionGlobalSavedData.getPlayerData(player.getUniqueID());
 
-      if (data.getInvasionState() != InvasionPlayerData.EnumInvasionState.Pending) {
+      if (data.getInvasionState() != InvasionPlayerData.EnumInvasionState.Active) {
         continue;
       }
 
@@ -29,9 +31,15 @@ public class StateChangePendingToActive
         continue;
       }
 
-      if (invasionData.getTimestamp() <= world.getTotalWorldTime()) {
-        data.setInvasionState(InvasionPlayerData.EnumInvasionState.Active);
-        invasionGlobalSavedData.markDirty();
+      List<InvasionPlayerData.InvasionData.WaveData> waveDataList = invasionData.getWaveDataList();
+
+      for (InvasionPlayerData.InvasionData.WaveData waveData : waveDataList) {
+        int delayTicks = waveData.getDelayTicks();
+
+        if (delayTicks > 0) {
+          waveData.setDelayTicks(delayTicks - updateIntervalTicks);
+          invasionGlobalSavedData.markDirty();
+        }
       }
     }
   }

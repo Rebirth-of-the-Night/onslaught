@@ -1,6 +1,7 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner;
 
 import com.codetaylor.mc.onslaught.ModOnslaught;
+import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactory;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
@@ -10,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.logging.Level;
@@ -21,17 +23,23 @@ public class SpawnerMobForced {
 
   private final Function<String, MobTemplate> mobTemplateFunction;
   private final MobTemplateEntityFactory mobTemplateEntityFactory;
+  private final EntityInvasionDataInjector entityInvasionDataInjector;
   private final SpawnSampler spawnSampler;
+  private final List<DeferredSpawn> deferredSpawnList;
 
   public SpawnerMobForced(
+      SpawnSampler spawnSampler,
       Function<String, MobTemplate> mobTemplateFunction,
       MobTemplateEntityFactory mobTemplateEntityFactory,
-      SpawnSampler spawnSampler
+      EntityInvasionDataInjector entityInvasionDataInjector,
+      List<DeferredSpawn> deferredSpawnList
   ) {
 
     this.mobTemplateFunction = mobTemplateFunction;
     this.mobTemplateEntityFactory = mobTemplateEntityFactory;
+    this.entityInvasionDataInjector = entityInvasionDataInjector;
     this.spawnSampler = spawnSampler;
+    this.deferredSpawnList = deferredSpawnList;
   }
 
   /**
@@ -73,6 +81,7 @@ public class SpawnerMobForced {
     // TODO
     /*
     Place the deferred mob data into a collection.
+
     Create a class to reduce the time on each deferred data element.
     Create a class to spawn particles at each deferred data element's location.
     Create a class to manage nearby players' potion effects.
@@ -82,20 +91,19 @@ public class SpawnerMobForced {
       - Either this or we just clean them up and do the bookkeeping if they try to spawn in an unloaded chunk.
      */
 
-    /*
-    Case: Server crashes and the spawned mob count in the player's data is
-    desynced from the actual.
+    // apply player target, chase long distance, and invasion data tags
+    this.entityInvasionDataInjector.inject(entity, uuid, waveIndex, mobIndex);
 
-    Solve: Derive the spawned count from in-game entities, magic spawns, and
-    killed count. Search all worlds for all entities and count entities that
-    are tagged with the player's uuid.
-
-    Case: Player goes offline mid-invasion and the spawned mob count is no longer
-    accessible.
-
-    Solve: Move all player data to world data sans timer.
-
-     */
+    this.deferredSpawnList.add(new DeferredSpawn(
+        entity,
+        world.provider.getDimension(),
+        entity.getPosition(),
+        uuid,
+        waveIndex,
+        mobIndex,
+        spawnDataCopy.type,
+        ModuleOnslaughtConfig.INVASION.FORCED_SPAWN_DELAY_TICKS
+    ));
 
     return true;
   }

@@ -2,15 +2,18 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateWave;
+import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionUpdateEventHandler;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.management.PlayerList;
+import net.minecraft.world.World;
 
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
-public class Spawner {
+public class Spawner
+    implements InvasionUpdateEventHandler.IInvasionUpdateComponent {
 
   private final Function<String, InvasionTemplate> invasionTemplateFunction;
   private final SpawnerWave spawnerWave;
@@ -24,15 +27,12 @@ public class Spawner {
     this.spawnerWave = spawnerWave;
   }
 
-  public void process(
-      InvasionGlobalSavedData invasionGlobalSavedData,
-      Supplier<List<EntityPlayerMP>> playerListSupplier
-  ) {
+  @Override
+  public void update(int updateIntervalTicks, InvasionGlobalSavedData invasionGlobalSavedData, PlayerList playerList, World world) {
 
     long start = System.currentTimeMillis();
-    List<EntityPlayerMP> playerList = playerListSupplier.get();
 
-    for (EntityPlayerMP player : playerList) {
+    for (EntityPlayerMP player : playerList.getPlayers()) {
       InvasionPlayerData data = invasionGlobalSavedData.getPlayerData(player.getUniqueID());
 
       if (data.getInvasionState() != InvasionPlayerData.EnumInvasionState.Active) {

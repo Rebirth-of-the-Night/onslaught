@@ -8,6 +8,10 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.UUID;
 
+/**
+ * Responsible for tagging mobs with invasion data and applying the TargetPlayer
+ * and ChaseLongDistance AI task NBT.
+ */
 public class EntityInvasionDataInjector {
 
   public void inject(EntityLiving entity, UUID uuid, int waveIndex, int mobIndex) {
