@@ -160,7 +160,7 @@ public class ModuleOnslaught
     /*
     In-memory list of deferred spawns.
      */
-    ArrayList<DeferredSpawn> deferredSpawnList = new ArrayList<>();
+    ArrayList<DeferredSpawnData> deferredSpawnDataList = new ArrayList<>();
 
     SpawnSampler spawnSampler = new SpawnSampler(
         new SpawnPredicateFactory()
@@ -189,15 +189,18 @@ public class ModuleOnslaught
                     )
                 ),
 
-                new StateChangeEligibleToPending(
-                    eligiblePlayers,
-                    new InvasionSelector(
-                        () -> this.dataStore.getInvasionTemplateRegistry().getAll().stream(),
-                        id -> this.dataStore.getInvasionTemplateRegistry().has(id)
-                    ),
-                    new InvasionPlayerDataFactory(
-                        idToInvasionTemplateFunction,
-                        new InvasionSpawnDataConverter()
+                new InvasionUpdateEventHandler.InvasionTimedUpdateComponent(
+                    9,
+                    new StateChangeEligibleToPending(
+                        eligiblePlayers,
+                        new InvasionSelector(
+                            () -> this.dataStore.getInvasionTemplateRegistry().getAll().stream(),
+                            id -> this.dataStore.getInvasionTemplateRegistry().has(id)
+                        ),
+                        new InvasionPlayerDataFactory(
+                            idToInvasionTemplateFunction,
+                            new InvasionSpawnDataConverter()
+                        )
                     )
                 ),
 
@@ -237,8 +240,9 @@ public class ModuleOnslaught
                                 idToMobTemplateFunction,
                                 mobTemplateEntityFactory,
                                 entityInvasionDataInjector,
-                                deferredSpawnList
-                            )
+                                deferredSpawnDataList
+                            ),
+                            deferredSpawnDataList
                         )
                     )
                 ),
@@ -246,7 +250,15 @@ public class ModuleOnslaught
                 new InvasionUpdateEventHandler.InvasionTimedUpdateComponent(
                     21,
                     new DeferredSpawnTimer(
-                        deferredSpawnList
+                        deferredSpawnDataList
+                    )
+                ),
+
+                new InvasionUpdateEventHandler.InvasionTimedUpdateComponent(
+                    22,
+                    new DeferredSpawner(
+                        entityInvasionDataInjector,
+                        deferredSpawnDataList
                     )
                 )
             }

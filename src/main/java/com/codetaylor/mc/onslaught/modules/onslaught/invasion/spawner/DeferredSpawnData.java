@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.UUID;
 
-public class DeferredSpawn {
+public class DeferredSpawnData {
 
   private final EntityLiving entityLiving;
   private final int dimensionId;
@@ -18,7 +18,7 @@ public class DeferredSpawn {
 
   private int ticksRemaining;
 
-  public DeferredSpawn(
+  public DeferredSpawnData(
       EntityLiving entityLiving,
       int dimensionId,
       BlockPos pos,

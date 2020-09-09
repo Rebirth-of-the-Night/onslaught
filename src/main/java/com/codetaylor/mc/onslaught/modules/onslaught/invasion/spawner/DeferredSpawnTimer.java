@@ -13,18 +13,18 @@ import java.util.List;
 public class DeferredSpawnTimer
     implements InvasionUpdateEventHandler.IInvasionUpdateComponent {
 
-  private final List<DeferredSpawn> deferredSpawnList;
+  private final List<DeferredSpawnData> deferredSpawnDataList;
 
-  public DeferredSpawnTimer(List<DeferredSpawn> deferredSpawnList) {
+  public DeferredSpawnTimer(List<DeferredSpawnData> deferredSpawnDataList) {
 
-    this.deferredSpawnList = deferredSpawnList;
+    this.deferredSpawnDataList = deferredSpawnDataList;
   }
 
   @Override
   public void update(int updateIntervalTicks, InvasionGlobalSavedData invasionGlobalSavedData, PlayerList playerList, World world) {
 
-    for (DeferredSpawn deferredSpawn : this.deferredSpawnList) {
-      deferredSpawn.setTicksRemaining(deferredSpawn.getTicksRemaining() - updateIntervalTicks);
+    for (DeferredSpawnData deferredSpawnData : this.deferredSpawnDataList) {
+      deferredSpawnData.setTicksRemaining(deferredSpawnData.getTicksRemaining() - updateIntervalTicks);
     }
   }
 }

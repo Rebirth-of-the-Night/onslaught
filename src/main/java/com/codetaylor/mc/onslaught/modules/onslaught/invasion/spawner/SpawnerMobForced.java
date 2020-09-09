@@ -25,21 +25,21 @@ public class SpawnerMobForced {
   private final MobTemplateEntityFactory mobTemplateEntityFactory;
   private final EntityInvasionDataInjector entityInvasionDataInjector;
   private final SpawnSampler spawnSampler;
-  private final List<DeferredSpawn> deferredSpawnList;
+  private final List<DeferredSpawnData> deferredSpawnDataList;
 
   public SpawnerMobForced(
       SpawnSampler spawnSampler,
       Function<String, MobTemplate> mobTemplateFunction,
       MobTemplateEntityFactory mobTemplateEntityFactory,
       EntityInvasionDataInjector entityInvasionDataInjector,
-      List<DeferredSpawn> deferredSpawnList
+      List<DeferredSpawnData> deferredSpawnDataList
   ) {
 
     this.mobTemplateFunction = mobTemplateFunction;
     this.mobTemplateEntityFactory = mobTemplateEntityFactory;
     this.entityInvasionDataInjector = entityInvasionDataInjector;
     this.spawnSampler = spawnSampler;
-    this.deferredSpawnList = deferredSpawnList;
+    this.deferredSpawnDataList = deferredSpawnDataList;
   }
 
   /**
@@ -81,8 +81,8 @@ public class SpawnerMobForced {
     // TODO
     /*
     Place the deferred mob data into a collection.
-
     Create a class to reduce the time on each deferred data element.
+
     Create a class to spawn particles at each deferred data element's location.
     Create a class to manage nearby players' potion effects.
     Create a class to spawn a deferred mob when its element's timer expires.
@@ -94,7 +94,7 @@ public class SpawnerMobForced {
     // apply player target, chase long distance, and invasion data tags
     this.entityInvasionDataInjector.inject(entity, uuid, waveIndex, mobIndex);
 
-    this.deferredSpawnList.add(new DeferredSpawn(
+    this.deferredSpawnDataList.add(new DeferredSpawnData(
         entity,
         world.provider.getDimension(),
         entity.getPosition(),

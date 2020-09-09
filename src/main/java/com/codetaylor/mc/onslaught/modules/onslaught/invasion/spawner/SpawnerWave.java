@@ -30,16 +30,19 @@ public class SpawnerWave {
   private final InvasionSpawnDataConverter invasionSpawnDataConverter;
   private final SpawnerMob spawnerMob;
   private final SpawnerMobForced spawnerMobForced;
+  private final List<DeferredSpawnData> deferredSpawnDataList;
 
   public SpawnerWave(
       InvasionSpawnDataConverter invasionSpawnDataConverter,
       SpawnerMob spawnerMob,
-      SpawnerMobForced spawnerMobForced
+      SpawnerMobForced spawnerMobForced,
+      List<DeferredSpawnData> deferredSpawnDataList
   ) {
 
     this.invasionSpawnDataConverter = invasionSpawnDataConverter;
     this.spawnerMob = spawnerMob;
     this.spawnerMobForced = spawnerMobForced;
+    this.deferredSpawnDataList = deferredSpawnDataList;
   }
 
   /**
@@ -113,7 +116,15 @@ public class SpawnerWave {
       }
     }
 
-    // TODO: include pending spawns from the magic spawns
+    // Include deferred spawns in the count
+    for (DeferredSpawnData deferredSpawnData : this.deferredSpawnDataList) {
+
+      if (waveIndex == deferredSpawnData.getWaveIndex()
+          && mobIndex == deferredSpawnData.getMobIndex()
+          && uuid.equals(deferredSpawnData.getUuid())) {
+        result += 1;
+      }
+    }
 
     return result;
   }
