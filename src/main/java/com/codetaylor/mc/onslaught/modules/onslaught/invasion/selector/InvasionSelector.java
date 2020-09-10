@@ -2,7 +2,6 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion.selector;
 
 import com.codetaylor.mc.athenaeum.util.WeightedPicker;
 import com.codetaylor.mc.onslaught.ModOnslaught;
-import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplate;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -20,14 +19,17 @@ public class InvasionSelector {
 
   private final Supplier<Stream<Map.Entry<String, InvasionTemplate>>> invasionTemplateStreamSupplier;
   private final Predicate<String> invasionTemplateExistsPredicate;
+  private final Supplier<String> fallbackInvasionSupplier;
 
   public InvasionSelector(
       Supplier<Stream<Map.Entry<String, InvasionTemplate>>> invasionTemplateStreamSupplier,
-      Predicate<String> invasionTemplateExistsPredicate
+      Predicate<String> invasionTemplateExistsPredicate,
+      Supplier<String> fallbackInvasionSupplier
   ) {
 
     this.invasionTemplateStreamSupplier = invasionTemplateStreamSupplier;
     this.invasionTemplateExistsPredicate = invasionTemplateExistsPredicate;
+    this.fallbackInvasionSupplier = fallbackInvasionSupplier;
   }
 
   /**
@@ -52,7 +54,7 @@ public class InvasionSelector {
 
     if (picker.getSize() == 0) {
       // Ensure that the fallback invasion exists else return null
-      String fallbackInvasion = ModuleOnslaughtConfig.INVASION.DEFAULT_FALLBACK_INVASION;
+      String fallbackInvasion = this.fallbackInvasionSupplier.get();
       boolean invasionTemplateExists = this.invasionTemplateExistsPredicate.test(fallbackInvasion);
 
       if (invasionTemplateExists) {

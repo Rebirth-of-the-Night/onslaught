@@ -18,7 +18,7 @@ public class ModuleOnslaughtConfig {
   public static class Invasion {
 
     @Config.Comment({
-        "The min and max number of ticks between invasions.",
+        "The min and max number of ticks before a player becomes eligible for an invasion.",
         "For reference, a Minecraft day is 24000 ticks long.",
         "Default: [120000, 168000] or 5-7 Minecraft days"
     })

@@ -198,12 +198,14 @@ public class ModuleOnslaught
                         eligiblePlayers,
                         new InvasionSelector(
                             () -> this.dataStore.getInvasionTemplateRegistry().getAll().stream(),
-                            id -> this.dataStore.getInvasionTemplateRegistry().has(id)
+                            id -> this.dataStore.getInvasionTemplateRegistry().has(id),
+                            () -> ModuleOnslaughtConfig.INVASION.DEFAULT_FALLBACK_INVASION
                         ),
                         new InvasionPlayerDataFactory(
                             idToInvasionTemplateFunction,
                             invasionSpawnDataConverter
-                        )
+                        ),
+                        () -> ModuleOnslaughtConfig.INVASION.MAX_CONCURRENT_INVASIONS
                     )
                 ),
 

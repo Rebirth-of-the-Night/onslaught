@@ -1,6 +1,5 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.state;
 
-import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionUpdateEventHandler;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
@@ -13,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.IntSupplier;
 
 /**
  * Responsible for transitioning a player's invasion state from eligible to pending.
@@ -23,16 +23,19 @@ public class StateChangeEligibleToPending
   private final Set<UUID> eligiblePlayers;
   private final InvasionSelector invasionSelector;
   private final InvasionPlayerDataFactory invasionPlayerDataFactory;
+  private final IntSupplier maxConcurrentInvasionsSupplier;
 
   public StateChangeEligibleToPending(
       Set<UUID> eligiblePlayers,
       InvasionSelector invasionSelector,
-      InvasionPlayerDataFactory invasionPlayerDataFactory
+      InvasionPlayerDataFactory invasionPlayerDataFactory,
+      IntSupplier maxConcurrentInvasionsSupplier
   ) {
 
     this.eligiblePlayers = eligiblePlayers;
     this.invasionSelector = invasionSelector;
     this.invasionPlayerDataFactory = invasionPlayerDataFactory;
+    this.maxConcurrentInvasionsSupplier = maxConcurrentInvasionsSupplier;
   }
 
   @Override
@@ -44,12 +47,13 @@ public class StateChangeEligibleToPending
 
     // Check that we don't exceed the max concurrent invasion value.
     int concurrentInvasions = this.countInvasions(invasionGlobalSavedData, playerList.getPlayers());
+    int maxConcurrentInvasions = this.maxConcurrentInvasionsSupplier.getAsInt();
 
-    if (concurrentInvasions >= ModuleOnslaughtConfig.INVASION.MAX_CONCURRENT_INVASIONS) {
+    if (concurrentInvasions >= maxConcurrentInvasions) {
       return;
     }
 
-    int allowedInvasions = ModuleOnslaughtConfig.INVASION.MAX_CONCURRENT_INVASIONS - concurrentInvasions;
+    int allowedInvasions = maxConcurrentInvasions - concurrentInvasions;
     List<UUID> toRemove = new ArrayList<>(this.eligiblePlayers.size());
 
     for (UUID uuid : this.eligiblePlayers) {
