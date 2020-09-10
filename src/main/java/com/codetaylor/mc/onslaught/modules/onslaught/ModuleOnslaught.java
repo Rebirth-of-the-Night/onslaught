@@ -242,7 +242,8 @@ public class ModuleOnslaught
                                 spawnSampler,
                                 idToMobTemplateFunction,
                                 mobTemplateEntityFactory,
-                                deferredSpawnDataList
+                                deferredSpawnDataList,
+                                () -> ModuleOnslaughtConfig.INVASION.FORCED_SPAWN_DELAY_TICKS
                             ),
                             deferredSpawnDataList
                         )
@@ -258,6 +259,18 @@ public class ModuleOnslaught
                         idToMobTemplateFunction,
                         mobTemplateEntityFactory,
                         deferredSpawnDataList
+                    )
+                ),
+
+                new InvasionUpdateEventHandler.InvasionTimedUpdateComponent(
+                    11,
+                    new DeferredSpawnEffectApplicator(
+                        deferredSpawnDataList,
+                        new DeferredSpawnEffectApplicator.EffectListSupplier(
+                            ModuleOnslaughtConfig.INVASION.FORCED_SPAWN_EFFECTS
+                        ),
+                        () -> ModuleOnslaughtConfig.INVASION.FORCED_SPAWN_EFFECT_DURATION_TICKS,
+                        () -> ModuleOnslaughtConfig.INVASION.FORCED_SPAWN_EFFECT_RANGE
                     )
                 )
             }

@@ -1,7 +1,6 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner;
 
 import com.codetaylor.mc.onslaught.ModOnslaught;
-import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateWave;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactory;
@@ -15,6 +14,7 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.function.IntSupplier;
 import java.util.logging.Level;
 
 /**
@@ -26,18 +26,35 @@ public class SpawnerMobForced {
   private final MobTemplateEntityFactory mobTemplateEntityFactory;
   private final SpawnSampler spawnSampler;
   private final List<DeferredSpawnData> deferredSpawnDataList;
+  private final IntSupplier forcedSpawnDelayTicksSupplier;
+
+  // TODO
+/*
+    Place the deferred mob data into a collection.
+    Create a class to reduce the time on each deferred data element.
+
+    Create a class to spawn particles at each deferred data element's location.
+    Create a class to manage nearby players' potion effects.
+    Create a class to spawn a deferred mob when its element's timer expires.
+      - Check that the player is alive and in the same dimension as the spawning mob.
+    Create a class to cleanup elements and do player data bookkeeping when a chunk is unloaded.
+      - Either this or we just clean them up and do the bookkeeping if they try to spawn in an unloaded chunk.
+     */
+
 
   public SpawnerMobForced(
       SpawnSampler spawnSampler,
       Function<String, MobTemplate> mobTemplateFunction,
       MobTemplateEntityFactory mobTemplateEntityFactory,
-      List<DeferredSpawnData> deferredSpawnDataList
+      List<DeferredSpawnData> deferredSpawnDataList,
+      IntSupplier forcedSpawnDelayTicksSupplier
   ) {
 
     this.mobTemplateFunction = mobTemplateFunction;
     this.mobTemplateEntityFactory = mobTemplateEntityFactory;
     this.spawnSampler = spawnSampler;
     this.deferredSpawnDataList = deferredSpawnDataList;
+    this.forcedSpawnDelayTicksSupplier = forcedSpawnDelayTicksSupplier;
   }
 
   /**
@@ -77,19 +94,6 @@ public class SpawnerMobForced {
       return false;
     }
 
-    // TODO
-    /*
-    Place the deferred mob data into a collection.
-    Create a class to reduce the time on each deferred data element.
-
-    Create a class to spawn particles at each deferred data element's location.
-    Create a class to manage nearby players' potion effects.
-    Create a class to spawn a deferred mob when its element's timer expires.
-      - Check that the player is alive and in the same dimension as the spawning mob.
-    Create a class to cleanup elements and do player data bookkeeping when a chunk is unloaded.
-      - Either this or we just clean them up and do the bookkeeping if they try to spawn in an unloaded chunk.
-     */
-
     this.deferredSpawnDataList.add(new DeferredSpawnData(
         entity,
         world.provider.getDimension(),
@@ -99,7 +103,7 @@ public class SpawnerMobForced {
         mobIndex,
         spawnDataCopy.type,
         secondaryMob,
-        ModuleOnslaughtConfig.INVASION.FORCED_SPAWN_DELAY_TICKS
+        this.forcedSpawnDelayTicksSupplier.getAsInt()
     ));
 
     return true;

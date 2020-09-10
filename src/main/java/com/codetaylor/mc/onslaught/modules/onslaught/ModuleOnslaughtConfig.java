@@ -45,6 +45,28 @@ public class ModuleOnslaughtConfig {
     })
     public int FORCED_SPAWN_DELAY_TICKS = 10 * 20;
 
+    @Config.Comment({
+        "Effect id's of effects to be applied when a player is near a forced",
+        "spawn location. These effects will be continuously applied while a",
+        "player is within range."
+    })
+    @Config.RequiresMcRestart
+    public String[] FORCED_SPAWN_EFFECTS = {};
+
+    @Config.Comment({
+        "If a player is within this range of a forced spawn location, the forced",
+        "spawn effects will be applied.",
+        "Default: " + 8
+    })
+    public int FORCED_SPAWN_EFFECT_RANGE = 8;
+
+    @Config.Comment({
+        "Duration of effects applied when a player is within range of a forced",
+        "spawn location.",
+        "Default: " + (10 * 20)
+    })
+    public int FORCED_SPAWN_EFFECT_DURATION_TICKS = 10 * 20;
+
   }
 
   public static Wave WAVE = new Wave();
