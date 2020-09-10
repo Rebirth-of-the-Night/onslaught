@@ -274,6 +274,13 @@ public class ModuleOnslaught
                         () -> ModuleOnslaughtConfig.INVASION.FORCED_SPAWN_EFFECT_DURATION_TICKS,
                         () -> ModuleOnslaughtConfig.INVASION.FORCED_SPAWN_EFFECT_RANGE
                     )
+                ),
+
+                new InvasionUpdateEventHandler.InvasionTimedUpdateComponent(
+                    20,
+                    new DeferredSpawnClientParticlePacketSender(
+                        deferredSpawnDataList
+                    )
                 )
             }
         )
