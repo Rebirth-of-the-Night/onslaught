@@ -9,6 +9,10 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
+/**
+ * Responsible for hooking the overworld tick and calling the update method on
+ * all registered {@link IInvasionUpdateComponent}s.
+ */
 public class InvasionUpdateEventHandler {
 
   public InvasionUpdateEventHandler(IInvasionUpdateComponent[] components) {

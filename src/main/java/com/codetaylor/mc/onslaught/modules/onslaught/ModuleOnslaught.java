@@ -22,6 +22,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.EffectApplic
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.LootTableApplicator;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactory;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.*;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionKillCountUpdater;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionSpawnDataConverter;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.SpawnSampler;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.predicate.SpawnPredicateFactory;
@@ -45,6 +46,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.logging.Level;
@@ -158,9 +160,9 @@ public class ModuleOnslaught
     LinkedHashSet<UUID> eligiblePlayers = new LinkedHashSet<>();
 
     /*
-    In-memory list of deferred spawns.
+    List of deferred spawns.
      */
-    ArrayList<DeferredSpawnData> deferredSpawnDataList = new ArrayList<>();
+    List<DeferredSpawnData> deferredSpawnDataList = new ArrayList<>();
 
     SpawnPredicateFactory spawnPredicateFactory = new SpawnPredicateFactory();
 
@@ -285,6 +287,10 @@ public class ModuleOnslaught
             }
         )
     );
+
+    MinecraftForge.EVENT_BUS.register(new InvasionKillCountUpdateEventHandler(
+        new InvasionKillCountUpdater()
+    ));
   }
 
   @SideOnly(Side.CLIENT)
