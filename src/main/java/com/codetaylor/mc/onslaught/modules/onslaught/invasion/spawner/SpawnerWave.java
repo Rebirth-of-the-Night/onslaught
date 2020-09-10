@@ -80,7 +80,7 @@ public class SpawnerWave {
         // Try to spawn secondary mob normally
 
         if (this.spawnerMob.attemptSpawnMob(world, position, uuid, waveIndex, mobIndex, mobData.getMobTemplateId(), spawnData)
-            || (spawnData.force && this.spawnerMobForced.attemptSpawnMob(world, position, uuid, waveIndex, mobIndex, mobData.getMobTemplateId(), spawnData))
+            || (spawnData.force && this.spawnerMobForced.attemptSpawnMob(world, position, uuid, waveIndex, mobIndex, mobData.getMobTemplateId(), spawnData, secondaryMob))
             || this.spawnerMob.attemptSpawnMob(world, position, uuid, waveIndex, mobIndex, secondaryMob.id, this.invasionSpawnDataConverter.convert(secondaryMob.spawn))) {
 
           remainingMobs -= 1;

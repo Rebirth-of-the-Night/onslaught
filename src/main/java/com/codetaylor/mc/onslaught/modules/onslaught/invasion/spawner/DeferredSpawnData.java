@@ -15,6 +15,7 @@ public class DeferredSpawnData {
   private final int waveIndex;
   private final int mobIndex;
   private final InvasionTemplateWave.EnumSpawnType spawnType;
+  private final InvasionTemplateWave.SecondaryMob secondaryMob;
 
   private int ticksRemaining;
 
@@ -26,6 +27,7 @@ public class DeferredSpawnData {
       int waveIndex,
       int mobIndex,
       InvasionTemplateWave.EnumSpawnType spawnType,
+      InvasionTemplateWave.SecondaryMob secondaryMob,
       int ticksRemaining
   ) {
 
@@ -36,6 +38,7 @@ public class DeferredSpawnData {
     this.waveIndex = waveIndex;
     this.mobIndex = mobIndex;
     this.spawnType = spawnType;
+    this.secondaryMob = secondaryMob;
     this.ticksRemaining = ticksRemaining;
   }
 
@@ -67,6 +70,11 @@ public class DeferredSpawnData {
   public int getMobIndex() {
 
     return this.mobIndex;
+  }
+
+  public InvasionTemplateWave.SecondaryMob getSecondaryMob() {
+
+    return this.secondaryMob;
   }
 
   public int getTicksRemaining() {

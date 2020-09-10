@@ -162,8 +162,10 @@ public class ModuleOnslaught
      */
     ArrayList<DeferredSpawnData> deferredSpawnDataList = new ArrayList<>();
 
+    SpawnPredicateFactory spawnPredicateFactory = new SpawnPredicateFactory();
+
     SpawnSampler spawnSampler = new SpawnSampler(
-        new SpawnPredicateFactory()
+        spawnPredicateFactory
     );
 
     Function<String, InvasionTemplate> idToInvasionTemplateFunction = (id -> this.dataStore.getInvasionTemplateRegistry().get(id));
@@ -175,6 +177,7 @@ public class ModuleOnslaught
     );
 
     EntityInvasionDataInjector entityInvasionDataInjector = new EntityInvasionDataInjector();
+    InvasionSpawnDataConverter invasionSpawnDataConverter = new InvasionSpawnDataConverter();
 
     MinecraftForge.EVENT_BUS.register(
         new InvasionUpdateEventHandler(
@@ -190,7 +193,7 @@ public class ModuleOnslaught
                 ),
 
                 new InvasionUpdateEventHandler.InvasionTimedUpdateComponent(
-                    9,
+                    15,
                     new StateChangeEligibleToPending(
                         eligiblePlayers,
                         new InvasionSelector(
@@ -199,7 +202,7 @@ public class ModuleOnslaught
                         ),
                         new InvasionPlayerDataFactory(
                             idToInvasionTemplateFunction,
-                            new InvasionSpawnDataConverter()
+                            invasionSpawnDataConverter
                         )
                     )
                 ),
@@ -228,7 +231,7 @@ public class ModuleOnslaught
                     new Spawner(
                         idToInvasionTemplateFunction,
                         new SpawnerWave(
-                            new InvasionSpawnDataConverter(),
+                            invasionSpawnDataConverter,
                             new SpawnerMob(
                                 spawnSampler,
                                 idToMobTemplateFunction,
@@ -250,6 +253,10 @@ public class ModuleOnslaught
                     21,
                     new DeferredSpawner(
                         entityInvasionDataInjector,
+                        spawnPredicateFactory,
+                        invasionSpawnDataConverter,
+                        idToMobTemplateFunction,
+                        mobTemplateEntityFactory,
                         deferredSpawnDataList
                     )
                 )

@@ -2,6 +2,7 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner;
 
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
+import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateWave;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactory;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
@@ -49,7 +50,8 @@ public class SpawnerMobForced {
       int waveIndex,
       int mobIndex,
       String mobTemplateId,
-      InvasionPlayerData.InvasionData.SpawnData spawnData
+      InvasionPlayerData.InvasionData.SpawnData spawnData,
+      InvasionTemplateWave.SecondaryMob secondaryMob
   ) {
 
     MobTemplate mobTemplate = this.mobTemplateFunction.apply(mobTemplateId);
@@ -96,6 +98,7 @@ public class SpawnerMobForced {
         waveIndex,
         mobIndex,
         spawnDataCopy.type,
+        secondaryMob,
         ModuleOnslaughtConfig.INVASION.FORCED_SPAWN_DELAY_TICKS
     ));
 
