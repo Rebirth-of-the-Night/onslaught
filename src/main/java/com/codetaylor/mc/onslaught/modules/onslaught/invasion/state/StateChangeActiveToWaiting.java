@@ -1,6 +1,8 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.state;
 
 import com.codetaylor.mc.athenaeum.util.RandomHelper;
+import com.codetaylor.mc.onslaught.ModOnslaught;
+import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionUpdateEventHandler;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
@@ -35,6 +37,12 @@ public class StateChangeActiveToWaiting
 
         data.setTicksUntilEligible(ticksUntilEligible);
         invasionGlobalSavedData.markDirty();
+
+        if (ModuleOnslaughtConfig.DEBUG.INVASION_STATE) {
+          String message = String.format("Set invasion state to %s for player %s", "Waiting", player.getName());
+          ModOnslaught.LOG.fine(message);
+          System.out.println(message);
+        }
       }
     }
   }

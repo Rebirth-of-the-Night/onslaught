@@ -1,5 +1,7 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.state;
 
+import com.codetaylor.mc.onslaught.ModOnslaught;
+import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionUpdateEventHandler;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
@@ -49,6 +51,12 @@ public class StateChangeWaitingToEligible
       } else {
         this.eligiblePlayers.add(player.getUniqueID());
         data.setInvasionState(InvasionPlayerData.EnumInvasionState.Eligible);
+
+        if (ModuleOnslaughtConfig.DEBUG.INVASION_STATE) {
+          String message = String.format("Set invasion state to %s for player %s", "Eligible", player.getName());
+          ModOnslaught.LOG.fine(message);
+          System.out.println(message);
+        }
       }
 
       invasionGlobalSavedData.markDirty();

@@ -1,6 +1,7 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.state;
 
 import com.codetaylor.mc.athenaeum.util.WeightedPicker;
+import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateWave;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
@@ -9,6 +10,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionSpawnDataC
 import javax.annotation.Nullable;
 import java.util.Random;
 import java.util.function.Function;
+import java.util.logging.Level;
 
 /**
  * Responsible for creating {@link InvasionPlayerData.InvasionData} from the
@@ -35,6 +37,7 @@ public class InvasionPlayerDataFactory {
     InvasionTemplate invasionTemplate = this.invasionTemplateFunction.apply(templateId);
 
     if (invasionTemplate == null) {
+      ModOnslaught.LOG.log(Level.SEVERE, "Unknown template id: " + templateId);
       return null;
     }
 

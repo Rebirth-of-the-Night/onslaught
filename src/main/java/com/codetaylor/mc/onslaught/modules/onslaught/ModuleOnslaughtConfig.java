@@ -11,6 +11,7 @@ public class ModuleOnslaughtConfig {
   public static class Debug {
 
     public boolean SPAWN_SAMPLER = true;
+    public boolean INVASION_STATE = true;
   }
 
   public static Invasion INVASION = new Invasion();

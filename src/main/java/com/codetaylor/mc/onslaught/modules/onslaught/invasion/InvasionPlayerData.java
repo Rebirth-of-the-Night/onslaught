@@ -223,6 +223,16 @@ public class InvasionPlayerData
     }
 
     @Override
+    public String toString() {
+
+      return "InvasionData{" +
+          "invasionTemplateId='" + this.invasionTemplateId + '\'' +
+          ", timestamp=" + this.timestamp +
+          ", waveDataList=" + this.waveDataList +
+          '}';
+    }
+
+    @Override
     public NBTTagCompound serializeNBT() {
 
       NBTTagCompound tag = new NBTTagCompound();
@@ -275,6 +285,15 @@ public class InvasionPlayerData
       public List<MobData> getMobDataList() {
 
         return this.mobDataList;
+      }
+
+      @Override
+      public String toString() {
+
+        return "WaveData{" +
+            "delayTicks=" + this.delayTicks +
+            ", mobDataList=" + this.mobDataList +
+            '}';
       }
 
       @Override
@@ -359,6 +378,17 @@ public class InvasionPlayerData
       }
 
       @Override
+      public String toString() {
+
+        return "MobData{" +
+            "mobTemplateId='" + this.mobTemplateId + '\'' +
+            ", totalCount=" + this.totalCount +
+            ", killedCount=" + this.killedCount +
+            ", spawnData=" + this.spawnData +
+            '}';
+      }
+
+      @Override
       public NBTTagCompound serializeNBT() {
 
         NBTTagCompound tag = new NBTTagCompound();
@@ -402,6 +432,20 @@ public class InvasionPlayerData
         copy.stepRadius = this.stepRadius;
         copy.sampleDistance = this.sampleDistance;
         return copy;
+      }
+
+      @Override
+      public String toString() {
+
+        return "SpawnData{" +
+            "type=" + this.type +
+            ", light=" + Arrays.toString(this.light) +
+            ", force=" + this.force +
+            ", rangeXZ=" + Arrays.toString(this.rangeXZ) +
+            ", rangeY=" + this.rangeY +
+            ", stepRadius=" + this.stepRadius +
+            ", sampleDistance=" + this.sampleDistance +
+            '}';
       }
 
       @Override

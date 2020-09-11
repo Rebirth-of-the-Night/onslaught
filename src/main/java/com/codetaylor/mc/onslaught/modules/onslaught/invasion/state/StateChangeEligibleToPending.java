@@ -1,5 +1,7 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.state;
 
+import com.codetaylor.mc.onslaught.ModOnslaught;
+import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionUpdateEventHandler;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionCounter;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
@@ -13,6 +15,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.IntSupplier;
+import java.util.logging.Level;
 
 /**
  * Responsible for transitioning a player's invasion state from eligible to pending.
@@ -73,15 +76,28 @@ public class StateChangeEligibleToPending
         String invasionTemplateId = this.invasionSelector.selectInvasionForPlayer(player);
 
         if (invasionTemplateId == null) {
+          ModOnslaught.LOG.log(Level.SEVERE, "Unable to select invasion for player: " + player.getName());
           continue;
         }
 
         InvasionPlayerData data = invasionGlobalSavedData.getPlayerData(uuid);
+        InvasionPlayerData.InvasionData invasionData = this.invasionPlayerDataFactory.create(invasionTemplateId, player.getRNG(), worldTime);
         data.setInvasionState(InvasionPlayerData.EnumInvasionState.Pending);
-        data.setInvasionData(this.invasionPlayerDataFactory.create(invasionTemplateId, player.getRNG(), worldTime));
+        data.setInvasionData(invasionData);
         invasionGlobalSavedData.markDirty();
 
         allowedInvasions -= 1;
+
+        if (ModuleOnslaughtConfig.DEBUG.INVASION_STATE) {
+          String message = String.format("Set invasion state to %s for player %s", "Pending", player.getName());
+          ModOnslaught.LOG.fine(message);
+          System.out.println(message);
+
+          if (invasionData != null) {
+            ModOnslaught.LOG.fine(invasionData.toString());
+            System.out.println(invasionData.toString());
+          }
+        }
       }
 
       toRemove.add(uuid);

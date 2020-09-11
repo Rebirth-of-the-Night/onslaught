@@ -1,5 +1,7 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.state;
 
+import com.codetaylor.mc.onslaught.ModOnslaught;
+import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionUpdateEventHandler;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
@@ -31,6 +33,12 @@ public class StateChangePendingToActive
       if (invasionData.getTimestamp() <= worldTime) {
         data.setInvasionState(InvasionPlayerData.EnumInvasionState.Active);
         invasionGlobalSavedData.markDirty();
+
+        if (ModuleOnslaughtConfig.DEBUG.INVASION_STATE) {
+          String message = String.format("Set invasion state to %s for player %s", "Active", player.getName());
+          ModOnslaught.LOG.fine(message);
+          System.out.println(message);
+        }
       }
     }
   }
