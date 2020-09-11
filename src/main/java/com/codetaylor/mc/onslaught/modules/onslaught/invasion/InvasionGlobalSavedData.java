@@ -14,6 +14,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
 
+/**
+ * Responsible for persisting invasion data.
+ */
 public class InvasionGlobalSavedData
     extends WorldSavedData
     implements Function<UUID, InvasionPlayerData> {
@@ -35,11 +38,6 @@ public class InvasionGlobalSavedData
       storage.setData(DATA_NAME, instance);
     }
     return instance;
-  }
-
-  public static void markDirty(World world) {
-
-    InvasionGlobalSavedData.get(world).markDirty();
   }
 
   private final Map<UUID, InvasionPlayerData> playerDataMap;
