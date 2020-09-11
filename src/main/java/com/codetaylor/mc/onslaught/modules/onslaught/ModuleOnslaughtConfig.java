@@ -10,8 +10,10 @@ public class ModuleOnslaughtConfig {
 
   public static class Debug {
 
-    public boolean SPAWN_SAMPLER = true;
     public boolean INVASION_STATE = true;
+    public boolean INVASION_SPAWNERS = true;
+    public boolean INVASION_DATA_UPDATES = true;
+    public boolean INVASION_SELECTOR = true;
   }
 
   public static Invasion INVASION = new Invasion();

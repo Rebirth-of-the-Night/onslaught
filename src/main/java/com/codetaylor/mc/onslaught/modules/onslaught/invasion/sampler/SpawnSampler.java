@@ -80,7 +80,7 @@ public class SpawnSampler {
 //    int stepRadius = 4;
 //    int sampleDistance = 2;
 
-    if (ModuleOnslaughtConfig.DEBUG.SPAWN_SAMPLER) {
+    if (ModuleOnslaughtConfig.DEBUG.INVASION_SPAWNERS) {
       LOG.fine("Entity: " + entity.getClass().getName());
       LOG.fine("Origin: " + origin);
       LOG.fine("Radius max: " + radiusMax);
@@ -142,7 +142,7 @@ public class SpawnSampler {
         if (predicate.test(entity)) {
           Vec3d result = new Vec3d(x, entity.posY, z);
 
-          if (ModuleOnslaughtConfig.DEBUG.SPAWN_SAMPLER) {
+          if (ModuleOnslaughtConfig.DEBUG.INVASION_SPAWNERS) {
             LOG.fine("Samples: " + sampleCount);
             LOG.fine("Time: " + (System.currentTimeMillis() - start) + " ms");
             LOG.fine("Result: " + result);
@@ -158,7 +158,7 @@ public class SpawnSampler {
       }
     }
 
-    if (ModuleOnslaughtConfig.DEBUG.SPAWN_SAMPLER) {
+    if (ModuleOnslaughtConfig.DEBUG.INVASION_SPAWNERS) {
       LOG.fine("Samples: " + sampleCount);
       LOG.fine("Time: " + (System.currentTimeMillis() - start) + " ms");
       LOG.fine("Result: null");

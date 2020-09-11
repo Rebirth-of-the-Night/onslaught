@@ -91,4 +91,20 @@ public class DeferredSpawnData {
 
     return this.spawnType;
   }
+
+  @Override
+  public String toString() {
+
+    return "DeferredSpawnData{" +
+        "entityLiving=" + this.entityLiving +
+        ", dimensionId=" + this.dimensionId +
+        ", pos=" + this.pos +
+        ", uuid=" + this.uuid +
+        ", waveIndex=" + this.waveIndex +
+        ", mobIndex=" + this.mobIndex +
+        ", spawnType=" + this.spawnType +
+        ", secondaryMob=" + this.secondaryMob +
+        ", ticksRemaining=" + this.ticksRemaining +
+        '}';
+  }
 }

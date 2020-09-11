@@ -9,6 +9,8 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +84,8 @@ public class DeferredSpawnEffectApplicator
   public static class EffectListSupplier
       implements Supplier<List<Potion>> {
 
+    private static final Logger LOGGER = LogManager.getLogger(EffectListSupplier.class);
+
     private final String[] effects;
 
     private List<Potion> potionList;
@@ -103,7 +107,9 @@ public class DeferredSpawnEffectApplicator
           Potion potion = ForgeRegistries.POTIONS.getValue(resourceLocation);
 
           if (potion == null) {
-            ModOnslaught.LOG.log(Level.SEVERE, "Unknown forced spawn effect id: " + resourceLocation);
+            String message = "Unknown forced spawn effect id: " + resourceLocation;
+            ModOnslaught.LOG.log(Level.SEVERE, message);
+            LOGGER.error(message);
 
           } else {
             this.potionList.add(potion);

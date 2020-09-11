@@ -2,8 +2,11 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion.selector;
 
 import com.codetaylor.mc.athenaeum.util.WeightedPicker;
 import com.codetaylor.mc.onslaught.ModOnslaught;
+import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplate;
 import net.minecraft.entity.player.EntityPlayer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import java.util.Map;
@@ -16,6 +19,8 @@ import java.util.stream.Stream;
  * Responsible for selecting an invasion for the given player.
  */
 public class InvasionSelector {
+
+  private static final Logger LOGGER = LogManager.getLogger(InvasionSelector.class);
 
   private final Supplier<Stream<Map.Entry<String, InvasionTemplate>>> invasionTemplateStreamSupplier;
   private final Predicate<String> invasionTemplateExistsPredicate;
@@ -58,17 +63,31 @@ public class InvasionSelector {
       boolean invasionTemplateExists = this.invasionTemplateExistsPredicate.test(fallbackInvasion);
 
       if (invasionTemplateExists) {
-        ModOnslaught.LOG.info(String.format("Selected invasion %s for player %s", fallbackInvasion, player.getName()));
+
+        if (ModuleOnslaughtConfig.DEBUG.INVASION_SELECTOR) {
+          String message = String.format("Selected invasion %s for player %s", fallbackInvasion, player.getName());
+          ModOnslaught.LOG.fine(message);
+          System.out.println(message);
+        }
+
         return fallbackInvasion;
 
       } else {
-        ModOnslaught.LOG.log(Level.SEVERE, String.format("Missing the fallback invasion defined in config, skipping invasion for player %s", player.getName()));
+        String message = String.format("Missing the fallback invasion defined in config, skipping invasion for player %s", player.getName());
+        ModOnslaught.LOG.log(Level.SEVERE, message);
+        LOGGER.error(message);
         return null;
       }
 
     } else {
       String invasion = picker.get().getKey();
-      ModOnslaught.LOG.info(String.format("Selected invasion %s for player %s", invasion, player.getName()));
+
+      if (ModuleOnslaughtConfig.DEBUG.INVASION_SELECTOR) {
+        String message = String.format("Selected invasion %s for player %s", invasion, player.getName());
+        ModOnslaught.LOG.fine(message);
+        System.out.println(message);
+      }
+
       return invasion;
     }
   }

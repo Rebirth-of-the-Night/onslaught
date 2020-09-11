@@ -1,5 +1,7 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner;
 
+import com.codetaylor.mc.onslaught.ModOnslaught;
+import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.Tag;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateWave;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
@@ -56,6 +58,12 @@ public class SpawnerWave {
       InvasionTemplateWave.SecondaryMob secondaryMob
   ) {
 
+    if (ModuleOnslaughtConfig.DEBUG.INVASION_SPAWNERS) {
+      String message = String.format("Attempting to spawn mobs for player %s wave %d", player.getName(), waveIndex);
+      ModOnslaught.LOG.fine(message);
+      System.out.println(message);
+    }
+
     List<InvasionPlayerData.InvasionData.MobData> mobDataList = waveData.getMobDataList();
 
     for (int mobIndex = 0; mobIndex < mobDataList.size(); mobIndex++) {
@@ -73,6 +81,12 @@ public class SpawnerWave {
       int activeMobs = this.countActiveMobs(world.loadedEntityList, uuid, waveIndex, mobIndex);
       int remainingMobs = mobData.getTotalCount() - mobData.getKilledCount() - activeMobs;
 
+      if (ModuleOnslaughtConfig.DEBUG.INVASION_SPAWNERS) {
+        String message = String.format("Attempting to spawn %d mobs of type %s for player %s in wave %d", remainingMobs, mobData.getMobTemplateId(), player.getName(), waveIndex);
+        ModOnslaught.LOG.fine(message);
+        System.out.println(message);
+      }
+
       while (remainingMobs > 0) {
 
         // Try to spawn mob normally
@@ -85,7 +99,16 @@ public class SpawnerWave {
 
           remainingMobs -= 1;
 
-          if (System.currentTimeMillis() - startTimestamp > MAX_ALLOWED_SPAWN_TIME_MS) {
+          long elapsedTimeMs = System.currentTimeMillis() - startTimestamp;
+
+          if (elapsedTimeMs > MAX_ALLOWED_SPAWN_TIME_MS) {
+
+            if (ModuleOnslaughtConfig.DEBUG.INVASION_SPAWNERS) {
+              String message = String.format("Spawning exceeded max allowed time: %d > %d", elapsedTimeMs, MAX_ALLOWED_SPAWN_TIME_MS);
+              ModOnslaught.LOG.fine(message);
+              System.out.println(message);
+            }
+
             return true; // Stop spawning
           }
         }

@@ -1,5 +1,7 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
 
+import com.codetaylor.mc.onslaught.ModOnslaught;
+import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.Tag;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -41,6 +43,12 @@ public class InvasionKillCountUpdater {
       int killedCount = mobData.getKilledCount();
       mobData.setKilledCount(killedCount + 1);
       invasionGlobalSavedData.markDirty();
+
+      if (ModuleOnslaughtConfig.DEBUG.INVASION_DATA_UPDATES) {
+        String message = String.format("Kill count updated for wave index %d mob id %s from %d to %d", waveIndex, mobData.getMobTemplateId(), killedCount, killedCount + 1);
+        ModOnslaught.LOG.fine(message);
+        System.out.println(message);
+      }
     }
   }
 }

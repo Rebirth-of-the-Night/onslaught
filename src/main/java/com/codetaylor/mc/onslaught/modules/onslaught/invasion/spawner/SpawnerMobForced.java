@@ -1,6 +1,7 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner;
 
 import com.codetaylor.mc.onslaught.ModOnslaught;
+import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateWave;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactory;
@@ -10,6 +11,8 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +24,8 @@ import java.util.logging.Level;
  * Responsible for attempting a forced invasion spawn.
  */
 public class SpawnerMobForced {
+
+  private static final Logger LOGGER = LogManager.getLogger(SpawnerMobForced.class);
 
   private final Function<String, MobTemplate> mobTemplateFunction;
   private final MobTemplateEntityFactory mobTemplateEntityFactory;
@@ -40,7 +45,6 @@ public class SpawnerMobForced {
     Create a class to cleanup elements and do player data bookkeeping when a chunk is unloaded.
       - Either this or we just clean them up and do the bookkeeping if they try to spawn in an unloaded chunk.
      */
-
 
   public SpawnerMobForced(
       SpawnSampler spawnSampler,
@@ -74,14 +78,18 @@ public class SpawnerMobForced {
     MobTemplate mobTemplate = this.mobTemplateFunction.apply(mobTemplateId);
 
     if (mobTemplate == null) {
-      ModOnslaught.LOG.log(Level.SEVERE, "Unknown mob template id: " + mobTemplateId);
+      String message = "Unknown mob template id: " + mobTemplateId;
+      ModOnslaught.LOG.log(Level.SEVERE, message);
+      LOGGER.error(message);
       return false;
     }
 
     EntityLiving entity = this.mobTemplateEntityFactory.create(mobTemplate, world);
 
     if (entity == null) {
-      ModOnslaught.LOG.log(Level.SEVERE, "Unknown entity id: " + mobTemplate.id);
+      String message = "Unknown entity id: " + mobTemplate.id;
+      ModOnslaught.LOG.log(Level.SEVERE, message);
+      LOGGER.error(message);
       return false;
     }
 
@@ -91,10 +99,17 @@ public class SpawnerMobForced {
     Vec3d spawnLocation = this.spawnSampler.getSpawnLocation(entity, playerPos, spawnDataCopy);
 
     if (spawnLocation == null) {
+
+      if (ModuleOnslaughtConfig.DEBUG.INVASION_SPAWNERS) {
+        String message = "Unable to find spawn location";
+        ModOnslaught.LOG.fine(message);
+        System.out.println(message);
+      }
+
       return false;
     }
 
-    this.deferredSpawnDataList.add(new DeferredSpawnData(
+    DeferredSpawnData deferredSpawnData = new DeferredSpawnData(
         entity,
         world.provider.getDimension(),
         entity.getPosition(),
@@ -104,7 +119,15 @@ public class SpawnerMobForced {
         spawnDataCopy.type,
         secondaryMob,
         this.forcedSpawnDelayTicksSupplier.getAsInt()
-    ));
+    );
+
+    this.deferredSpawnDataList.add(deferredSpawnData);
+
+    if (ModuleOnslaughtConfig.DEBUG.INVASION_SPAWNERS) {
+      String message = "Created new deferred spawn data: " + deferredSpawnData.toString();
+      ModOnslaught.LOG.fine(message);
+      System.out.println(message);
+    }
 
     return true;
   }
