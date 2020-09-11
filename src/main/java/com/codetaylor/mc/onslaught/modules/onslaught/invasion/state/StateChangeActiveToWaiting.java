@@ -25,7 +25,9 @@ public class StateChangeActiveToWaiting
       InvasionPlayerData data = invasionGlobalSavedData.getPlayerData(player.getUniqueID());
       InvasionPlayerData.InvasionData invasionData = data.getInvasionData();
 
-      if (this.isInvasionFinished(invasionData)) {
+      if (this.isInvasionFinished(invasionData)
+          && data.getInvasionState() == InvasionPlayerData.EnumInvasionState.Active) {
+
         data.setInvasionState(InvasionPlayerData.EnumInvasionState.Waiting);
         data.setInvasionData(null);
 

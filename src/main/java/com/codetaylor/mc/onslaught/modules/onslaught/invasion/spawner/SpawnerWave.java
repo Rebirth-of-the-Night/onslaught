@@ -58,12 +58,6 @@ public class SpawnerWave {
       InvasionTemplateWave.SecondaryMob secondaryMob
   ) {
 
-    if (ModuleOnslaughtConfig.DEBUG.INVASION_SPAWNERS) {
-      String message = String.format("Attempting to spawn mobs for player %s wave %d", player.getName(), waveIndex);
-      ModOnslaught.LOG.fine(message);
-      System.out.println(message);
-    }
-
     List<InvasionPlayerData.InvasionData.MobData> mobDataList = waveData.getMobDataList();
 
     for (int mobIndex = 0; mobIndex < mobDataList.size(); mobIndex++) {
@@ -81,7 +75,7 @@ public class SpawnerWave {
       int activeMobs = this.countActiveMobs(world.loadedEntityList, uuid, waveIndex, mobIndex);
       int remainingMobs = mobData.getTotalCount() - mobData.getKilledCount() - activeMobs;
 
-      if (ModuleOnslaughtConfig.DEBUG.INVASION_SPAWNERS) {
+      if (ModuleOnslaughtConfig.DEBUG.INVASION_SPAWNERS && remainingMobs > 0) {
         String message = String.format("Attempting to spawn %d mobs of type %s for player %s in wave %d", remainingMobs, mobData.getMobTemplateId(), player.getName(), waveIndex);
         ModOnslaught.LOG.fine(message);
         System.out.println(message);
@@ -125,8 +119,14 @@ public class SpawnerWave {
     for (Entity entity : entityList) {
       NBTTagCompound entityData = entity.getEntityData();
 
-      if (entityData.hasKey(Tag.INVASION_DATA)) {
-        NBTTagCompound tag = entityData.getCompoundTag(Tag.INVASION_DATA);
+      if (!entityData.hasKey(Tag.ONSLAUGHT)) {
+        continue;
+      }
+
+      NBTTagCompound modTag = entityData.getCompoundTag(Tag.ONSLAUGHT);
+
+      if (modTag.hasKey(Tag.INVASION_DATA)) {
+        NBTTagCompound tag = modTag.getCompoundTag(Tag.INVASION_DATA);
         String uuidData = tag.getString(Tag.INVASION_UUID);
         int waveIndexData = tag.getInteger(Tag.INVASION_WAVE_INDEX);
         int mobIndexData = tag.getInteger(Tag.INVASION_MOB_INDEX);

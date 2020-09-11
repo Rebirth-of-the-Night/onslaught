@@ -28,11 +28,13 @@ public class EntityInvasionDataInjector {
 
   private void injectInvasionData(UUID uuid, int waveIndex, int mobIndex, NBTTagCompound entityData) {
 
+    NBTTagCompound modTag = entityData.getCompoundTag(Tag.ONSLAUGHT);
+
     NBTTagCompound tag = new NBTTagCompound();
     tag.setString(Tag.INVASION_UUID, uuid.toString());
     tag.setInteger(Tag.INVASION_WAVE_INDEX, waveIndex);
     tag.setInteger(Tag.INVASION_MOB_INDEX, mobIndex);
-    entityData.setTag(Tag.INVASION_DATA, tag);
+    modTag.setTag(Tag.INVASION_DATA, tag);
   }
 
   private void injectCustomAI(UUID uuid, NBTTagCompound entityData) {

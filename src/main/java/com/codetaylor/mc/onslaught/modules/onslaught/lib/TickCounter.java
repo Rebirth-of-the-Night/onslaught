@@ -26,7 +26,7 @@ public class TickCounter {
     this.count += ticks;
 
     if (this.count >= this.max) {
-      this.count -= this.max;
+      this.count = 0;
       return true;
     }
 

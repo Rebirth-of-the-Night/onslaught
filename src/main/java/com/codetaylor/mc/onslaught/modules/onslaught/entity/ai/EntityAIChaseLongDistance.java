@@ -78,7 +78,7 @@ public class EntityAIChaseLongDistance
       this.path = navigator.getPathToXYZ(pathVec.x, pathVec.y, pathVec.z);
     }
 
-    System.out.println(this.path);
+//    System.out.println(this.path);
 
     return (this.path != null);
   }

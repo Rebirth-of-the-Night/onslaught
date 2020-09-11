@@ -50,7 +50,7 @@ public class Spawner
       if (invasionTemplate == null) {
         // If this happens, the invasion id has changed since the invasion data was created.
         // Nullify the invasion to flag it as complete.
-        // The state change processors will clean this up.
+        // The active to waiting state change processor will clean this up.
         data.setInvasionData(null);
         continue;
       }

@@ -39,7 +39,7 @@ public class StateChangeWaitingToEligible
       // they will be added to the list again.
 
       if (data.getInvasionState() != InvasionPlayerData.EnumInvasionState.Waiting
-          || data.getInvasionState() != InvasionPlayerData.EnumInvasionState.Eligible) {
+          && data.getInvasionState() != InvasionPlayerData.EnumInvasionState.Eligible) {
         return;
       }
 
@@ -49,14 +49,16 @@ public class StateChangeWaitingToEligible
         data.setTicksUntilEligible(ticksUntilNextInvasion - updateIntervalTicks);
 
       } else {
-        this.eligiblePlayers.add(player.getUniqueID());
-        data.setInvasionState(InvasionPlayerData.EnumInvasionState.Eligible);
 
-        if (ModuleOnslaughtConfig.DEBUG.INVASION_STATE) {
+        if (data.getInvasionState() != InvasionPlayerData.EnumInvasionState.Eligible
+            && ModuleOnslaughtConfig.DEBUG.INVASION_STATE) {
           String message = String.format("Set invasion state to %s for player %s", "Eligible", player.getName());
           ModOnslaught.LOG.fine(message);
           System.out.println(message);
         }
+
+        this.eligiblePlayers.add(player.getUniqueID());
+        data.setInvasionState(InvasionPlayerData.EnumInvasionState.Eligible);
       }
 
       invasionGlobalSavedData.markDirty();

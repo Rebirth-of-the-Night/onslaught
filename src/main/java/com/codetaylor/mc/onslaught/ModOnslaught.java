@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.FileHandler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Mod(
@@ -89,6 +90,7 @@ public class ModOnslaught {
       handler.setFormatter(new LogFormatter());
       LOG.addHandler(handler);
       LOG.setUseParentHandlers(false);
+      LOG.setLevel(Level.FINE);
       LOG.info("Initialized logger");
 
     } catch (IOException e) {
