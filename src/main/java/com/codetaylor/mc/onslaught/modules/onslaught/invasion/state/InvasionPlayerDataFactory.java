@@ -12,7 +12,8 @@ import java.util.function.Function;
 
 /**
  * Responsible for creating {@link InvasionPlayerData.InvasionData} from the
- * given template id and PRNG.
+ * given template id, using the given {@link Random} to select values from
+ * ranges.
  */
 public class InvasionPlayerDataFactory {
 
@@ -29,7 +30,7 @@ public class InvasionPlayerDataFactory {
   }
 
   @Nullable
-  public InvasionPlayerData.InvasionData create(String templateId, Random random, long totalWorldTime, long worldTime) {
+  public InvasionPlayerData.InvasionData create(String templateId, Random random, long worldTime) {
 
     InvasionTemplate invasionTemplate = this.invasionTemplateFunction.apply(templateId);
 
@@ -39,7 +40,20 @@ public class InvasionPlayerDataFactory {
 
     InvasionPlayerData.InvasionData invasionData = new InvasionPlayerData.InvasionData();
     invasionData.setInvasionTemplateId(templateId);
-    invasionData.setTimestamp(totalWorldTime + (13000 - worldTime));
+
+    /*
+    25000 // current time
+    25000 + 24000 = 49000
+    49000 % 24000 = 1000
+    49000 - 1000 = 48000 // start of next day
+
+    invasion starts at 13000
+    24000 - 13000 = 11000
+
+    49000 - (1000 + 11000) = 37000
+    37000 % 24000 = 13000 // ok
+     */
+    invasionData.setTimestamp((worldTime + 24000) - (((worldTime + 24000) % 24000) + 11000));
 
     for (InvasionTemplateWave waveTemplate : invasionTemplate.waves) {
       invasionData.getWaveDataList().add(this.createWaveData(waveTemplate, random));
@@ -62,6 +76,11 @@ public class InvasionPlayerDataFactory {
     return waveData;
   }
 
+  /**
+   * @param mob    the {@link InvasionTemplateWave.Mob}
+   * @param random the {@link Random} prng
+   * @return an {@link InvasionPlayerData.InvasionData.MobData} generated from the given {@link InvasionTemplateWave.Mob} and {@link Random}
+   */
   private InvasionPlayerData.InvasionData.MobData createMobData(InvasionTemplateWave.Mob mob, Random random) {
 
     InvasionPlayerData.InvasionData.MobData mobData = new InvasionPlayerData.InvasionData.MobData();
@@ -72,6 +91,11 @@ public class InvasionPlayerDataFactory {
     return mobData;
   }
 
+  /**
+   * @param groups the array of {@link InvasionTemplateWave.Group} to select from
+   * @param random the {@link Random} prng
+   * @return an {@link InvasionTemplateWave.Group} selected using a {@link WeightedPicker} and the given {@link Random} prng
+   */
   private InvasionTemplateWave.Group selectGroup(InvasionTemplateWave.Group[] groups, Random random) {
 
     WeightedPicker<InvasionTemplateWave.Group> weightedPicker = new WeightedPicker<>(random);
@@ -83,6 +107,11 @@ public class InvasionPlayerDataFactory {
     return weightedPicker.get();
   }
 
+  /**
+   * @param range  the given range, either [fixed] or [min,max]
+   * @param random the {@link Random} prng
+   * @return a random value in the given range, accounting for fixed, single value arrays
+   */
   private int evaluateRange(int[] range, Random random) {
 
     if (range.length == 1) {

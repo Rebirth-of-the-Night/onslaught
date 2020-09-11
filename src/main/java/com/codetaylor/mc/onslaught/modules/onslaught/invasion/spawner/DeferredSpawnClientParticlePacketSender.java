@@ -7,7 +7,6 @@ import com.codetaylor.mc.onslaught.modules.onslaught.packet.SCPacketDeferredSpaw
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class DeferredSpawnClientParticlePacketSender
   }
 
   @Override
-  public void update(int updateIntervalTicks, InvasionGlobalSavedData invasionGlobalSavedData, PlayerList playerList, World world) {
+  public void update(int updateIntervalTicks, InvasionGlobalSavedData invasionGlobalSavedData, PlayerList playerList, long worldTime) {
 
     for (DeferredSpawnData deferredSpawnData : this.deferredSpawnDataList) {
 

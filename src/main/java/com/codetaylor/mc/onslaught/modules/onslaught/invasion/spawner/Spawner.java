@@ -7,7 +7,6 @@ import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSave
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.management.PlayerList;
-import net.minecraft.world.World;
 
 import java.util.List;
 import java.util.function.Function;
@@ -28,7 +27,7 @@ public class Spawner
   }
 
   @Override
-  public void update(int updateIntervalTicks, InvasionGlobalSavedData invasionGlobalSavedData, PlayerList playerList, World world) {
+  public void update(int updateIntervalTicks, InvasionGlobalSavedData invasionGlobalSavedData, PlayerList playerList, long worldTime) {
 
     long start = System.currentTimeMillis();
 

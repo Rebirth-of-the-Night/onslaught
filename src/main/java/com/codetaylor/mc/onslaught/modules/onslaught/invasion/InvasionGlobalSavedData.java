@@ -12,9 +12,11 @@ import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
 
 public class InvasionGlobalSavedData
-    extends WorldSavedData {
+    extends WorldSavedData
+    implements Function<UUID, InvasionPlayerData> {
 
   private static final String DATA_NAME = ModuleOnslaught.MOD_ID + "_InvasionData";
 
@@ -51,6 +53,12 @@ public class InvasionGlobalSavedData
 
     super(name);
     this.playerDataMap = new HashMap<>();
+  }
+
+  @Override
+  public InvasionPlayerData apply(UUID uuid) {
+
+    return this.getPlayerData(uuid);
   }
 
   public InvasionPlayerData getPlayerData(UUID uuid) {

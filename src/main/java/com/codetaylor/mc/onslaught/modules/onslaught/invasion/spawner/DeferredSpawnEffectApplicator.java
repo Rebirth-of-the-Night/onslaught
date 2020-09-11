@@ -8,7 +8,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.util.ArrayList;
@@ -43,7 +42,7 @@ public class DeferredSpawnEffectApplicator
   }
 
   @Override
-  public void update(int updateIntervalTicks, InvasionGlobalSavedData invasionGlobalSavedData, PlayerList playerList, World world) {
+  public void update(int updateIntervalTicks, InvasionGlobalSavedData invasionGlobalSavedData, PlayerList playerList, long worldTime) {
 
     List<Potion> effectList = this.effectListSupplier.get();
 

@@ -6,9 +6,9 @@ import com.codetaylor.mc.athenaeum.network.IPacketService;
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.AntiAirPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.IAntiAirPlayerData;
-import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandPrototype;
 import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandReload;
 import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandSummon;
+import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandTest;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.DataLoader;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.DataStore;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplate;
@@ -22,8 +22,10 @@ import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.EffectApplic
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.LootTableApplicator;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactory;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.*;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionCounter;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionKillCountUpdater;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionSpawnDataConverter;
+import com.codetaylor.mc.onslaught.modules.onslaught.lib.TickIntervalCounter;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.SpawnSampler;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.predicate.SpawnPredicateFactory;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.selector.InvasionSelector;
@@ -207,7 +209,8 @@ public class ModuleOnslaught
                             idToInvasionTemplateFunction,
                             invasionSpawnDataConverter
                         ),
-                        () -> ModuleOnslaughtConfig.INVASION.MAX_CONCURRENT_INVASIONS
+                        () -> ModuleOnslaughtConfig.INVASION.MAX_CONCURRENT_INVASIONS,
+                        new InvasionCounter()
                     )
                 ),
 
@@ -338,6 +341,6 @@ public class ModuleOnslaught
         this.dataLoader
     ));
 
-    event.registerServerCommand(new CommandPrototype());
+    event.registerServerCommand(new CommandTest());
   }
 }

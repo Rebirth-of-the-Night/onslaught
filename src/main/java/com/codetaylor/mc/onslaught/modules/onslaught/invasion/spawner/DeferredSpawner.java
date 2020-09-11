@@ -52,7 +52,7 @@ public class DeferredSpawner
   }
 
   @Override
-  public void update(int updateIntervalTicks, InvasionGlobalSavedData invasionGlobalSavedData, PlayerList playerList, World world) {
+  public void update(int updateIntervalTicks, InvasionGlobalSavedData invasionGlobalSavedData, PlayerList playerList, long worldTime) {
 
     if (this.deferredSpawnDataList.isEmpty()) {
       return;

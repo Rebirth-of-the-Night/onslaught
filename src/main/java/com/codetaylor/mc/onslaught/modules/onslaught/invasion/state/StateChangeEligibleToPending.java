@@ -1,12 +1,12 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.state;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionUpdateEventHandler;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionCounter;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.selector.InvasionSelector;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.management.PlayerList;
-import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,29 +24,35 @@ public class StateChangeEligibleToPending
   private final InvasionSelector invasionSelector;
   private final InvasionPlayerDataFactory invasionPlayerDataFactory;
   private final IntSupplier maxConcurrentInvasionsSupplier;
+  private final InvasionCounter invasionCounter;
 
   public StateChangeEligibleToPending(
       Set<UUID> eligiblePlayers,
       InvasionSelector invasionSelector,
       InvasionPlayerDataFactory invasionPlayerDataFactory,
-      IntSupplier maxConcurrentInvasionsSupplier
+      IntSupplier maxConcurrentInvasionsSupplier,
+      InvasionCounter invasionCounter
   ) {
 
     this.eligiblePlayers = eligiblePlayers;
     this.invasionSelector = invasionSelector;
     this.invasionPlayerDataFactory = invasionPlayerDataFactory;
     this.maxConcurrentInvasionsSupplier = maxConcurrentInvasionsSupplier;
+    this.invasionCounter = invasionCounter;
   }
 
   @Override
-  public void update(int updateIntervalTicks, InvasionGlobalSavedData invasionGlobalSavedData, PlayerList playerList, World world) {
+  public void update(int updateIntervalTicks, InvasionGlobalSavedData invasionGlobalSavedData, PlayerList playerList, long worldTime) {
 
-    if (world.getWorldTime() > 1000) {
+    if (worldTime % 24000 > 1000) {
       return;
     }
 
     // Check that we don't exceed the max concurrent invasion value.
-    int concurrentInvasions = this.countInvasions(invasionGlobalSavedData, playerList.getPlayers());
+    int concurrentInvasions = this.invasionCounter.count(
+        uuid -> invasionGlobalSavedData.getPlayerData(uuid).getInvasionState(),
+        playerList.getPlayers()
+    );
     int maxConcurrentInvasions = this.maxConcurrentInvasionsSupplier.getAsInt();
 
     if (concurrentInvasions >= maxConcurrentInvasions) {
@@ -72,7 +78,7 @@ public class StateChangeEligibleToPending
 
         InvasionPlayerData data = invasionGlobalSavedData.getPlayerData(uuid);
         data.setInvasionState(InvasionPlayerData.EnumInvasionState.Pending);
-        data.setInvasionData(this.invasionPlayerDataFactory.create(invasionTemplateId, player.getRNG(), world.getTotalWorldTime(), world.getWorldTime()));
+        data.setInvasionData(this.invasionPlayerDataFactory.create(invasionTemplateId, player.getRNG(), worldTime));
         invasionGlobalSavedData.markDirty();
 
         allowedInvasions -= 1;
@@ -88,22 +94,5 @@ public class StateChangeEligibleToPending
     for (UUID uuid : toRemove) {
       this.eligiblePlayers.remove(uuid);
     }
-  }
-
-  private int countInvasions(InvasionGlobalSavedData invasionGlobalSavedData, List<EntityPlayerMP> players) {
-
-    int result = 0;
-
-    for (EntityPlayerMP player : players) {
-      InvasionPlayerData data = invasionGlobalSavedData.getPlayerData(player.getUniqueID());
-      InvasionPlayerData.EnumInvasionState invasionState = data.getInvasionState();
-
-      if (invasionState == InvasionPlayerData.EnumInvasionState.Pending
-          || invasionState == InvasionPlayerData.EnumInvasionState.Active) {
-        result += 1;
-      }
-    }
-
-    return result;
   }
 }

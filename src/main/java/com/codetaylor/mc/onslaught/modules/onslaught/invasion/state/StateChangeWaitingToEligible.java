@@ -5,7 +5,6 @@ import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSave
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.management.PlayerList;
-import net.minecraft.world.World;
 
 import java.util.Set;
 import java.util.UUID;
@@ -24,7 +23,7 @@ public class StateChangeWaitingToEligible
   }
 
   @Override
-  public void update(int updateIntervalTicks, InvasionGlobalSavedData invasionGlobalSavedData, PlayerList playerList, World world) {
+  public void update(int updateIntervalTicks, InvasionGlobalSavedData invasionGlobalSavedData, PlayerList playerList, long worldTime) {
 
     for (EntityPlayerMP player : playerList.getPlayers()) {
       InvasionPlayerData data = invasionGlobalSavedData.getPlayerData(player.getUniqueID());

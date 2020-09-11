@@ -72,5 +72,4 @@ public class InvasionSelector {
       return invasion;
     }
   }
-
 }
