@@ -1,5 +1,8 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.data.mob;
 
+/**
+ * Holds mob template effect data read from the json files.
+ */
 public class MobTemplateEffect {
 
   public String id;

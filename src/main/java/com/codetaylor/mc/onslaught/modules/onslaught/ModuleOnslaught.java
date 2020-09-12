@@ -25,7 +25,6 @@ import com.codetaylor.mc.onslaught.modules.onslaught.event.*;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionCounter;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionKillCountUpdater;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionSpawnDataConverter;
-import com.codetaylor.mc.onslaught.modules.onslaught.lib.TickIntervalCounter;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.SpawnSampler;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.predicate.SpawnPredicateFactory;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.selector.InvasionSelector;
@@ -127,14 +126,16 @@ public class ModuleOnslaught
     // -------------------------------------------------------------------------
 
     MinecraftForge.EVENT_BUS.register(new EntityAIInjectionEventHandler(
-        new EntityAIPlayerTargetInjector(),
-        new EntityAIChaseLongDistanceInjector(),
-        new EntityAIMiningInjector(),
-        new EntityAIAttackMeleeInjector(),
-        new EntityAICounterAttackInjector(),
-        new EntityAIExplodeWhenStuckInjector(),
-        new EntityAILungeInjector(),
-        new EntityAIAntiAirInjector()
+        new EntityAIInjectorBase[]{
+            new EntityAIPlayerTargetInjector(),
+            new EntityAIChaseLongDistanceInjector(),
+            new EntityAIMiningInjector(),
+            new EntityAIAttackMeleeInjector(),
+            new EntityAICounterAttackInjector(),
+            new EntityAIExplodeWhenStuckInjector(),
+            new EntityAILungeInjector(),
+            new EntityAIAntiAirInjector()
+        }
     ));
 
     // -------------------------------------------------------------------------

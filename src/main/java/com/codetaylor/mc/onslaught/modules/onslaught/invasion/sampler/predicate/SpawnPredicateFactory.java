@@ -6,6 +6,9 @@ import net.minecraft.entity.EntityLiving;
 
 import java.util.function.Predicate;
 
+/**
+ * Responsible for creating a spawn predicate from the given {@link InvasionPlayerData.InvasionData.SpawnData}.
+ */
 public class SpawnPredicateFactory {
 
   public Predicate<EntityLiving> create(InvasionPlayerData.InvasionData.SpawnData spawnData) {

@@ -11,6 +11,10 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
+/**
+ * Packet sent to the client containing relative motion values. Updates the
+ * player's motion values and sets a value on the player's anti-air capability.
+ */
 public class SCPacketAntiAir
     implements IMessage,
     IMessageHandler<SCPacketAntiAir, SCPacketAntiAir> {

@@ -4,6 +4,9 @@ import com.codetaylor.mc.onslaught.modules.onslaught.data.Tag;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.nbt.NBTTagCompound;
 
+/**
+ * Contains common methods used by all subclasses.
+ */
 public abstract class EntityAIInjectorBase {
 
   public abstract void inject(EntityLiving entity, NBTTagCompound tag);

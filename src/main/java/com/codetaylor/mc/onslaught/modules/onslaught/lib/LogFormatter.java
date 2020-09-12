@@ -7,6 +7,9 @@ import java.util.Date;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
+/**
+ * Responsible for formatting log output.
+ */
 public class LogFormatter
     extends Formatter {
 

@@ -15,7 +15,7 @@ import java.util.UUID;
 import java.util.function.Function;
 
 /**
- * Responsible for persisting invasion data.
+ * Responsible for persisting all players' invasion data.
  */
 public class InvasionGlobalSavedData
     extends WorldSavedData

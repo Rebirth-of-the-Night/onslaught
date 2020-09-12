@@ -10,6 +10,9 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
 
+/**
+ * Responsible for sending deferred spawn particle packets to the client.
+ */
 public class DeferredSpawnClientParticlePacketSender
     implements InvasionUpdateEventHandler.IInvasionUpdateComponent {
 

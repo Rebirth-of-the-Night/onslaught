@@ -6,6 +6,9 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.UUID;
 
+/**
+ * Responsible for containing all the data necessary to perform a deferred spawn.
+ */
 public class DeferredSpawnData {
 
   private final EntityLiving entityLiving;

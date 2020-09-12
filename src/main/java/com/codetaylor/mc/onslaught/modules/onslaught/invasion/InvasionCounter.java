@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
 
+/**
+ * Responsible for counting active invasions.
+ */
 public class InvasionCounter {
 
   public int count(Function<UUID, InvasionPlayerData.EnumInvasionState> invasionStateFunction, List<EntityPlayerMP> players) {

@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Responsible for containing and serializing the state of a player's invasion.
+ */
 public class InvasionPlayerData
     implements INBTSerializable<NBTTagCompound> {
 

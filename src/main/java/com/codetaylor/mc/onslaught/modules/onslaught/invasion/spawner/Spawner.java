@@ -11,6 +11,9 @@ import net.minecraft.server.management.PlayerList;
 import java.util.List;
 import java.util.function.Function;
 
+/**
+ * Responsible for triggering spawn attempts for active invasions.
+ */
 public class Spawner
     implements InvasionUpdateEventHandler.IInvasionUpdateComponent {
 

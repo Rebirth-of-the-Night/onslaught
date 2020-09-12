@@ -2,6 +2,13 @@ package com.codetaylor.mc.onslaught.modules.onslaught.lib;
 
 public final class Util {
 
+  /**
+   * Evaluates the input array as either a single, fixed value or two values: a
+   * min and max. Returns an array of two values, min and max.
+   *
+   * @param range the input array
+   * @return an array of two values, min and max
+   */
   public static int[] evaluateRangeArray(int[] range) {
 
     int[] result = new int[2];

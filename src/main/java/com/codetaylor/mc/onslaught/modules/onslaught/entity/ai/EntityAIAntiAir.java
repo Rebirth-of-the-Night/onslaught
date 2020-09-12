@@ -8,6 +8,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
 
+/**
+ * Responsible for pulling players down to the owner's Y level.
+ */
 public class EntityAIAntiAir
     extends EntityAIBase {
 

@@ -5,6 +5,10 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 
+/**
+ * Contains static methods to assist in unreflecting getters and setters using
+ * {@link MethodHandle}s.
+ */
 public final class MethodHandleHelper {
 
   public static MethodHandle unreflectGetter(Class<?> c, String field) {

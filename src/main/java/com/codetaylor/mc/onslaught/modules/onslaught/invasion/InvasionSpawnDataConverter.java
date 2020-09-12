@@ -4,6 +4,10 @@ import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTempl
 
 import java.util.Arrays;
 
+/**
+ * Responsible for converting {@link InvasionTemplateWave.Spawn} template data
+ * into {@link InvasionPlayerData.InvasionData.SpawnData} player data.
+ */
 public class InvasionSpawnDataConverter {
 
   public InvasionPlayerData.InvasionData.SpawnData convert(InvasionTemplateWave.Spawn spawn) {

@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import java.util.function.Predicate;
 
 /**
- * Responsible for testing a pillar of blocks for a valid ground spawn location.
+ * Responsible for testing a pillar of blocks for a valid air spawn location.
  */
 public class SpawnPredicateAir
     implements Predicate<EntityLiving> {
