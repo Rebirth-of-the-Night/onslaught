@@ -7,8 +7,8 @@ import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.AntiAirPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.IAntiAirPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandReload;
+import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandStartInvasion;
 import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandSummon;
-import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandTest;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.DataLoader;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.DataStore;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplate;
@@ -35,6 +35,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.lib.JsonFileLocator;
 import com.codetaylor.mc.onslaught.modules.onslaught.loot.CustomLootTableManagerInjector;
 import com.codetaylor.mc.onslaught.modules.onslaught.loot.ExtraLootInjector;
 import com.codetaylor.mc.onslaught.modules.onslaught.packet.SCPacketAntiAir;
+import net.minecraft.command.CommandBase;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -45,10 +46,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Function;
 import java.util.logging.Level;
 
@@ -57,15 +55,20 @@ public class ModuleOnslaught
 
   public static final String MOD_ID = ModOnslaught.MOD_ID;
 
+  /**
+   * Holds a static reference to the modules packet service.
+   */
   public static IPacketService PACKET_SERVICE;
 
-  private final DataStore dataStore;
-  private DataLoader dataLoader;
+  /**
+   * Holds the commands constructed during pre-init for registration with the
+   * server when it starts.
+   */
+  private CommandBase[] commands;
 
   public ModuleOnslaught() {
 
     super(0, MOD_ID);
-    this.dataStore = new DataStore();
 
     PACKET_SERVICE = this.enableNetwork();
   }
@@ -75,6 +78,12 @@ public class ModuleOnslaught
 
     super.onPreInitializationEvent(event);
 
+    // -------------------------------------------------------------------------
+
+    final DataStore dataStore = new DataStore();
+
+    // -------------------------------------------------------------------------
+
     File modConfigurationDirectory = event.getModConfigurationDirectory();
     Path modConfigurationPath = modConfigurationDirectory.toPath();
     FilePathCreator filePathCreator = new FilePathCreator();
@@ -83,9 +92,9 @@ public class ModuleOnslaught
     // - Json Templates
     // -------------------------------------------------------------------------
 
-    this.dataLoader = new DataLoader(
-        this.dataStore::setMobTemplateRegistry,
-        this.dataStore::setInvasionTemplateRegistry,
+    DataLoader dataLoader = new DataLoader(
+        dataStore::setMobTemplateRegistry,
+        dataStore::setInvasionTemplateRegistry,
         modConfigurationPath,
         filePathCreator,
         new JsonFileLocator(),
@@ -96,7 +105,8 @@ public class ModuleOnslaught
             new InvasionTemplateAdapter()
         )
     );
-    this.dataLoader.load();
+
+    dataLoader.load();
 
     // -------------------------------------------------------------------------
     // - Extra Loot Injection
@@ -157,10 +167,10 @@ public class ModuleOnslaught
     // -------------------------------------------------------------------------
 
     /*
-    This is the set of players with an expired invasion timer. A LinkedHashSet is
-    used to ensure retention of insertion order and eliminate duplicate elements.
+     This is the set of players with an expired invasion timer. A LinkedHashSet is
+     used to ensure retention of insertion order and eliminate duplicate elements.
      */
-    LinkedHashSet<UUID> eligiblePlayers = new LinkedHashSet<>();
+    Set<UUID> eligiblePlayers = new LinkedHashSet<>();
 
     /*
     List of deferred spawns.
@@ -173,8 +183,8 @@ public class ModuleOnslaught
         spawnPredicateFactory
     );
 
-    Function<String, InvasionTemplate> idToInvasionTemplateFunction = (id -> this.dataStore.getInvasionTemplateRegistry().get(id));
-    Function<String, MobTemplate> idToMobTemplateFunction = (id -> this.dataStore.getMobTemplateRegistry().get(id));
+    Function<String, InvasionTemplate> idToInvasionTemplateFunction = (id -> dataStore.getInvasionTemplateRegistry().get(id));
+    Function<String, MobTemplate> idToMobTemplateFunction = (id -> dataStore.getMobTemplateRegistry().get(id));
 
     MobTemplateEntityFactory mobTemplateEntityFactory = new MobTemplateEntityFactory(
         new EffectApplicator(),
@@ -183,6 +193,11 @@ public class ModuleOnslaught
 
     EntityInvasionDataInjector entityInvasionDataInjector = new EntityInvasionDataInjector();
     InvasionSpawnDataConverter invasionSpawnDataConverter = new InvasionSpawnDataConverter();
+
+    InvasionPlayerDataFactory invasionPlayerDataFactory = new InvasionPlayerDataFactory(
+        idToInvasionTemplateFunction,
+        invasionSpawnDataConverter
+    );
 
     MinecraftForge.EVENT_BUS.register(
         new InvasionUpdateEventHandler(
@@ -202,14 +217,11 @@ public class ModuleOnslaught
                     new StateChangeEligibleToPending(
                         eligiblePlayers,
                         new InvasionSelector(
-                            () -> this.dataStore.getInvasionTemplateRegistry().getAll().stream(),
-                            id -> this.dataStore.getInvasionTemplateRegistry().has(id),
+                            () -> dataStore.getInvasionTemplateRegistry().getAll().stream(),
+                            id -> dataStore.getInvasionTemplateRegistry().has(id),
                             () -> ModuleOnslaughtConfig.INVASION.DEFAULT_FALLBACK_INVASION
                         ),
-                        new InvasionPlayerDataFactory(
-                            idToInvasionTemplateFunction,
-                            invasionSpawnDataConverter
-                        ),
+                        invasionPlayerDataFactory,
                         () -> ModuleOnslaughtConfig.INVASION.MAX_CONCURRENT_INVASIONS,
                         new InvasionCounter()
                     )
@@ -295,6 +307,31 @@ public class ModuleOnslaught
     MinecraftForge.EVENT_BUS.register(new InvasionKillCountUpdateEventHandler(
         new InvasionKillCountUpdater()
     ));
+
+    // -------------------------------------------------------------------------
+    // - Commands
+    // -------------------------------------------------------------------------
+
+    /*
+    Commands are constructed in pre-init to leverage dependency injection.
+     */
+
+    this.commands = new CommandBase[]{
+        new CommandSummon(
+            idToMobTemplateFunction,
+            () -> dataStore.getMobTemplateRegistry().getIdList(),
+            mobTemplateEntityFactory
+        ),
+        new CommandReload(
+            dataLoader
+        ),
+        new CommandStartInvasion(
+            idToInvasionTemplateFunction,
+            () -> dataStore.getInvasionTemplateRegistry().getIdList(),
+            invasionPlayerDataFactory,
+            eligiblePlayers
+        )
+    };
   }
 
   @SideOnly(Side.CLIENT)
@@ -329,19 +366,8 @@ public class ModuleOnslaught
     // - Command Registration
     // -------------------------------------------------------------------------
 
-    event.registerServerCommand(new CommandSummon(
-        id -> this.dataStore.getMobTemplateRegistry().get(id),
-        () -> this.dataStore.getMobTemplateRegistry().getIdList(),
-        new MobTemplateEntityFactory(
-            new EffectApplicator(),
-            new LootTableApplicator()
-        )
-    ));
-
-    event.registerServerCommand(new CommandReload(
-        this.dataLoader
-    ));
-
-    event.registerServerCommand(new CommandTest());
+    for (CommandBase command : this.commands) {
+      event.registerServerCommand(command);
+    }
   }
 }

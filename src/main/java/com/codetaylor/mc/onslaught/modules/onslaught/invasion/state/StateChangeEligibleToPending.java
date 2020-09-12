@@ -80,8 +80,23 @@ public class StateChangeEligibleToPending
           continue;
         }
 
+        /*
+        25000 // current time
+        25000 + 24000 = 49000
+        49000 % 24000 = 1000
+        49000 - 1000 = 48000 // start of next day
+
+        invasion starts at 13000
+        24000 - 13000 = 11000
+
+        49000 - (1000 + 11000) = 37000
+        37000 % 24000 = 13000 // ok
+         */
+        long invasionTimestamp = (worldTime + 24000) - (((worldTime + 24000) % 24000) + 11000);
+
         InvasionPlayerData data = invasionGlobalSavedData.getPlayerData(uuid);
-        InvasionPlayerData.InvasionData invasionData = this.invasionPlayerDataFactory.create(invasionTemplateId, player.getRNG(), worldTime);
+        InvasionPlayerData.InvasionData invasionData = this.invasionPlayerDataFactory
+            .create(invasionTemplateId, player.getRNG(), invasionTimestamp);
         data.setInvasionState(InvasionPlayerData.EnumInvasionState.Pending);
         data.setInvasionData(invasionData);
         invasionGlobalSavedData.markDirty();

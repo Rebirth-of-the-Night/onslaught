@@ -32,7 +32,7 @@ public class InvasionPlayerDataFactory {
   }
 
   @Nullable
-  public InvasionPlayerData.InvasionData create(String templateId, Random random, long worldTime) {
+  public InvasionPlayerData.InvasionData create(String templateId, Random random, long timestamp) {
 
     InvasionTemplate invasionTemplate = this.invasionTemplateFunction.apply(templateId);
 
@@ -43,20 +43,7 @@ public class InvasionPlayerDataFactory {
 
     InvasionPlayerData.InvasionData invasionData = new InvasionPlayerData.InvasionData();
     invasionData.setInvasionTemplateId(templateId);
-
-    /*
-    25000 // current time
-    25000 + 24000 = 49000
-    49000 % 24000 = 1000
-    49000 - 1000 = 48000 // start of next day
-
-    invasion starts at 13000
-    24000 - 13000 = 11000
-
-    49000 - (1000 + 11000) = 37000
-    37000 % 24000 = 13000 // ok
-     */
-    invasionData.setTimestamp((worldTime + 24000) - (((worldTime + 24000) % 24000) + 11000));
+    invasionData.setTimestamp(timestamp);
 
     for (InvasionTemplateWave waveTemplate : invasionTemplate.waves) {
       invasionData.getWaveDataList().add(this.createWaveData(waveTemplate, random));

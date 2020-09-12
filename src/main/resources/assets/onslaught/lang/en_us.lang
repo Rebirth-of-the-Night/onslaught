@@ -1,5 +1,12 @@
 commands.onslaught.reload.usage=/oreload
 commands.onslaught.reload.success=Templates successfully reloaded
 commands.onslaught.reload.failed=Failed to reload templates, see log for details
+
 commands.onslaught.summon.usage=/osummon <template_id> [x] [y] [z]
-commands.onslaught.summon.invalid.template.id=Invalid template id: %s
+commands.onslaught.summon.invalid.template.id=Invalid mob template id: %s
+
+commands.onslaught.start.usage=/ostart <template_id> [player|number]
+commands.onslaught.start.invalid.template.id=Invalid invasion template id: %s
+commands.onslaught.start.already.active=Player %s already has active invasion
+commands.onslaught.start.starting=Starting invasion for player %s with template %s
+commands.onslaught.start.skipping=Skipping player %s, already has an active invasion
