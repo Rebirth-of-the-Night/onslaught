@@ -1,9 +1,9 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.command;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplate;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionCommandStarter;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.state.InvasionPlayerDataFactory;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -17,7 +17,10 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -33,21 +36,19 @@ public class CommandStartInvasion
   private static final String INVASION_STARTING = "commands.onslaught.start.starting";
   private static final String INVASION_SKIPPING = "commands.onslaught.start.skipping";
 
+  private final InvasionCommandStarter invasionCommandStarter;
   private final Function<String, InvasionTemplate> invasionTemplateFunction;
   private final Supplier<List<String>> invasionTemplateIdListSupplier;
-  private final InvasionPlayerDataFactory invasionPlayerDataFactory;
-  private final Set<UUID> eligiblePlayers;
 
   public CommandStartInvasion(
+      InvasionCommandStarter invasionCommandStarter,
       Function<String, InvasionTemplate> invasionTemplateFunction,
-      Supplier<List<String>> invasionTemplateIdListSupplier,
-      InvasionPlayerDataFactory invasionPlayerDataFactory, Set<UUID> eligiblePlayers
+      Supplier<List<String>> invasionTemplateIdListSupplier
   ) {
 
+    this.invasionCommandStarter = invasionCommandStarter;
     this.invasionTemplateFunction = invasionTemplateFunction;
     this.invasionTemplateIdListSupplier = invasionTemplateIdListSupplier;
-    this.invasionPlayerDataFactory = invasionPlayerDataFactory;
-    this.eligiblePlayers = eligiblePlayers;
   }
 
   @Nonnull
@@ -145,26 +146,12 @@ public class CommandStartInvasion
       EntityPlayerMP player
   ) throws CommandException {
 
-    World world = player.world;
-    InvasionGlobalSavedData invasionGlobalSavedData = InvasionGlobalSavedData.get(world);
-    UUID uuid = player.getUniqueID();
-    InvasionPlayerData data = invasionGlobalSavedData.getPlayerData(uuid);
+    if (this.invasionCommandStarter.startInvasionForPlayer(templateId, player)) {
+      sender.sendMessage(new TextComponentTranslation(INVASION_STARTING, player.getName(), templateId));
 
-    // Skip players with an active invasion, notify command sender.
-    if (data.getInvasionState() == InvasionPlayerData.EnumInvasionState.Active) {
+    } else {
       throw new CommandException(INVASION_ALREADY_ACTIVE, player.getName());
     }
-
-    InvasionPlayerData.InvasionData invasionData = this.invasionPlayerDataFactory
-        .create(templateId, player.getRNG(), 0);
-    data.setInvasionState(InvasionPlayerData.EnumInvasionState.Active);
-    data.setInvasionData(invasionData);
-    invasionGlobalSavedData.markDirty();
-
-    // Remove the player from the eligible set
-    this.eligiblePlayers.remove(uuid);
-
-    sender.sendMessage(new TextComponentTranslation(INVASION_STARTING, player.getName(), templateId));
   }
 
   @ParametersAreNonnullByDefault

@@ -22,6 +22,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.EffectApplic
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.LootTableApplicator;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactory;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.*;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionCommandStarter;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionCounter;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionKillCountUpdater;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionSpawnDataConverter;
@@ -318,6 +319,11 @@ public class ModuleOnslaught
     Commands are constructed in pre-init to leverage dependency injection.
      */
 
+    InvasionCommandStarter invasionCommandStarter = new InvasionCommandStarter(
+        invasionPlayerDataFactory,
+        eligiblePlayers
+    );
+
     this.commands = new CommandBase[]{
         new CommandSummon(
             idToMobTemplateFunction,
@@ -328,10 +334,9 @@ public class ModuleOnslaught
             dataLoader
         ),
         new CommandStartInvasion(
+            invasionCommandStarter,
             idToInvasionTemplateFunction,
-            () -> dataStore.getInvasionTemplateRegistry().getIdList(),
-            invasionPlayerDataFactory,
-            eligiblePlayers
+            () -> dataStore.getInvasionTemplateRegistry().getIdList()
         )
     };
   }
