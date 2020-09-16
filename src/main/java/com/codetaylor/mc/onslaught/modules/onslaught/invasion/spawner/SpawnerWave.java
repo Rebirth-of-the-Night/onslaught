@@ -4,7 +4,7 @@ import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateWave;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionSpawnDataConverter;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionSpawnDataConverterFunction;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -26,19 +26,19 @@ public class SpawnerWave {
 
   private static final int MAX_ALLOWED_SPAWN_TIME_MS = 500;
 
-  private final InvasionSpawnDataConverter invasionSpawnDataConverter;
+  private final InvasionSpawnDataConverterFunction invasionSpawnDataConverterFunction;
   private final SpawnerMob spawnerMob;
   private final SpawnerMobForced spawnerMobForced;
   private final ActiveMobCounter activeMobCounter;
 
   public SpawnerWave(
-      InvasionSpawnDataConverter invasionSpawnDataConverter,
+      InvasionSpawnDataConverterFunction invasionSpawnDataConverterFunction,
       SpawnerMob spawnerMob,
       SpawnerMobForced spawnerMobForced,
       ActiveMobCounter activeMobCounter
   ) {
 
-    this.invasionSpawnDataConverter = invasionSpawnDataConverter;
+    this.invasionSpawnDataConverterFunction = invasionSpawnDataConverterFunction;
     this.spawnerMob = spawnerMob;
     this.spawnerMobForced = spawnerMobForced;
     this.activeMobCounter = activeMobCounter;
@@ -86,7 +86,7 @@ public class SpawnerWave {
 
         if (this.spawnerMob.attemptSpawnMob(world, position, uuid, waveIndex, mobIndex, mobData.getMobTemplateId(), spawnData)
             || (spawnData.force && this.spawnerMobForced.attemptSpawnMob(world, position, uuid, waveIndex, mobIndex, mobData.getMobTemplateId(), spawnData, secondaryMob))
-            || this.spawnerMob.attemptSpawnMob(world, position, uuid, waveIndex, mobIndex, secondaryMob.id, this.invasionSpawnDataConverter.convert(secondaryMob.spawn))) {
+            || this.spawnerMob.attemptSpawnMob(world, position, uuid, waveIndex, mobIndex, secondaryMob.id, this.invasionSpawnDataConverterFunction.apply(secondaryMob.spawn))) {
 
           remainingMobs -= 1;
 

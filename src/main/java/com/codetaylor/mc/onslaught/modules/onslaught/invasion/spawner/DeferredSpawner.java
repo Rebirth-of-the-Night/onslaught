@@ -8,7 +8,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateE
 import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionUpdateEventHandler;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionSpawnDataConverter;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionSpawnDataConverterFunction;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.predicate.SpawnPredicateFactory;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -35,7 +35,7 @@ public class DeferredSpawner
 
   private final EntityInvasionDataInjector entityInvasionDataInjector;
   private final SpawnPredicateFactory spawnPredicateFactory;
-  private final InvasionSpawnDataConverter invasionSpawnDataConverter;
+  private final InvasionSpawnDataConverterFunction invasionSpawnDataConverterFunction;
   private final Function<String, MobTemplate> mobTemplateFunction;
   private final MobTemplateEntityFactory mobTemplateEntityFactory;
   private final List<DeferredSpawnData> deferredSpawnDataList;
@@ -43,7 +43,7 @@ public class DeferredSpawner
   public DeferredSpawner(
       EntityInvasionDataInjector entityInvasionDataInjector,
       SpawnPredicateFactory spawnPredicateFactory,
-      InvasionSpawnDataConverter invasionSpawnDataConverter,
+      InvasionSpawnDataConverterFunction invasionSpawnDataConverterFunction,
       Function<String, MobTemplate> mobTemplateFunction,
       MobTemplateEntityFactory mobTemplateEntityFactory,
       List<DeferredSpawnData> deferredSpawnDataList
@@ -51,7 +51,7 @@ public class DeferredSpawner
 
     this.entityInvasionDataInjector = entityInvasionDataInjector;
     this.spawnPredicateFactory = spawnPredicateFactory;
-    this.invasionSpawnDataConverter = invasionSpawnDataConverter;
+    this.invasionSpawnDataConverterFunction = invasionSpawnDataConverterFunction;
     this.mobTemplateFunction = mobTemplateFunction;
     this.mobTemplateEntityFactory = mobTemplateEntityFactory;
     this.deferredSpawnDataList = deferredSpawnDataList;
@@ -115,7 +115,7 @@ public class DeferredSpawner
       EntityLiving deferredSpawnDataEntity = deferredSpawnData.getEntityLiving();
       entity.setPosition(deferredSpawnDataEntity.posX, deferredSpawnDataEntity.posY, deferredSpawnDataEntity.posZ);
 
-      InvasionPlayerData.InvasionData.SpawnData spawnData = this.invasionSpawnDataConverter.convert(secondaryMob.spawn);
+      InvasionPlayerData.InvasionData.SpawnData spawnData = this.invasionSpawnDataConverterFunction.apply(secondaryMob.spawn);
       Predicate<EntityLiving> predicate = this.spawnPredicateFactory.create(spawnData);
 
       if (!predicate.test(entity)) {

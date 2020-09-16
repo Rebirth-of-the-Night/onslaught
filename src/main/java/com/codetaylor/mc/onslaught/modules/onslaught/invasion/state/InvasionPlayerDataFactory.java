@@ -5,7 +5,7 @@ import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateWave;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionSpawnDataConverter;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionSpawnDataConverterFunction;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -20,15 +20,15 @@ import java.util.logging.Level;
 public class InvasionPlayerDataFactory {
 
   private final Function<String, InvasionTemplate> invasionTemplateFunction;
-  private final InvasionSpawnDataConverter invasionSpawnDataConverter;
+  private final InvasionSpawnDataConverterFunction invasionSpawnDataConverterFunction;
 
   public InvasionPlayerDataFactory(
       Function<String, InvasionTemplate> invasionTemplateFunction,
-      InvasionSpawnDataConverter invasionSpawnDataConverter
+      InvasionSpawnDataConverterFunction invasionSpawnDataConverterFunction
   ) {
 
     this.invasionTemplateFunction = invasionTemplateFunction;
-    this.invasionSpawnDataConverter = invasionSpawnDataConverter;
+    this.invasionSpawnDataConverterFunction = invasionSpawnDataConverterFunction;
   }
 
   @Nullable
@@ -77,7 +77,7 @@ public class InvasionPlayerDataFactory {
     mobData.setMobTemplateId(mob.id);
     mobData.setTotalCount(this.evaluateRange(mob.count, random));
     mobData.setKilledCount(0);
-    mobData.setSpawnData(this.invasionSpawnDataConverter.convert(mob.spawn));
+    mobData.setSpawnData(this.invasionSpawnDataConverterFunction.apply(mob.spawn));
     return mobData;
   }
 

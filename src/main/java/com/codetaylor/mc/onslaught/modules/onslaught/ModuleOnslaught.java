@@ -25,7 +25,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.event.*;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionCommandStarter;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionCounter;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionKillCountUpdater;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionSpawnDataConverter;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionSpawnDataConverterFunction;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.SpawnSampler;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.predicate.SpawnPredicateFactory;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.selector.InvasionSelectorFunction;
@@ -193,11 +193,11 @@ public class ModuleOnslaught
     );
 
     EntityInvasionDataInjector entityInvasionDataInjector = new EntityInvasionDataInjector();
-    InvasionSpawnDataConverter invasionSpawnDataConverter = new InvasionSpawnDataConverter();
+    InvasionSpawnDataConverterFunction invasionSpawnDataConverterFunction = new InvasionSpawnDataConverterFunction();
 
     InvasionPlayerDataFactory invasionPlayerDataFactory = new InvasionPlayerDataFactory(
         idToInvasionTemplateFunction,
-        invasionSpawnDataConverter
+        invasionSpawnDataConverterFunction
     );
 
     MinecraftForge.EVENT_BUS.register(
@@ -252,7 +252,7 @@ public class ModuleOnslaught
                     new Spawner(
                         idToInvasionTemplateFunction,
                         new SpawnerWave(
-                            invasionSpawnDataConverter,
+                            invasionSpawnDataConverterFunction,
                             new SpawnerMob(
                                 spawnSampler,
                                 idToMobTemplateFunction,
@@ -278,7 +278,7 @@ public class ModuleOnslaught
                     new DeferredSpawner(
                         entityInvasionDataInjector,
                         spawnPredicateFactory,
-                        invasionSpawnDataConverter,
+                        invasionSpawnDataConverterFunction,
                         idToMobTemplateFunction,
                         mobTemplateEntityFactory,
                         deferredSpawnDataList
