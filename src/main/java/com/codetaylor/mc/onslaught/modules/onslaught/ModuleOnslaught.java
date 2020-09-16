@@ -8,6 +8,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.capability.AntiAirPlayerDat
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.IAntiAirPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandReload;
 import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandStartInvasion;
+import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandStartRandomInvasion;
 import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandSummon;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.DataLoader;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.DataStore;
@@ -200,6 +201,12 @@ public class ModuleOnslaught
         invasionSpawnDataConverterFunction
     );
 
+    InvasionSelectorFunction invasionSelectorFunction = new InvasionSelectorFunction(
+        () -> dataStore.getInvasionTemplateRegistry().getAll().stream(),
+        id -> dataStore.getInvasionTemplateRegistry().has(id),
+        () -> ModuleOnslaughtConfig.INVASION.DEFAULT_FALLBACK_INVASION
+    );
+
     MinecraftForge.EVENT_BUS.register(
         new InvasionUpdateEventHandler(
             new InvasionUpdateEventHandler.IInvasionUpdateComponent[]{
@@ -217,11 +224,7 @@ public class ModuleOnslaught
                     15,
                     new StateChangeEligibleToPending(
                         eligiblePlayers,
-                        new InvasionSelectorFunction(
-                            () -> dataStore.getInvasionTemplateRegistry().getAll().stream(),
-                            id -> dataStore.getInvasionTemplateRegistry().has(id),
-                            () -> ModuleOnslaughtConfig.INVASION.DEFAULT_FALLBACK_INVASION
-                        ),
+                        invasionSelectorFunction,
                         invasionPlayerDataFactory,
                         () -> ModuleOnslaughtConfig.INVASION.MAX_CONCURRENT_INVASIONS,
                         new InvasionCounter()
@@ -337,6 +340,10 @@ public class ModuleOnslaught
             invasionCommandStarter,
             idToInvasionTemplateFunction,
             () -> dataStore.getInvasionTemplateRegistry().getIdList()
+        ),
+        new CommandStartRandomInvasion(
+            invasionCommandStarter,
+            invasionSelectorFunction
         )
     };
   }
