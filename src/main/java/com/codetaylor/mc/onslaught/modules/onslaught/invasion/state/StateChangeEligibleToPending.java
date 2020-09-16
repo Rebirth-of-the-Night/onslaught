@@ -6,7 +6,6 @@ import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionUpdateEventHa
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionCounter;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.selector.InvasionSelector;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.management.PlayerList;
 
@@ -14,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.function.IntSupplier;
 import java.util.logging.Level;
 
@@ -24,14 +24,14 @@ public class StateChangeEligibleToPending
     implements InvasionUpdateEventHandler.IInvasionUpdateComponent {
 
   private final Set<UUID> eligiblePlayers;
-  private final InvasionSelector invasionSelector;
+  private final Function<EntityPlayerMP, String> invasionSelector;
   private final InvasionPlayerDataFactory invasionPlayerDataFactory;
   private final IntSupplier maxConcurrentInvasionsSupplier;
   private final InvasionCounter invasionCounter;
 
   public StateChangeEligibleToPending(
       Set<UUID> eligiblePlayers,
-      InvasionSelector invasionSelector,
+      Function<EntityPlayerMP, String> invasionSelector,
       InvasionPlayerDataFactory invasionPlayerDataFactory,
       IntSupplier maxConcurrentInvasionsSupplier,
       InvasionCounter invasionCounter
@@ -73,7 +73,7 @@ public class StateChangeEligibleToPending
       // players list.
       //noinspection ConstantConditions
       if (player != null) {
-        String invasionTemplateId = this.invasionSelector.selectInvasionForPlayer(player);
+        String invasionTemplateId = this.invasionSelector.apply(player);
 
         if (invasionTemplateId == null) {
           ModOnslaught.LOG.log(Level.SEVERE, "Unable to select invasion for player: " + player.getName());

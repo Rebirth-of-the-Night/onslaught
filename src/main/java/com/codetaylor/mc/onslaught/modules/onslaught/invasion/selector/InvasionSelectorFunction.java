@@ -4,12 +4,13 @@ import com.codetaylor.mc.athenaeum.util.WeightedPicker;
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplate;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.logging.Level;
@@ -18,15 +19,16 @@ import java.util.stream.Stream;
 /**
  * Responsible for selecting an invasion for the given player.
  */
-public class InvasionSelector {
+public class InvasionSelectorFunction
+    implements Function<EntityPlayerMP, String> {
 
-  private static final Logger LOGGER = LogManager.getLogger(InvasionSelector.class);
+  private static final Logger LOGGER = LogManager.getLogger(InvasionSelectorFunction.class);
 
   private final Supplier<Stream<Map.Entry<String, InvasionTemplate>>> invasionTemplateStreamSupplier;
   private final Predicate<String> invasionTemplateExistsPredicate;
   private final Supplier<String> fallbackInvasionSupplier;
 
-  public InvasionSelector(
+  public InvasionSelectorFunction(
       Supplier<Stream<Map.Entry<String, InvasionTemplate>>> invasionTemplateStreamSupplier,
       Predicate<String> invasionTemplateExistsPredicate,
       Supplier<String> fallbackInvasionSupplier
@@ -45,7 +47,8 @@ public class InvasionSelector {
    * @return the invasion id
    */
   @Nullable
-  public String selectInvasionForPlayer(EntityPlayer player) {
+  @Override
+  public String apply(EntityPlayerMP player) {
 
     final WeightedPicker<Map.Entry<String, InvasionTemplate>> picker = new WeightedPicker<>(player.getRNG());
 

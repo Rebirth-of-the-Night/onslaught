@@ -28,7 +28,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionKillCountU
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionSpawnDataConverter;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.SpawnSampler;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.predicate.SpawnPredicateFactory;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.selector.InvasionSelector;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.selector.InvasionSelectorFunction;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner.*;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.state.*;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.FilePathCreator;
@@ -217,7 +217,7 @@ public class ModuleOnslaught
                     15,
                     new StateChangeEligibleToPending(
                         eligiblePlayers,
-                        new InvasionSelector(
+                        new InvasionSelectorFunction(
                             () -> dataStore.getInvasionTemplateRegistry().getAll().stream(),
                             id -> dataStore.getInvasionTemplateRegistry().has(id),
                             () -> ModuleOnslaughtConfig.INVASION.DEFAULT_FALLBACK_INVASION
