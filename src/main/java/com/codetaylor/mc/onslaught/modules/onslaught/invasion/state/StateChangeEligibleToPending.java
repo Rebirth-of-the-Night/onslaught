@@ -96,7 +96,7 @@ public class StateChangeEligibleToPending
 
         InvasionPlayerData data = invasionGlobalSavedData.getPlayerData(uuid);
         InvasionPlayerData.InvasionData invasionData = this.invasionPlayerDataFactory
-            .create(invasionTemplateId, player.getRNG(), invasionTimestamp);
+            .create(invasionTemplateId, UUID.randomUUID(), player.getRNG(), invasionTimestamp);
         data.setInvasionState(InvasionPlayerData.EnumInvasionState.Pending);
         data.setInvasionData(invasionData);
         invasionGlobalSavedData.markDirty();

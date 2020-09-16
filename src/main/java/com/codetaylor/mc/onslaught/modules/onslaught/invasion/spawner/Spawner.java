@@ -66,7 +66,7 @@ public class Spawner
 
         if (waveData.getDelayTicks() <= 0) {
 
-          if (this.spawnerWave.attemptSpawnWave(start, player, waveIndex, waveData, templateWave.secondaryMob)) {
+          if (this.spawnerWave.attemptSpawnWave(start, player, invasionData.getInvasionUuid(), waveIndex, waveData, templateWave.secondaryMob)) {
             return;
           }
         }

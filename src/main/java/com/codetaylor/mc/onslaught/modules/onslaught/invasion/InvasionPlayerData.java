@@ -15,6 +15,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Responsible for containing and serializing the state of a player's invasion.
@@ -191,6 +192,11 @@ public class InvasionPlayerData
     private String invasionTemplateId;
 
     /**
+     * The unique id for the invasion.
+     */
+    private UUID invasionUuid;
+
+    /**
      * The timestamp after which the invasion becomes active.
      */
     private long timestamp;
@@ -208,6 +214,16 @@ public class InvasionPlayerData
     public void setInvasionTemplateId(String invasionTemplateId) {
 
       this.invasionTemplateId = invasionTemplateId;
+    }
+
+    public UUID getInvasionUuid() {
+
+      return this.invasionUuid;
+    }
+
+    public void setInvasionUuid(UUID invasionUuid) {
+
+      this.invasionUuid = invasionUuid;
     }
 
     public long getTimestamp() {
@@ -230,6 +246,7 @@ public class InvasionPlayerData
 
       return "InvasionData{" +
           "invasionTemplateId='" + this.invasionTemplateId + '\'' +
+          ", invasionUuid=" + this.invasionUuid +
           ", timestamp=" + this.timestamp +
           ", waveDataList=" + this.waveDataList +
           '}';
@@ -240,6 +257,7 @@ public class InvasionPlayerData
 
       NBTTagCompound tag = new NBTTagCompound();
       tag.setString("invasionTemplateId", this.invasionTemplateId);
+      tag.setString("invasionUuid", this.invasionUuid.toString());
       tag.setLong("timestamp", this.timestamp);
 
       NBTTagList tagList = new NBTTagList();
@@ -258,6 +276,7 @@ public class InvasionPlayerData
 
       this.invasionTemplateId = tag.getString("invasionTemplateId");
       this.timestamp = tag.getLong("timestamp");
+      this.invasionUuid = UUID.fromString(tag.getString("invasionUuid"));
 
       NBTTagList waveDataList = tag.getTagList("waveDataList", Constants.NBT.TAG_COMPOUND);
 
@@ -273,7 +292,7 @@ public class InvasionPlayerData
 
       private int delayTicks = 0;
 
-      private List<MobData> mobDataList = new ArrayList<>();
+      private final List<MobData> mobDataList = new ArrayList<>();
 
       public int getDelayTicks() {
 

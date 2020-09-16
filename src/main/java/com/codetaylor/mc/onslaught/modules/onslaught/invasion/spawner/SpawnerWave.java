@@ -50,6 +50,7 @@ public class SpawnerWave {
   public boolean attemptSpawnWave(
       long startTimestamp,
       EntityPlayerMP player,
+      UUID invasionUuid,
       int waveIndex,
       InvasionPlayerData.InvasionData.WaveData waveData,
       InvasionTemplateWave.SecondaryMob secondaryMob
@@ -66,10 +67,10 @@ public class SpawnerWave {
 
       World world = player.world;
       BlockPos position = player.getPosition();
-      UUID uuid = player.getUniqueID();
+      UUID playerUuid = player.getUniqueID();
       InvasionPlayerData.InvasionData.SpawnData spawnData = mobData.getSpawnData();
 
-      int activeMobs = this.activeMobCounter.countActiveMobs(world.loadedEntityList, uuid, waveIndex, mobIndex);
+      int activeMobs = this.activeMobCounter.countActiveMobs(world.loadedEntityList, invasionUuid, playerUuid, waveIndex, mobIndex);
       int remainingMobs = mobData.getTotalCount() - mobData.getKilledCount() - activeMobs;
 
       if (ModuleOnslaughtConfig.DEBUG.INVASION_SPAWNERS && remainingMobs > 0) {
@@ -84,9 +85,9 @@ public class SpawnerWave {
         // Try to force spawn (magic spawns)
         // Try to spawn secondary mob normally
 
-        if (this.spawnerMob.attemptSpawnMob(world, position, uuid, waveIndex, mobIndex, mobData.getMobTemplateId(), spawnData)
-            || (spawnData.force && this.spawnerMobForced.attemptSpawnMob(world, position, uuid, waveIndex, mobIndex, mobData.getMobTemplateId(), spawnData, secondaryMob))
-            || this.spawnerMob.attemptSpawnMob(world, position, uuid, waveIndex, mobIndex, secondaryMob.id, this.invasionSpawnDataConverterFunction.apply(secondaryMob.spawn))) {
+        if (this.spawnerMob.attemptSpawnMob(world, position, invasionUuid, playerUuid, waveIndex, mobIndex, mobData.getMobTemplateId(), spawnData)
+            || (spawnData.force && this.spawnerMobForced.attemptSpawnMob(world, position, invasionUuid, playerUuid, waveIndex, mobIndex, mobData.getMobTemplateId(), spawnData, secondaryMob))
+            || this.spawnerMob.attemptSpawnMob(world, position, invasionUuid, playerUuid, waveIndex, mobIndex, secondaryMob.id, this.invasionSpawnDataConverterFunction.apply(secondaryMob.spawn))) {
 
           remainingMobs -= 1;
 

@@ -14,7 +14,8 @@ public class DeferredSpawnData {
   private final EntityLiving entityLiving;
   private final int dimensionId;
   private final BlockPos pos;
-  private final UUID uuid;
+  private final UUID invasionUuid;
+  private final UUID playerUuid;
   private final int waveIndex;
   private final int mobIndex;
   private final InvasionTemplateWave.EnumSpawnType spawnType;
@@ -26,7 +27,8 @@ public class DeferredSpawnData {
       EntityLiving entityLiving,
       int dimensionId,
       BlockPos pos,
-      UUID uuid,
+      UUID invasionUuid,
+      UUID playerUuid,
       int waveIndex,
       int mobIndex,
       InvasionTemplateWave.EnumSpawnType spawnType,
@@ -37,7 +39,8 @@ public class DeferredSpawnData {
     this.entityLiving = entityLiving;
     this.dimensionId = dimensionId;
     this.pos = pos;
-    this.uuid = uuid;
+    this.invasionUuid = invasionUuid;
+    this.playerUuid = playerUuid;
     this.waveIndex = waveIndex;
     this.mobIndex = mobIndex;
     this.spawnType = spawnType;
@@ -60,9 +63,14 @@ public class DeferredSpawnData {
     return this.pos;
   }
 
-  public UUID getUuid() {
+  public UUID getInvasionUuid() {
 
-    return this.uuid;
+    return this.invasionUuid;
+  }
+
+  public UUID getPlayerUuid() {
+
+    return this.playerUuid;
   }
 
   public int getWaveIndex() {
@@ -102,7 +110,8 @@ public class DeferredSpawnData {
         "entityLiving=" + this.entityLiving +
         ", dimensionId=" + this.dimensionId +
         ", pos=" + this.pos +
-        ", uuid=" + this.uuid +
+        ", invasionUuid=" + this.invasionUuid +
+        ", playerUuid=" + this.playerUuid +
         ", waveIndex=" + this.waveIndex +
         ", mobIndex=" + this.mobIndex +
         ", spawnType=" + this.spawnType +

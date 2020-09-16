@@ -14,7 +14,7 @@ import java.util.UUID;
  */
 public class EntityInvasionDataInjector {
 
-  public void inject(EntityLiving entity, UUID uuid, int waveIndex, int mobIndex) {
+  public void inject(EntityLiving entity, UUID invasionUuid, UUID playerUuid, int waveIndex, int mobIndex) {
 
     NBTTagCompound entityData = entity.getEntityData();
 
@@ -22,16 +22,17 @@ public class EntityInvasionDataInjector {
       entityData.setTag(Tag.ONSLAUGHT, new NBTTagCompound());
     }
 
-    this.injectCustomAI(uuid, entityData);
-    this.injectInvasionData(uuid, waveIndex, mobIndex, entityData);
+    this.injectCustomAI(playerUuid, entityData);
+    this.injectInvasionData(invasionUuid, playerUuid, waveIndex, mobIndex, entityData);
   }
 
-  private void injectInvasionData(UUID uuid, int waveIndex, int mobIndex, NBTTagCompound entityData) {
+  private void injectInvasionData(UUID invasionUuid, UUID playerUuid, int waveIndex, int mobIndex, NBTTagCompound entityData) {
 
     NBTTagCompound modTag = entityData.getCompoundTag(Tag.ONSLAUGHT);
 
     NBTTagCompound tag = new NBTTagCompound();
-    tag.setString(Tag.INVASION_UUID, uuid.toString());
+    tag.setString(Tag.INVASION_UUID, invasionUuid.toString());
+    tag.setString(Tag.INVASION_PLAYER_UUID, playerUuid.toString());
     tag.setInteger(Tag.INVASION_WAVE_INDEX, waveIndex);
     tag.setInteger(Tag.INVASION_MOB_INDEX, mobIndex);
     modTag.setTag(Tag.INVASION_DATA, tag);

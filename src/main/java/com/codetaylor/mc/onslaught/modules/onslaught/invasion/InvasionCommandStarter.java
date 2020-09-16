@@ -46,7 +46,7 @@ public class InvasionCommandStarter {
     }
 
     InvasionPlayerData.InvasionData invasionData = this.invasionPlayerDataFactory
-        .create(templateId, player.getRNG(), 0);
+        .create(templateId, UUID.randomUUID(), player.getRNG(), 0);
     data.setInvasionState(InvasionPlayerData.EnumInvasionState.Active);
     data.setInvasionData(invasionData);
     invasionGlobalSavedData.markDirty();

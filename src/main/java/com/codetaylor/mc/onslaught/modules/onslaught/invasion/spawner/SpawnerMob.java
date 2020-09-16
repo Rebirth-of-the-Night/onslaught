@@ -48,7 +48,8 @@ public class SpawnerMob {
   public boolean attemptSpawnMob(
       World world,
       BlockPos playerPos,
-      UUID uuid,
+      UUID invasionUuid,
+      UUID playerUuid,
       int waveIndex,
       int mobIndex,
       String mobTemplateId,
@@ -87,7 +88,7 @@ public class SpawnerMob {
     }
 
     // apply player target, chase long distance, and invasion data tags
-    this.entityInvasionDataInjector.inject(entity, uuid, waveIndex, mobIndex);
+    this.entityInvasionDataInjector.inject(entity, invasionUuid, playerUuid, waveIndex, mobIndex);
 
     if (!world.spawnEntity(entity)) {
       String message = "Unable to spawn entity: " + entity;

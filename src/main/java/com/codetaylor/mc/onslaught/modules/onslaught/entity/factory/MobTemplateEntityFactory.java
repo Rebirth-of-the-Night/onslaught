@@ -35,8 +35,8 @@ public class MobTemplateEntityFactory {
     tagCompound.setString("id", template.id);
 
     // Ensure that the entity does not despawn normally.
-    if (!tagCompound.hasKey("PersistenceRequired")) {
-      tagCompound.setBoolean("PersistenceRequired", true);
+    if (!tagCompound.hasKey(Tag.PERSISTENCE_REQUIRED)) {
+      tagCompound.setBoolean(Tag.PERSISTENCE_REQUIRED, true);
     }
 
     Entity entity = EntityList.createEntityFromNBT(tagCompound, world);

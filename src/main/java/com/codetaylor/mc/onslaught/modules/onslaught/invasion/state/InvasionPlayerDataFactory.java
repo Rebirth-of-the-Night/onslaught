@@ -9,6 +9,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionSpawnDataC
 
 import javax.annotation.Nullable;
 import java.util.Random;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.logging.Level;
 
@@ -32,7 +33,7 @@ public class InvasionPlayerDataFactory {
   }
 
   @Nullable
-  public InvasionPlayerData.InvasionData create(String templateId, Random random, long timestamp) {
+  public InvasionPlayerData.InvasionData create(String templateId, UUID invasionUuid, Random random, long timestamp) {
 
     InvasionTemplate invasionTemplate = this.invasionTemplateFunction.apply(templateId);
 
@@ -43,6 +44,7 @@ public class InvasionPlayerDataFactory {
 
     InvasionPlayerData.InvasionData invasionData = new InvasionPlayerData.InvasionData();
     invasionData.setInvasionTemplateId(templateId);
+    invasionData.setInvasionUuid(invasionUuid);
     invasionData.setTimestamp(timestamp);
 
     for (InvasionTemplateWave waveTemplate : invasionTemplate.waves) {

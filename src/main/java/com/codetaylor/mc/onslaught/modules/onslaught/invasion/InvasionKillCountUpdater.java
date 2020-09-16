@@ -29,13 +29,16 @@ public class InvasionKillCountUpdater {
 
     int waveIndex = invasionTag.getInteger(Tag.INVASION_WAVE_INDEX);
     int mobIndex = invasionTag.getInteger(Tag.INVASION_MOB_INDEX);
-    String uuidString = invasionTag.getString(Tag.INVASION_UUID);
-    UUID uuid = UUID.fromString(uuidString);
+    String playerUuidString = invasionTag.getString(Tag.INVASION_PLAYER_UUID);
+    UUID playerUuid = UUID.fromString(playerUuidString);
+    String invasionUuidString = invasionTag.getString(Tag.INVASION_UUID);
+    UUID invasionUuid = UUID.fromString(invasionUuidString);
 
-    InvasionPlayerData playerData = invasionGlobalSavedData.getPlayerData(uuid);
+    InvasionPlayerData playerData = invasionGlobalSavedData.getPlayerData(playerUuid);
     InvasionPlayerData.InvasionData invasionData = playerData.getInvasionData();
 
-    if (invasionData != null) {
+    if (invasionData != null
+        && invasionData.getInvasionUuid().equals(invasionUuid)) {
       List<InvasionPlayerData.InvasionData.WaveData> waveDataList = invasionData.getWaveDataList();
       InvasionPlayerData.InvasionData.WaveData waveData = waveDataList.get(waveIndex);
       List<InvasionPlayerData.InvasionData.MobData> mobDataList = waveData.getMobDataList();

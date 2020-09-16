@@ -19,9 +19,11 @@ public class ActiveMobCounter {
     this.deferredSpawnDataList = deferredSpawnDataList;
   }
 
-  public int countActiveMobs(List<Entity> entityList, UUID uuid, int waveIndex, int mobIndex) {
+  public int countActiveMobs(List<Entity> entityList, UUID invasionUuid, UUID playerUuid, int waveIndex, int mobIndex) {
 
     int result = 0;
+    String playerUuidString = playerUuid.toString();
+    String invasionUuidString = invasionUuid.toString();
 
     for (Entity entity : entityList) {
       NBTTagCompound entityData = entity.getEntityData();
@@ -34,13 +36,15 @@ public class ActiveMobCounter {
 
       if (modTag.hasKey(Tag.INVASION_DATA)) {
         NBTTagCompound tag = modTag.getCompoundTag(Tag.INVASION_DATA);
-        String uuidData = tag.getString(Tag.INVASION_UUID);
+        String invasionUuidData = tag.getString(Tag.INVASION_UUID);
+        String playerUuidData = tag.getString(Tag.INVASION_PLAYER_UUID);
         int waveIndexData = tag.getInteger(Tag.INVASION_WAVE_INDEX);
         int mobIndexData = tag.getInteger(Tag.INVASION_MOB_INDEX);
 
         if (waveIndex == waveIndexData
             && mobIndex == mobIndexData
-            && uuid.toString().equals(uuidData)) {
+            && playerUuidString.equals(playerUuidData)
+            && invasionUuidString.equals(invasionUuidData)) {
           result += 1;
         }
       }
@@ -51,7 +55,8 @@ public class ActiveMobCounter {
 
       if (waveIndex == deferredSpawnData.getWaveIndex()
           && mobIndex == deferredSpawnData.getMobIndex()
-          && uuid.equals(deferredSpawnData.getUuid())) {
+          && playerUuid.equals(deferredSpawnData.getPlayerUuid())
+          && invasionUuid.equals(deferredSpawnData.getInvasionUuid())) {
         result += 1;
       }
     }

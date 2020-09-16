@@ -69,7 +69,7 @@ public class DeferredSpawner
       deferredSpawnData.setTicksRemaining(deferredSpawnData.getTicksRemaining() - updateIntervalTicks);
 
       if (deferredSpawnData.getTicksRemaining() <= 0) {
-        EntityPlayerMP player = playerList.getPlayerByUUID(deferredSpawnData.getUuid());
+        EntityPlayerMP player = playerList.getPlayerByUUID(deferredSpawnData.getPlayerUuid());
 
         if (!player.isDead
             && player.world.provider.getDimension() == deferredSpawnData.getDimensionId()) {
@@ -130,7 +130,7 @@ public class DeferredSpawner
       }
 
       // apply player target, chase long distance, and invasion data tags
-      this.entityInvasionDataInjector.inject(entity, deferredSpawnData.getUuid(), deferredSpawnData.getWaveIndex(), deferredSpawnData.getMobIndex());
+      this.entityInvasionDataInjector.inject(entity, deferredSpawnData.getInvasionUuid(), deferredSpawnData.getPlayerUuid(), deferredSpawnData.getWaveIndex(), deferredSpawnData.getMobIndex());
 
       if (world.spawnEntity(entity)) {
         entity.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(entity)), null);
@@ -148,7 +148,7 @@ public class DeferredSpawner
       this.checkAndClearCollisions(world, entity);
 
       // apply player target, chase long distance, and invasion data tags
-      this.entityInvasionDataInjector.inject(entity, deferredSpawnData.getUuid(), deferredSpawnData.getWaveIndex(), deferredSpawnData.getMobIndex());
+      this.entityInvasionDataInjector.inject(entity, deferredSpawnData.getInvasionUuid(), deferredSpawnData.getPlayerUuid(), deferredSpawnData.getWaveIndex(), deferredSpawnData.getMobIndex());
 
       if (world.spawnEntity(entity)) {
         entity.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(entity)), null);
