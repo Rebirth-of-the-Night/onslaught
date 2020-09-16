@@ -9,7 +9,7 @@ import java.util.function.Function;
  * Responsible for converting {@link InvasionTemplateWave.Spawn} template data
  * into {@link InvasionPlayerData.InvasionData.SpawnData} player data.
  */
-public class InvasionSpawnDataConverter
+public class InvasionSpawnDataConverterFunction
     implements Function<InvasionTemplateWave.Spawn, InvasionPlayerData.InvasionData.SpawnData> {
 
   @Override
