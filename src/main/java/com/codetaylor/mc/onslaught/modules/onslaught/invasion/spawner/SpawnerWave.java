@@ -2,13 +2,10 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner;
 
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.Tag;
 import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateWave;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionSpawnDataConverter;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -32,19 +29,19 @@ public class SpawnerWave {
   private final InvasionSpawnDataConverter invasionSpawnDataConverter;
   private final SpawnerMob spawnerMob;
   private final SpawnerMobForced spawnerMobForced;
-  private final List<DeferredSpawnData> deferredSpawnDataList;
+  private final ActiveMobCounter activeMobCounter;
 
   public SpawnerWave(
       InvasionSpawnDataConverter invasionSpawnDataConverter,
       SpawnerMob spawnerMob,
       SpawnerMobForced spawnerMobForced,
-      List<DeferredSpawnData> deferredSpawnDataList
+      ActiveMobCounter activeMobCounter
   ) {
 
     this.invasionSpawnDataConverter = invasionSpawnDataConverter;
     this.spawnerMob = spawnerMob;
     this.spawnerMobForced = spawnerMobForced;
-    this.deferredSpawnDataList = deferredSpawnDataList;
+    this.activeMobCounter = activeMobCounter;
   }
 
   /**
@@ -72,7 +69,7 @@ public class SpawnerWave {
       UUID uuid = player.getUniqueID();
       InvasionPlayerData.InvasionData.SpawnData spawnData = mobData.getSpawnData();
 
-      int activeMobs = this.countActiveMobs(world.loadedEntityList, uuid, waveIndex, mobIndex);
+      int activeMobs = this.activeMobCounter.countActiveMobs(world.loadedEntityList, uuid, waveIndex, mobIndex);
       int remainingMobs = mobData.getTotalCount() - mobData.getKilledCount() - activeMobs;
 
       if (ModuleOnslaughtConfig.DEBUG.INVASION_SPAWNERS && remainingMobs > 0) {
@@ -110,45 +107,5 @@ public class SpawnerWave {
     }
 
     return false; // Continue spawning
-  }
-
-  private int countActiveMobs(List<Entity> entityList, UUID uuid, int waveIndex, int mobIndex) {
-
-    int result = 0;
-
-    for (Entity entity : entityList) {
-      NBTTagCompound entityData = entity.getEntityData();
-
-      if (!entityData.hasKey(Tag.ONSLAUGHT)) {
-        continue;
-      }
-
-      NBTTagCompound modTag = entityData.getCompoundTag(Tag.ONSLAUGHT);
-
-      if (modTag.hasKey(Tag.INVASION_DATA)) {
-        NBTTagCompound tag = modTag.getCompoundTag(Tag.INVASION_DATA);
-        String uuidData = tag.getString(Tag.INVASION_UUID);
-        int waveIndexData = tag.getInteger(Tag.INVASION_WAVE_INDEX);
-        int mobIndexData = tag.getInteger(Tag.INVASION_MOB_INDEX);
-
-        if (waveIndex == waveIndexData
-            && mobIndex == mobIndexData
-            && uuid.toString().equals(uuidData)) {
-          result += 1;
-        }
-      }
-    }
-
-    // Include deferred spawns in the count
-    for (DeferredSpawnData deferredSpawnData : this.deferredSpawnDataList) {
-
-      if (waveIndex == deferredSpawnData.getWaveIndex()
-          && mobIndex == deferredSpawnData.getMobIndex()
-          && uuid.equals(deferredSpawnData.getUuid())) {
-        result += 1;
-      }
-    }
-
-    return result;
   }
 }

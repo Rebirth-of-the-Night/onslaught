@@ -265,7 +265,9 @@ public class ModuleOnslaught
                                 deferredSpawnDataList,
                                 () -> ModuleOnslaughtConfig.INVASION.FORCED_SPAWN_DELAY_TICKS
                             ),
-                            deferredSpawnDataList
+                            new ActiveMobCounter(
+                                deferredSpawnDataList
+                            )
                         )
                     )
                 ),
