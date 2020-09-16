@@ -24,21 +24,21 @@ public class StateChangeEligibleToPending
     implements InvasionUpdateEventHandler.IInvasionUpdateComponent {
 
   private final Set<UUID> eligiblePlayers;
-  private final Function<EntityPlayerMP, String> invasionSelector;
+  private final Function<EntityPlayerMP, String> invasionSelectorFunction;
   private final InvasionPlayerDataFactory invasionPlayerDataFactory;
   private final IntSupplier maxConcurrentInvasionsSupplier;
   private final InvasionCounter invasionCounter;
 
   public StateChangeEligibleToPending(
       Set<UUID> eligiblePlayers,
-      Function<EntityPlayerMP, String> invasionSelector,
+      Function<EntityPlayerMP, String> invasionSelectorFunction,
       InvasionPlayerDataFactory invasionPlayerDataFactory,
       IntSupplier maxConcurrentInvasionsSupplier,
       InvasionCounter invasionCounter
   ) {
 
     this.eligiblePlayers = eligiblePlayers;
-    this.invasionSelector = invasionSelector;
+    this.invasionSelectorFunction = invasionSelectorFunction;
     this.invasionPlayerDataFactory = invasionPlayerDataFactory;
     this.maxConcurrentInvasionsSupplier = maxConcurrentInvasionsSupplier;
     this.invasionCounter = invasionCounter;
@@ -73,7 +73,7 @@ public class StateChangeEligibleToPending
       // players list.
       //noinspection ConstantConditions
       if (player != null) {
-        String invasionTemplateId = this.invasionSelector.apply(player);
+        String invasionTemplateId = this.invasionSelectorFunction.apply(player);
 
         if (invasionTemplateId == null) {
           ModOnslaught.LOG.log(Level.SEVERE, "Unable to select invasion for player: " + player.getName());
