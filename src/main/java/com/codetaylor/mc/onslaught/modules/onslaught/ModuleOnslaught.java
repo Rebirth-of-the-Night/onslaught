@@ -203,7 +203,7 @@ public class ModuleOnslaught
         new InvasionUpdateEventHandler(
             new InvasionUpdateEventHandler.IInvasionUpdateComponent[]{
 
-                // State changes
+                // State changes -----------------------------------------------
 
                 new InvasionUpdateEventHandler.InvasionTimedUpdateComponent(
                     13,
@@ -237,14 +237,14 @@ public class ModuleOnslaught
                     new StateChangeActiveToWaiting()
                 ),
 
-                // Wave Timers
+                // Wave Timers -------------------------------------------------
 
                 new InvasionUpdateEventHandler.InvasionTimedUpdateComponent(
                     19,
                     new WaveDelayTimer()
                 ),
 
-                // Spawns
+                // Spawns ------------------------------------------------------
 
                 new InvasionUpdateEventHandler.InvasionTimedUpdateComponent(
                     20,
