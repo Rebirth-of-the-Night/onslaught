@@ -55,6 +55,7 @@ public class StateChangeWaitingToEligible
         InvasionPlayerData.EnumInvasionState previousInvasionState = data.getInvasionState();
 
         this.eligiblePlayers.add(player.getUniqueID());
+        data.setTicksUntilEligible(0);
         data.setInvasionState(InvasionPlayerData.EnumInvasionState.Eligible);
 
         if (previousInvasionState != InvasionPlayerData.EnumInvasionState.Eligible) {

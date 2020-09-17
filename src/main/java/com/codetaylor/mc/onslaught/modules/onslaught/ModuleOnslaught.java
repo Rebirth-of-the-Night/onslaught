@@ -6,18 +6,7 @@ import com.codetaylor.mc.athenaeum.network.IPacketService;
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.AntiAirPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.IAntiAirPlayerData;
-import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandReload;
-import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandStartInvasion;
-import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandStartRandomInvasion;
-import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandSummon;
-import com.codetaylor.mc.onslaught.modules.onslaught.template.TemplateLoader;
-import com.codetaylor.mc.onslaught.modules.onslaught.template.TemplateStore;
-import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplate;
-import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateAdapter;
-import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateLoader;
-import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplate;
-import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplateAdapter;
-import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplateLoader;
+import com.codetaylor.mc.onslaught.modules.onslaught.command.*;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector.*;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.EffectApplicator;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.LootTableApplicator;
@@ -34,7 +23,16 @@ import com.codetaylor.mc.onslaught.modules.onslaught.lib.JsonFileLocator;
 import com.codetaylor.mc.onslaught.modules.onslaught.loot.CustomLootTableManagerInjector;
 import com.codetaylor.mc.onslaught.modules.onslaught.loot.ExtraLootInjector;
 import com.codetaylor.mc.onslaught.modules.onslaught.packet.SCPacketAntiAir;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.TemplateLoader;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.TemplateStore;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplate;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateAdapter;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateLoader;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplate;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplateAdapter;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplateLoader;
 import net.minecraft.command.CommandBase;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -47,6 +45,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.IntSupplier;
 import java.util.logging.Level;
 
 public class ModuleOnslaught
@@ -198,10 +197,15 @@ public class ModuleOnslaught
         invasionSpawnDataConverterFunction
     );
 
-    InvasionSelectorFunction invasionSelectorFunction = new InvasionSelectorFunction(
+    Function<EntityPlayerMP, String> invasionSelectorFunction = new InvasionSelectorFunction(
         () -> templateStore.getInvasionTemplateRegistry().getAll().stream(),
         id -> templateStore.getInvasionTemplateRegistry().has(id),
         () -> ModuleOnslaughtConfig.INVASION.DEFAULT_FALLBACK_INVASION
+    );
+
+    IntSupplier invasionPlayerTimerValueSupplier = new InvasionPlayerTimerValueSupplier(
+        () -> ModuleOnslaughtConfig.INVASION.TIMING_RANGE_TICKS[0],
+        () -> ModuleOnslaughtConfig.INVASION.TIMING_RANGE_TICKS[1]
     );
 
     MinecraftForge.EVENT_BUS.register(
@@ -235,7 +239,12 @@ public class ModuleOnslaught
 
                 new InvasionUpdateEventHandler.InvasionTimedUpdateComponent(
                     18,
-                    new StateChangeActiveToWaiting()
+                    new StateChangeActiveToWaiting(
+                        new InvasionStopExecutor(
+                            invasionPlayerTimerValueSupplier,
+                            new InvasionFinishedPredicate()
+                        )
+                    )
                 ),
 
                 // Wave Timers -------------------------------------------------
@@ -307,6 +316,10 @@ public class ModuleOnslaught
         )
     );
 
+    MinecraftForge.EVENT_BUS.register(new EntityInvasionPlayerDataInitializationHandler(
+        invasionPlayerTimerValueSupplier
+    ));
+
     MinecraftForge.EVENT_BUS.register(new InvasionKillCountUpdateEventHandler(
         new InvasionKillCountUpdater()
     ));
@@ -331,6 +344,11 @@ public class ModuleOnslaught
         eligiblePlayers
     );
 
+    InvasionStopExecutor invasionStopActiveExecutor = new InvasionStopExecutor(
+        invasionPlayerTimerValueSupplier,
+        invasionPlayerData -> invasionPlayerData.getInvasionState() == InvasionPlayerData.EnumInvasionState.Active
+    );
+
     this.commands = new CommandBase[]{
         new CommandSummon(
             idToMobTemplateFunction,
@@ -348,6 +366,12 @@ public class ModuleOnslaught
         new CommandStartRandomInvasion(
             invasionCommandStarter,
             invasionSelectorFunction
+        ),
+        new CommandStopInvasion(
+            invasionStopActiveExecutor
+        ),
+        new CommandStopAllInvasion(
+            invasionStopActiveExecutor
         )
     };
   }

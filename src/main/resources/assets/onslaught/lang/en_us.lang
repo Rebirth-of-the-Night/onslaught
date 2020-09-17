@@ -18,3 +18,7 @@ commands.onslaught.startrandom.already.active=Player %s already has active invas
 commands.onslaught.startrandom.starting=Starting invasion for player %s with template %s
 
 commands.onslaught.stop.usage=/ostop [player]
+commands.onslaught.stop.success=Invasion stopped for player %s
+
+commands.onslaught.stopall.usage=/ostopall
+commands.onslaught.stopall.success=Stopped all active invasions

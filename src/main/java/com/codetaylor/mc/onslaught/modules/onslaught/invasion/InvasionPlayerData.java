@@ -1,7 +1,5 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
 
-import com.codetaylor.mc.athenaeum.util.RandomHelper;
-import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateWave;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -98,14 +96,7 @@ public class InvasionPlayerData
 
   public InvasionPlayerData() {
 
-    // This needs to be set to an initial value or new players will get
-    // an invasion immediately.
-    int min = ModuleOnslaughtConfig.INVASION.TIMING_RANGE_TICKS[0];
-    int max = ModuleOnslaughtConfig.INVASION.TIMING_RANGE_TICKS[1];
-    min = Math.min(max, min);
-    max = Math.max(max, min);
-    this.ticksUntilEligible = RandomHelper.random().nextInt(max - min + 1) + min;
-
+    this.ticksUntilEligible = Integer.MIN_VALUE;
     this.invasionState = EnumInvasionState.Waiting;
   }
 

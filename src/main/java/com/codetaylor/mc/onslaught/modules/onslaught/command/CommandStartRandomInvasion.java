@@ -3,7 +3,6 @@ package com.codetaylor.mc.onslaught.modules.onslaught.command;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionCommandStarter;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.selector.InvasionSelectorFunction;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -20,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Function;
 
 /**
  * Starts a random invasion for a specific player or N random players.
@@ -34,11 +34,11 @@ public class CommandStartRandomInvasion
   private static final String INVASION_STARTING = "commands.onslaught.startrandom.starting";
 
   private final InvasionCommandStarter invasionCommandStarter;
-  private final InvasionSelectorFunction invasionSelectorFunction;
+  private final Function<EntityPlayerMP, String> invasionSelectorFunction;
 
   public CommandStartRandomInvasion(
       InvasionCommandStarter invasionCommandStarter,
-      InvasionSelectorFunction invasionSelectorFunction
+      Function<EntityPlayerMP, String> invasionSelectorFunction
   ) {
 
     this.invasionCommandStarter = invasionCommandStarter;
