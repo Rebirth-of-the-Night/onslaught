@@ -45,6 +45,7 @@ public final class Tag {
   public static final String INVASION_UUID = "UUID";
   public static final String INVASION_WAVE_INDEX = "WaveIndex";
   public static final String INVASION_MOB_INDEX = "MobIndex";
+  public static final String INVASION_OFFLINE_TIMESTAMP = "OfflineTimestamp";
 
   private Tag() {
     //

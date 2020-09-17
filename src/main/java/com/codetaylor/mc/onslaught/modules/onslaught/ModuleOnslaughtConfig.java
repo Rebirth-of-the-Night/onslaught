@@ -70,6 +70,13 @@ public class ModuleOnslaughtConfig {
     })
     public int FORCED_SPAWN_EFFECT_DURATION_TICKS = 10 * 20;
 
+    @Config.Comment({
+        "Duration in ticks that a player can be offline before their invasion",
+        "mobs are stripped of invasion data.",
+        "Default: " + (2 * 60 * 20)
+    })
+    public int OFFLINE_CLEANUP_DELAY_TICKS = 2 * 60 * 20;
+
   }
 
   public static Wave WAVE = new Wave();

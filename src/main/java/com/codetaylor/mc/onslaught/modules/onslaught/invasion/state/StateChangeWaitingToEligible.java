@@ -2,11 +2,13 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion.state;
 
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
+import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionStateChangedEvent;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionUpdateEventHandler;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.management.PlayerList;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.util.Set;
 import java.util.UUID;
@@ -50,15 +52,21 @@ public class StateChangeWaitingToEligible
 
       } else {
 
-        if (data.getInvasionState() != InvasionPlayerData.EnumInvasionState.Eligible
-            && ModuleOnslaughtConfig.DEBUG.INVASION_STATE) {
-          String message = String.format("Set invasion state to %s for player %s", "Eligible", player.getName());
-          ModOnslaught.LOG.fine(message);
-          System.out.println(message);
-        }
+        InvasionPlayerData.EnumInvasionState previousInvasionState = data.getInvasionState();
 
         this.eligiblePlayers.add(player.getUniqueID());
         data.setInvasionState(InvasionPlayerData.EnumInvasionState.Eligible);
+
+        if (previousInvasionState != InvasionPlayerData.EnumInvasionState.Eligible) {
+
+          if (ModuleOnslaughtConfig.DEBUG.INVASION_STATE) {
+            String message = String.format("Set invasion state to %s for player %s", "Eligible", player.getName());
+            ModOnslaught.LOG.fine(message);
+            System.out.println(message);
+          }
+
+          MinecraftForge.EVENT_BUS.post(new InvasionStateChangedEvent(player, InvasionPlayerData.EnumInvasionState.Waiting, InvasionPlayerData.EnumInvasionState.Eligible));
+        }
       }
 
       invasionGlobalSavedData.markDirty();

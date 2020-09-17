@@ -23,10 +23,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.EffectApplic
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.LootTableApplicator;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactory;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.*;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionCommandStarter;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionCounter;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionKillCountUpdater;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionSpawnDataConverterFunction;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.*;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.SpawnSampler;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.predicate.SpawnPredicateFactory;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.selector.InvasionSelectorFunction;
@@ -58,7 +55,7 @@ public class ModuleOnslaught
   public static final String MOD_ID = ModOnslaught.MOD_ID;
 
   /**
-   * Holds a static reference to the modules packet service.
+   * Holds a static reference to the module's packet service.
    */
   public static IPacketService PACKET_SERVICE;
 
@@ -312,6 +309,13 @@ public class ModuleOnslaught
 
     MinecraftForge.EVENT_BUS.register(new InvasionKillCountUpdateEventHandler(
         new InvasionKillCountUpdater()
+    ));
+
+    MinecraftForge.EVENT_BUS.register(new EntityInvasionCleanupEventHandler(
+        new EntityInvasionPeriodicWorldCleanup(
+            () -> ModuleOnslaughtConfig.INVASION.OFFLINE_CLEANUP_DELAY_TICKS,
+            new EntityInvasionDataRemover()
+        )
     ));
 
     // -------------------------------------------------------------------------

@@ -3,11 +3,13 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion.state;
 import com.codetaylor.mc.athenaeum.util.RandomHelper;
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
+import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionStateChangedEvent;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionUpdateEventHandler;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.management.PlayerList;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.util.List;
 
@@ -44,6 +46,8 @@ public class StateChangeActiveToWaiting
           ModOnslaught.LOG.fine(message);
           System.out.println(message);
         }
+
+        MinecraftForge.EVENT_BUS.post(new InvasionStateChangedEvent(player, InvasionPlayerData.EnumInvasionState.Active, InvasionPlayerData.EnumInvasionState.Waiting));
       }
     }
   }
