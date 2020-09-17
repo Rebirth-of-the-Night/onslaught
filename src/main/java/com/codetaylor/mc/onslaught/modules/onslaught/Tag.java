@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.data;
+package com.codetaylor.mc.onslaught.modules.onslaught;
 
 /**
  * Contains all NBT tags used by the mod.

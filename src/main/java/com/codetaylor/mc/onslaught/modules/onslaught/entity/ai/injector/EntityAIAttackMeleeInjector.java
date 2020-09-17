@@ -4,7 +4,7 @@ import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.DefaultPriority;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.EntityAIAttackMelee;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.Tag;
+import com.codetaylor.mc.onslaught.modules.onslaught.Tag;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.nbt.NBTTagCompound;

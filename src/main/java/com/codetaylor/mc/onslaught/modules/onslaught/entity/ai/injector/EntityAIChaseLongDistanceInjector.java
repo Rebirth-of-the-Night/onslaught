@@ -4,7 +4,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.DefaultPriority;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.EntityAIChaseLongDistance;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.EntityAIChaseLongDistanceGhast;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.Tag;
+import com.codetaylor.mc.onslaught.modules.onslaught.Tag;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntitySlime;

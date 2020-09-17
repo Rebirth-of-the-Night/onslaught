@@ -1,6 +1,6 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.event;
 
-import com.codetaylor.mc.onslaught.modules.onslaught.data.Tag;
+import com.codetaylor.mc.onslaught.modules.onslaught.Tag;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.EntityInvasionPeriodicWorldCleanup;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import it.unimi.dsi.fastutil.ints.Int2LongMap;

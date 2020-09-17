@@ -1,7 +1,7 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.entity.factory;
 
 import com.codetaylor.mc.onslaught.ModOnslaught;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplateEffect;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplateEffect;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;

@@ -2,7 +2,7 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
 
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.Tag;
+import com.codetaylor.mc.onslaught.modules.onslaught.Tag;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.List;

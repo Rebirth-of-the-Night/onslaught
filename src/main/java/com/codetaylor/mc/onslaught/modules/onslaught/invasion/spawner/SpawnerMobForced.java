@@ -2,8 +2,8 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner;
 
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateWave;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplate;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateWave;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactory;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.SpawnSampler;

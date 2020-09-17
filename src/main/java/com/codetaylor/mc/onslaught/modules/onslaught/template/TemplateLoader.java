@@ -1,13 +1,13 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.data;
+package com.codetaylor.mc.onslaught.modules.onslaught.template;
 
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaught;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplate;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateLoader;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateRegistry;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplate;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplateLoader;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplateRegistry;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplate;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateLoader;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateRegistry;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplate;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplateLoader;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplateRegistry;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.FilePathCreator;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.JsonFileLocator;
 
@@ -20,7 +20,7 @@ import java.util.logging.Level;
 /**
  * Responsible for loading mob templates and invasion templates into the data store.
  */
-public class DataLoader {
+public class TemplateLoader {
 
   private final Consumer<MobTemplateRegistry> mobTemplateRegistryConsumer;
   private final Consumer<InvasionTemplateRegistry> invasionTemplateRegistryConsumer;
@@ -30,7 +30,7 @@ public class DataLoader {
   private final MobTemplateLoader mobTemplateLoader;
   private final InvasionTemplateLoader invasionTemplateLoader;
 
-  public DataLoader(
+  public TemplateLoader(
       Consumer<MobTemplateRegistry> mobTemplateRegistryConsumer,
       Consumer<InvasionTemplateRegistry> invasionTemplateRegistryConsumer,
       Path path,

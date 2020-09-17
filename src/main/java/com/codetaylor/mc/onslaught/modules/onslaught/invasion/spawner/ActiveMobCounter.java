@@ -1,6 +1,6 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner;
 
-import com.codetaylor.mc.onslaught.modules.onslaught.data.Tag;
+import com.codetaylor.mc.onslaught.modules.onslaught.Tag;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 

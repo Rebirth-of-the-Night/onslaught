@@ -10,14 +10,14 @@ import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandReload;
 import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandStartInvasion;
 import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandStartRandomInvasion;
 import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandSummon;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.DataLoader;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.DataStore;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplate;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateAdapter;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateLoader;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplate;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplateAdapter;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplateLoader;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.TemplateLoader;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.TemplateStore;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplate;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateAdapter;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateLoader;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplate;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplateAdapter;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplateLoader;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector.*;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.EffectApplicator;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.LootTableApplicator;
@@ -79,7 +79,7 @@ public class ModuleOnslaught
 
     // -------------------------------------------------------------------------
 
-    final DataStore dataStore = new DataStore();
+    final TemplateStore templateStore = new TemplateStore();
 
     // -------------------------------------------------------------------------
 
@@ -91,9 +91,9 @@ public class ModuleOnslaught
     // - Json Templates
     // -------------------------------------------------------------------------
 
-    DataLoader dataLoader = new DataLoader(
-        dataStore::setMobTemplateRegistry,
-        dataStore::setInvasionTemplateRegistry,
+    TemplateLoader templateLoader = new TemplateLoader(
+        templateStore::setMobTemplateRegistry,
+        templateStore::setInvasionTemplateRegistry,
         modConfigurationPath,
         filePathCreator,
         new JsonFileLocator(),
@@ -105,7 +105,7 @@ public class ModuleOnslaught
         )
     );
 
-    dataLoader.load();
+    templateLoader.load();
 
     // -------------------------------------------------------------------------
     // - Extra Loot Injection
@@ -182,8 +182,8 @@ public class ModuleOnslaught
         spawnPredicateFactory
     );
 
-    Function<String, InvasionTemplate> idToInvasionTemplateFunction = (id -> dataStore.getInvasionTemplateRegistry().get(id));
-    Function<String, MobTemplate> idToMobTemplateFunction = (id -> dataStore.getMobTemplateRegistry().get(id));
+    Function<String, InvasionTemplate> idToInvasionTemplateFunction = (id -> templateStore.getInvasionTemplateRegistry().get(id));
+    Function<String, MobTemplate> idToMobTemplateFunction = (id -> templateStore.getMobTemplateRegistry().get(id));
 
     MobTemplateEntityFactory mobTemplateEntityFactory = new MobTemplateEntityFactory(
         new EffectApplicator(),
@@ -199,8 +199,8 @@ public class ModuleOnslaught
     );
 
     InvasionSelectorFunction invasionSelectorFunction = new InvasionSelectorFunction(
-        () -> dataStore.getInvasionTemplateRegistry().getAll().stream(),
-        id -> dataStore.getInvasionTemplateRegistry().has(id),
+        () -> templateStore.getInvasionTemplateRegistry().getAll().stream(),
+        id -> templateStore.getInvasionTemplateRegistry().has(id),
         () -> ModuleOnslaughtConfig.INVASION.DEFAULT_FALLBACK_INVASION
     );
 
@@ -334,16 +334,16 @@ public class ModuleOnslaught
     this.commands = new CommandBase[]{
         new CommandSummon(
             idToMobTemplateFunction,
-            () -> dataStore.getMobTemplateRegistry().getIdList(),
+            () -> templateStore.getMobTemplateRegistry().getIdList(),
             mobTemplateEntityFactory
         ),
         new CommandReload(
-            dataLoader
+            templateLoader
         ),
         new CommandStartInvasion(
             invasionCommandStarter,
             idToInvasionTemplateFunction,
-            () -> dataStore.getInvasionTemplateRegistry().getIdList()
+            () -> templateStore.getInvasionTemplateRegistry().getIdList()
         ),
         new CommandStartRandomInvasion(
             invasionCommandStarter,

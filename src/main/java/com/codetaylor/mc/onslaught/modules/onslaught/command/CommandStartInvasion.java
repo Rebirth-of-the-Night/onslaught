@@ -1,6 +1,6 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.command;
 
-import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplate;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionCommandStarter;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;

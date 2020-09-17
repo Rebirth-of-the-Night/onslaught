@@ -2,8 +2,8 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion.state;
 
 import com.codetaylor.mc.athenaeum.util.WeightedPicker;
 import com.codetaylor.mc.onslaught.ModOnslaught;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplate;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateWave;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplate;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateWave;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionSpawnDataConverterFunction;
 

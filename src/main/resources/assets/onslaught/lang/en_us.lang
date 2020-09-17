@@ -16,3 +16,5 @@ commands.onslaught.startrandom.no.invasion.selected=No invasion could be selecte
 commands.onslaught.startrandom.skipping=Skipping player %s, already has an active invasion
 commands.onslaught.startrandom.already.active=Player %s already has active invasion
 commands.onslaught.startrandom.starting=Starting invasion for player %s with template %s
+
+commands.onslaught.stop.usage=/ostop [player]

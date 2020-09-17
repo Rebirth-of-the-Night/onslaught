@@ -2,7 +2,7 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
 
 import com.codetaylor.mc.athenaeum.util.RandomHelper;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateWave;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateWave;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.nbt.NBTBase;

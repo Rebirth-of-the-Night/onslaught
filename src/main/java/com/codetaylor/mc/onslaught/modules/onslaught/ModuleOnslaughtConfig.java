@@ -1,6 +1,6 @@
 package com.codetaylor.mc.onslaught.modules.onslaught;
 
-import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateWave;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateWave;
 import net.minecraftforge.common.config.Config;
 
 @Config(modid = ModuleOnslaught.MOD_ID, name = ModuleOnslaught.MOD_ID + "/" + "onslaught")

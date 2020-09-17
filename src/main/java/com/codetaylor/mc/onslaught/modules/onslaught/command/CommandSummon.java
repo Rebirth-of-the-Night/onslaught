@@ -1,6 +1,6 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.command;
 
-import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplate;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactory;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;

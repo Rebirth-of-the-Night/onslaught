@@ -1,6 +1,6 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector;
 
-import com.codetaylor.mc.onslaught.modules.onslaught.data.Tag;
+import com.codetaylor.mc.onslaught.modules.onslaught.Tag;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.nbt.NBTTagCompound;
 

@@ -1,6 +1,6 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner;
 
-import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateWave;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateWave;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.BlockPos;
 

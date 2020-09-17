@@ -1,8 +1,8 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.selector;
 
 import com.codetaylor.mc.athenaeum.util.ArrayHelper;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplate;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateSelectorDimension;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplate;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateSelectorDimension;
 
 import java.util.Map;
 import java.util.function.IntSupplier;

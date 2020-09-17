@@ -1,7 +1,7 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.entity.factory;
 
-import com.codetaylor.mc.onslaught.modules.onslaught.data.Tag;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplate;
+import com.codetaylor.mc.onslaught.modules.onslaught.Tag;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;

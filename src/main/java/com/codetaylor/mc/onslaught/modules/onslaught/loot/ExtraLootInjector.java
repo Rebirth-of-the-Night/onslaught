@@ -1,7 +1,7 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.loot;
 
 import com.codetaylor.mc.onslaught.ModOnslaught;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.Tag;
+import com.codetaylor.mc.onslaught.modules.onslaught.Tag;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.MethodHandleHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

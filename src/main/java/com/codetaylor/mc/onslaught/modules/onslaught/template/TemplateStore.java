@@ -1,19 +1,19 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.data;
+package com.codetaylor.mc.onslaught.modules.onslaught.template;
 
-import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateRegistry;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.mob.MobTemplateRegistry;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateRegistry;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplateRegistry;
 
 import java.util.Collections;
 
 /**
  * Responsible for holding references to mob templates and invasion templates.
  */
-public class DataStore {
+public class TemplateStore {
 
   private MobTemplateRegistry mobTemplateRegistry;
   private InvasionTemplateRegistry invasionTemplateRegistry;
 
-  public DataStore() {
+  public TemplateStore() {
 
     this.setMobTemplateRegistry(new MobTemplateRegistry(Collections.emptyMap()));
     this.setInvasionTemplateRegistry(new InvasionTemplateRegistry(Collections.emptyMap()));

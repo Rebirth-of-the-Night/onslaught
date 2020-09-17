@@ -2,7 +2,7 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion.selector;
 
 import com.codetaylor.mc.athenaeum.integration.gamestages.GameStages;
 import com.codetaylor.mc.athenaeum.integration.gamestages.Stages;
-import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplate;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplate;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.Loader;
 

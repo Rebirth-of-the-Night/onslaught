@@ -1,6 +1,6 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.command;
 
-import com.codetaylor.mc.onslaught.modules.onslaught.data.DataLoader;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.TemplateLoader;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -20,11 +20,11 @@ public class CommandReload
   private static final String SUCCESS = "commands.onslaught.reload.success";
   private static final String FAILED = "commands.onslaught.reload.failed";
 
-  private final DataLoader dataLoader;
+  private final TemplateLoader templateLoader;
 
-  public CommandReload(DataLoader dataLoader) {
+  public CommandReload(TemplateLoader templateLoader) {
 
-    this.dataLoader = dataLoader;
+    this.templateLoader = templateLoader;
   }
 
   @Nonnull
@@ -56,7 +56,7 @@ public class CommandReload
 
     } else {
 
-      if (this.dataLoader.load()) {
+      if (this.templateLoader.load()) {
         notifyCommandListener(sender, this, SUCCESS);
 
       } else {

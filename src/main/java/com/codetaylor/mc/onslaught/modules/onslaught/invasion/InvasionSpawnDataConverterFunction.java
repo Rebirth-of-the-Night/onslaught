@@ -1,6 +1,6 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
 
-import com.codetaylor.mc.onslaught.modules.onslaught.data.invasion.InvasionTemplateWave;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateWave;
 
 import java.util.Arrays;
 import java.util.function.Function;
