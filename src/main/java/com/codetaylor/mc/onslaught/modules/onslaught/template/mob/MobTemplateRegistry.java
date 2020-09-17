@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.data.mob;
+package com.codetaylor.mc.onslaught.modules.onslaught.template.mob;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.data.mob;
+package com.codetaylor.mc.onslaught.modules.onslaught.template.mob;
 
 import net.minecraft.nbt.NBTTagCompound;
 

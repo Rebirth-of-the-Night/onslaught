@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.data.invasion;
+package com.codetaylor.mc.onslaught.modules.onslaught.template.invasion;
 
 import javax.annotation.Nullable;
 import java.util.*;

@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.data.mob;
+package com.codetaylor.mc.onslaught.modules.onslaught.template.mob;
 
 /**
  * Holds mob template effect data read from the json files.

@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.data.invasion;
+package com.codetaylor.mc.onslaught.modules.onslaught.template.invasion;
 
 /**
  * Responsible for holding invasion template data read from json files.

@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.data.invasion;
+package com.codetaylor.mc.onslaught.modules.onslaught.template.invasion;
 
 import com.codetaylor.mc.athenaeum.integration.gamestages.Stages;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.StagesTypeAdapter;
