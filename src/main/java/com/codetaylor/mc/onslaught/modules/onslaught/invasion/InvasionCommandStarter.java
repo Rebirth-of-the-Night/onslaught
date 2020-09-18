@@ -1,6 +1,5 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
 
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.state.InvasionPlayerDataFactory;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 
@@ -46,7 +45,7 @@ public class InvasionCommandStarter {
     }
 
     InvasionPlayerData.InvasionData invasionData = this.invasionPlayerDataFactory
-        .create(templateId, UUID.randomUUID(), player.getRNG(), 0);
+        .create(templateId, UUID.randomUUID(), player.getRNG(), 0, -1);
     data.setInvasionState(InvasionPlayerData.EnumInvasionState.Active);
     data.setInvasionData(invasionData);
     invasionGlobalSavedData.markDirty();

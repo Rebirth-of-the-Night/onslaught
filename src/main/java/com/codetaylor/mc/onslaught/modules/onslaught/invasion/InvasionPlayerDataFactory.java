@@ -1,11 +1,9 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.invasion.state;
+package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
 
 import com.codetaylor.mc.athenaeum.util.WeightedPicker;
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateWave;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionSpawnDataConverterFunction;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -33,7 +31,7 @@ public class InvasionPlayerDataFactory {
   }
 
   @Nullable
-  public InvasionPlayerData.InvasionData create(String templateId, UUID invasionUuid, Random random, long timestamp) {
+  public InvasionPlayerData.InvasionData create(String templateId, UUID invasionUuid, Random random, long timestamp, long warningMessageTimestamp) {
 
     InvasionTemplate invasionTemplate = this.invasionTemplateFunction.apply(templateId);
 
@@ -46,6 +44,7 @@ public class InvasionPlayerDataFactory {
     invasionData.setInvasionTemplateId(templateId);
     invasionData.setInvasionUuid(invasionUuid);
     invasionData.setTimestamp(timestamp);
+    invasionData.setWarningMessageTimestamp(warningMessageTimestamp);
 
     for (InvasionTemplateWave waveTemplate : invasionTemplate.waves) {
       invasionData.getWaveDataList().add(this.createWaveData(waveTemplate, random));

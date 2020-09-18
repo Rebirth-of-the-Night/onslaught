@@ -135,11 +135,6 @@ public class InvasionPlayerData
     this.invasionData = invasionData;
   }
 
-  public boolean hasInvasionData() {
-
-    return (this.invasionData != null);
-  }
-
   // ---------------------------------------------------------------------------
   // - Serialization
   // ---------------------------------------------------------------------------
@@ -193,6 +188,12 @@ public class InvasionPlayerData
     private long timestamp;
 
     /**
+     * The timestamp after which the warning message is sent. If the value
+     * is -1, the message will not be sent.
+     */
+    private long warningMessageTimestamp;
+
+    /**
      * The invasion's wave data.
      */
     private final List<WaveData> waveDataList = new ArrayList<>();
@@ -227,6 +228,16 @@ public class InvasionPlayerData
       this.timestamp = timestamp;
     }
 
+    public long getWarningMessageTimestamp() {
+
+      return this.warningMessageTimestamp;
+    }
+
+    public void setWarningMessageTimestamp(long warningMessageTimestamp) {
+
+      this.warningMessageTimestamp = warningMessageTimestamp;
+    }
+
     public List<WaveData> getWaveDataList() {
 
       return this.waveDataList;
@@ -239,6 +250,7 @@ public class InvasionPlayerData
           "invasionTemplateId='" + this.invasionTemplateId + '\'' +
           ", invasionUuid=" + this.invasionUuid +
           ", timestamp=" + this.timestamp +
+          ", warningMessageTimestamp=" + this.warningMessageTimestamp +
           ", waveDataList=" + this.waveDataList +
           '}';
     }
@@ -250,6 +262,7 @@ public class InvasionPlayerData
       tag.setString("invasionTemplateId", this.invasionTemplateId);
       tag.setString("invasionUuid", this.invasionUuid.toString());
       tag.setLong("timestamp", this.timestamp);
+      tag.setLong("warningMessageTimestamp", this.warningMessageTimestamp);
 
       NBTTagList tagList = new NBTTagList();
 
@@ -267,6 +280,7 @@ public class InvasionPlayerData
 
       this.invasionTemplateId = tag.getString("invasionTemplateId");
       this.timestamp = tag.getLong("timestamp");
+      this.warningMessageTimestamp = tag.getLong("warningMessageTimestamp");
       this.invasionUuid = UUID.fromString(tag.getString("invasionUuid"));
 
       NBTTagList waveDataList = tag.getTagList("waveDataList", Constants.NBT.TAG_COMPOUND);

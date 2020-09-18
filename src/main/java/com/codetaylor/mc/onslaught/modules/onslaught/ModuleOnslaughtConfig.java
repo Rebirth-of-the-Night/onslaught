@@ -77,6 +77,37 @@ public class ModuleOnslaughtConfig {
     })
     public int OFFLINE_CLEANUP_DELAY_TICKS = 2 * 60 * 20;
 
+    @Config.Comment({
+        "The number of ticks prior to the invasion that the warning message",
+        "will be sent.",
+        "Set to -1 to disable.",
+        "Default: " + (-1)
+    })
+    public int DEFAULT_MESSAGE_WARNING_TICKS = -1;
+
+    @Config.Comment({
+        "The default warning message sent to the player.",
+        "Can be a string or lang key.",
+        "Default: " + "message.onslaught.invasion.warn"
+    })
+    public String DEFAULT_MESSAGE_WARNING = "message.onslaught.invasion.warn";
+
+    @Config.Comment({
+        "The default invasion start message sent to the player.",
+        "Can be a string or lang key.",
+        "Set to an empty string to disable.",
+        "Default: " + "message.onslaught.invasion.begin"
+    })
+    public String DEFAULT_MESSAGE_BEGIN = "message.onslaught.invasion.begin";
+
+    @Config.Comment({
+        "The default invasion end message sent to the player.",
+        "Can be a string or lang key.",
+        "Set to an empty string to disable.",
+        "Default: " + "message.onslaught.invasion.end"
+    })
+    public String DEFAULT_MESSAGE_END = "message.onslaught.invasion.end";
+
   }
 
   public static Wave WAVE = new Wave();

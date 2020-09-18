@@ -4,9 +4,7 @@ import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionStateChangedEvent;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionUpdateEventHandler;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionCounter;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.*;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.management.PlayerList;
 import net.minecraftforge.common.MinecraftForge;
@@ -30,13 +28,17 @@ public class StateChangeEligibleToPending
   private final InvasionPlayerDataFactory invasionPlayerDataFactory;
   private final IntSupplier maxConcurrentInvasionsSupplier;
   private final InvasionCounter invasionCounter;
+  private final InvasionTimestampFunction invasionTimestampFunction;
+  private final InvasionWarningMessageTimestampFunction invasionWarningMessageTimestampFunction;
 
   public StateChangeEligibleToPending(
       Set<UUID> eligiblePlayers,
       Function<EntityPlayerMP, String> invasionSelectorFunction,
       InvasionPlayerDataFactory invasionPlayerDataFactory,
       IntSupplier maxConcurrentInvasionsSupplier,
-      InvasionCounter invasionCounter
+      InvasionCounter invasionCounter,
+      InvasionTimestampFunction invasionTimestampFunction,
+      InvasionWarningMessageTimestampFunction invasionWarningMessageTimestampFunction
   ) {
 
     this.eligiblePlayers = eligiblePlayers;
@@ -44,6 +46,8 @@ public class StateChangeEligibleToPending
     this.invasionPlayerDataFactory = invasionPlayerDataFactory;
     this.maxConcurrentInvasionsSupplier = maxConcurrentInvasionsSupplier;
     this.invasionCounter = invasionCounter;
+    this.invasionTimestampFunction = invasionTimestampFunction;
+    this.invasionWarningMessageTimestampFunction = invasionWarningMessageTimestampFunction;
   }
 
   @Override
@@ -82,23 +86,18 @@ public class StateChangeEligibleToPending
           continue;
         }
 
-        /*
-        25000 // current time
-        25000 + 24000 = 49000
-        49000 % 24000 = 1000
-        49000 - 1000 = 48000 // start of next day
-
-        invasion starts at 13000
-        24000 - 13000 = 11000
-
-        49000 - (1000 + 11000) = 37000
-        37000 % 24000 = 13000 // ok
-         */
-        long invasionTimestamp = (worldTime + 24000) - (((worldTime + 24000) % 24000) + 11000);
+        long invasionTimestamp = this.invasionTimestampFunction.apply(worldTime);
+        long invasionWarningMessageTimestamp = this.invasionWarningMessageTimestampFunction.apply(invasionTemplateId, invasionTimestamp);
 
         InvasionPlayerData data = invasionGlobalSavedData.getPlayerData(uuid);
         InvasionPlayerData.InvasionData invasionData = this.invasionPlayerDataFactory
-            .create(invasionTemplateId, UUID.randomUUID(), player.getRNG(), invasionTimestamp);
+            .create(
+                invasionTemplateId,
+                UUID.randomUUID(),
+                player.getRNG(),
+                invasionTimestamp,
+                invasionWarningMessageTimestamp
+            );
         data.setInvasionState(InvasionPlayerData.EnumInvasionState.Pending);
         data.setInvasionData(invasionData);
         invasionGlobalSavedData.markDirty();

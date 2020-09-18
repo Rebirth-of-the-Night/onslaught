@@ -17,7 +17,10 @@ import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.SpawnSampl
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.predicate.SpawnPredicateFactory;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.selector.InvasionSelectorFunction;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner.*;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.state.*;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.state.StateChangeActiveToWaiting;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.state.StateChangeEligibleToPending;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.state.StateChangePendingToActive;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.state.StateChangeWaitingToEligible;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.FilePathCreator;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.JsonFileLocator;
 import com.codetaylor.mc.onslaught.modules.onslaught.loot.CustomLootTableManagerInjector;
@@ -228,7 +231,11 @@ public class ModuleOnslaught
                         invasionSelectorFunction,
                         invasionPlayerDataFactory,
                         () -> ModuleOnslaughtConfig.INVASION.MAX_CONCURRENT_INVASIONS,
-                        new InvasionCounter()
+                        new InvasionCounter(),
+                        new InvasionTimestampFunction(),
+                        new InvasionWarningMessageTimestampFunction(
+                            idToInvasionTemplateFunction
+                        )
                     )
                 ),
 
@@ -311,25 +318,57 @@ public class ModuleOnslaught
                     new DeferredSpawnClientParticlePacketSender(
                         deferredSpawnDataList
                     )
+                ),
+
+                new InvasionUpdateEventHandler.InvasionTimedUpdateComponent(
+                    20 * 5,
+                    new InvasionMessageSenderWarning(
+                        new InvasionMessageSender(
+                            idToInvasionTemplateFunction,
+                            invasionTemplate -> invasionTemplate.messages.warn.message,
+                            () -> ModuleOnslaughtConfig.INVASION.DEFAULT_MESSAGE_WARNING
+                        )
+                    )
                 )
             }
         )
     );
 
-    MinecraftForge.EVENT_BUS.register(new EntityInvasionPlayerDataInitializationHandler(
-        invasionPlayerTimerValueSupplier
-    ));
-
-    MinecraftForge.EVENT_BUS.register(new InvasionKillCountUpdateEventHandler(
-        new InvasionKillCountUpdater()
-    ));
-
-    MinecraftForge.EVENT_BUS.register(new EntityInvasionCleanupEventHandler(
-        new EntityInvasionPeriodicWorldCleanup(
-            () -> ModuleOnslaughtConfig.INVASION.OFFLINE_CLEANUP_DELAY_TICKS,
-            new EntityInvasionDataRemover()
+    MinecraftForge.EVENT_BUS.register(
+        new EntityInvasionPlayerDataInitializationHandler(
+            invasionPlayerTimerValueSupplier
         )
-    ));
+    );
+
+    MinecraftForge.EVENT_BUS.register(
+        new InvasionKillCountUpdateEventHandler(
+            new InvasionKillCountUpdater()
+        )
+    );
+
+    MinecraftForge.EVENT_BUS.register(
+        new EntityInvasionCleanupEventHandler(
+            new EntityInvasionPeriodicWorldCleanup(
+                () -> ModuleOnslaughtConfig.INVASION.OFFLINE_CLEANUP_DELAY_TICKS,
+                new EntityInvasionDataRemover()
+            )
+        )
+    );
+
+    MinecraftForge.EVENT_BUS.register(
+        new InvasionMessageEventHandler(
+            new InvasionMessageSender(
+                idToInvasionTemplateFunction,
+                invasionTemplate -> invasionTemplate.messages.begin,
+                () -> ModuleOnslaughtConfig.INVASION.DEFAULT_MESSAGE_BEGIN
+            ),
+            new InvasionMessageSender(
+                idToInvasionTemplateFunction,
+                invasionTemplate -> invasionTemplate.messages.end,
+                () -> ModuleOnslaughtConfig.INVASION.DEFAULT_MESSAGE_END
+            )
+        )
+    );
 
     // -------------------------------------------------------------------------
     // - Commands
