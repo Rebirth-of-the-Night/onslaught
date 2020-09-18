@@ -258,7 +258,9 @@ public class ModuleOnslaught
 
                 new InvasionUpdateEventHandler.InvasionTimedUpdateComponent(
                     19,
-                    new WaveDelayTimer()
+                    new WaveDelayTimer(
+                        new ActiveWavePredicate()
+                    )
                 ),
 
                 // Spawns ------------------------------------------------------
