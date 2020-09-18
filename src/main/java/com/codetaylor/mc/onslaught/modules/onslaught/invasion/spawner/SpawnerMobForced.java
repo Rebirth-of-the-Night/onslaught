@@ -2,11 +2,11 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner;
 
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
-import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateWave;
-import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactory;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.SpawnSampler;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateWave;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplate;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -32,19 +32,6 @@ public class SpawnerMobForced {
   private final SpawnSampler spawnSampler;
   private final List<DeferredSpawnData> deferredSpawnDataList;
   private final IntSupplier forcedSpawnDelayTicksSupplier;
-
-  // TODO
-/*
-    Place the deferred mob data into a collection.
-    Create a class to reduce the time on each deferred data element.
-
-    Create a class to spawn particles at each deferred data element's location.
-    Create a class to manage nearby players' potion effects.
-    Create a class to spawn a deferred mob when its element's timer expires.
-      - Check that the player is alive and in the same dimension as the spawning mob.
-    Create a class to cleanup elements and do player data bookkeeping when a chunk is unloaded.
-      - Either this or we just clean them up and do the bookkeeping if they try to spawn in an unloaded chunk.
-     */
 
   public SpawnerMobForced(
       SpawnSampler spawnSampler,
