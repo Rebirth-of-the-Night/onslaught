@@ -376,6 +376,10 @@ public class ModuleOnslaught
         new InvasionSleepInhibitorEventHandler()
     );
 
+    MinecraftForge.EVENT_BUS.register(
+        new InvasionDimensionTravelRestrictionEventHandler()
+    );
+
     // -------------------------------------------------------------------------
     // - Commands
     // -------------------------------------------------------------------------
