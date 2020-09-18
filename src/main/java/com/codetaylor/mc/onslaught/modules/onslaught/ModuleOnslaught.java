@@ -370,6 +370,10 @@ public class ModuleOnslaught
         )
     );
 
+    MinecraftForge.EVENT_BUS.register(
+        new InvasionSleepInhibitorEventHandler()
+    );
+
     // -------------------------------------------------------------------------
     // - Commands
     // -------------------------------------------------------------------------
