@@ -380,6 +380,19 @@ public class ModuleOnslaught
         new InvasionDimensionTravelRestrictionEventHandler()
     );
 
+    MinecraftForge.EVENT_BUS.register(
+        new InvasionWaveCommandEventHandler(
+            new InvasionCommandExecutor(
+                idToInvasionTemplateFunction,
+                invasionTemplate -> invasionTemplate.commands.start
+            ),
+            new InvasionCommandExecutor(
+                idToInvasionTemplateFunction,
+                invasionTemplate -> invasionTemplate.commands.end
+            )
+        )
+    );
+
     // -------------------------------------------------------------------------
     // - Commands
     // -------------------------------------------------------------------------
