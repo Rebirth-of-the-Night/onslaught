@@ -3,6 +3,7 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplate;
 
 import java.util.function.Function;
+import java.util.function.IntSupplier;
 
 /**
  * Responsible for calculating the invasion's warning message timestamp given
@@ -11,10 +12,15 @@ import java.util.function.Function;
 public class InvasionWarningMessageTimestampFunction {
 
   private final Function<String, InvasionTemplate> idToInvasionTemplateFunction;
+  private final IntSupplier defaultWarningTicks;
 
-  public InvasionWarningMessageTimestampFunction(Function<String, InvasionTemplate> idToInvasionTemplateFunction) {
+  public InvasionWarningMessageTimestampFunction(
+      Function<String, InvasionTemplate> idToInvasionTemplateFunction,
+      IntSupplier defaultWarningTicks
+  ) {
 
     this.idToInvasionTemplateFunction = idToInvasionTemplateFunction;
+    this.defaultWarningTicks = defaultWarningTicks;
   }
 
   public long apply(String invasionTemplateId, long invasionTimestamp) {
@@ -23,7 +29,13 @@ public class InvasionWarningMessageTimestampFunction {
     int ticks = invasionTemplate.messages.warn.ticks;
 
     if (ticks < 0) {
-      return -1;
+      // check the default
+
+      ticks = defaultWarningTicks.getAsInt();
+
+      if (ticks < 0) {
+        return -1;
+      }
     }
 
     return invasionTimestamp - ticks;

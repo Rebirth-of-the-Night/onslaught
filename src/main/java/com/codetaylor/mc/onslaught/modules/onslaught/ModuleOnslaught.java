@@ -247,7 +247,8 @@ public class ModuleOnslaught
                         new InvasionCounter(),
                         new InvasionTimestampFunction(),
                         new InvasionWarningMessageTimestampFunction(
-                            idToInvasionTemplateFunction
+                            idToInvasionTemplateFunction,
+                            () -> ModuleOnslaughtConfig.INVASION.DEFAULT_MESSAGE_WARNING_TICKS
                         )
                     )
                 ),
