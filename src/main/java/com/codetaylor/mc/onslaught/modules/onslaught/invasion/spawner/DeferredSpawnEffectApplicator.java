@@ -46,6 +46,10 @@ public class DeferredSpawnEffectApplicator
   @Override
   public void update(int updateIntervalTicks, InvasionGlobalSavedData invasionGlobalSavedData, PlayerList playerList, long worldTime) {
 
+    if (this.deferredSpawnDataList.isEmpty()) {
+      return;
+    }
+
     List<Potion> effectList = this.effectListSupplier.get();
 
     if (effectList.isEmpty()) {
