@@ -54,7 +54,7 @@ public class SpawnPredicateGround
     // Ensure the light level isn't above the max
     int light = entity.world.getLightFromNeighbors(this.blockPos);
 
-    if (light < this.lightMin && light > this.lightMax) {
+    if (light < this.lightMin || light > this.lightMax) {
       return false;
     }
 
