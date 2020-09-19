@@ -1,6 +1,6 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.invasion.client;
+package com.codetaylor.mc.onslaught.modules.onslaught.invasion.render.client;
 
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionHudRenderInfo;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.render.InvasionHudRenderInfo;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
 

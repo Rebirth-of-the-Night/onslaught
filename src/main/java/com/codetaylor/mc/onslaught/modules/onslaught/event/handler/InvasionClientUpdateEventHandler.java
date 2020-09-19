@@ -1,5 +1,7 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.event;
+package com.codetaylor.mc.onslaught.modules.onslaught.event.handler;
 
+import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionEntityKilledEvent;
+import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionStateChangedEvent;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionClientHUDUpdateSender;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.TickCounter;
@@ -39,10 +41,16 @@ public class InvasionClientUpdateEventHandler {
   @SubscribeEvent
   public void on(InvasionStateChangedEvent event) {
 
-    // Force run when an invasion is completed.
+    // Force run when an invasion is completed or started.
 
     if (event.getPreviousState() == InvasionPlayerData.EnumInvasionState.Active
         && event.getCurrentState() == InvasionPlayerData.EnumInvasionState.Waiting) {
+      // completed
+      this.forceRun();
+
+    } else if (event.getPreviousState() == InvasionPlayerData.EnumInvasionState.Waiting
+        && event.getCurrentState() == InvasionPlayerData.EnumInvasionState.Active) {
+      // started
       this.forceRun();
     }
   }
@@ -63,7 +71,13 @@ public class InvasionClientUpdateEventHandler {
     this.forceRun();
   }
 
-  // TODO: force run when an invasion mob is killed
+  @SubscribeEvent
+  public void on(InvasionEntityKilledEvent event) {
+
+    // Force run when an invasion entity is killed.
+
+    this.forceRun();
+  }
 
   @SubscribeEvent
   public void on(TickEvent.ServerTickEvent event) {
@@ -84,5 +98,4 @@ public class InvasionClientUpdateEventHandler {
       this.invasionClientHUDUpdateSender.update(players);
     }
   }
-
 }

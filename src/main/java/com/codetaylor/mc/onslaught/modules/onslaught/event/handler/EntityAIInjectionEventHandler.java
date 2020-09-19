@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.event;
+package com.codetaylor.mc.onslaught.modules.onslaught.event.handler;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.Tag;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector.EntityAIInjectorBase;

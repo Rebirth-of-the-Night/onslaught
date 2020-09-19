@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.event.client;
+package com.codetaylor.mc.onslaught.modules.onslaught.event.handler.client;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.render.client.InvasionHudRenderer;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;

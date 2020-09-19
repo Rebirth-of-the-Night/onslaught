@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.event;
+package com.codetaylor.mc.onslaught.modules.onslaught.event.handler;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;

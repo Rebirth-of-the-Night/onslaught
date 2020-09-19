@@ -1,5 +1,6 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.event;
+package com.codetaylor.mc.onslaught.modules.onslaught.event.handler;
 
+import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionStateChangedEvent;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionCommandExecutor;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
