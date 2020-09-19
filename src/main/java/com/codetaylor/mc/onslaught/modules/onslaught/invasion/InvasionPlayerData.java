@@ -178,6 +178,11 @@ public class InvasionPlayerData
     private String invasionTemplateId;
 
     /**
+     * The invasion name.
+     */
+    private String invasionName;
+
+    /**
      * The unique id for the invasion.
      */
     private UUID invasionUuid;
@@ -206,6 +211,16 @@ public class InvasionPlayerData
     public void setInvasionTemplateId(String invasionTemplateId) {
 
       this.invasionTemplateId = invasionTemplateId;
+    }
+
+    public String getInvasionName() {
+
+      return this.invasionName;
+    }
+
+    public void setInvasionName(String invasionName) {
+
+      this.invasionName = invasionName;
     }
 
     public UUID getInvasionUuid() {

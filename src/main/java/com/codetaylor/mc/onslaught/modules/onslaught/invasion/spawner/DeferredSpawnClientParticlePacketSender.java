@@ -1,7 +1,7 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaught;
-import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionUpdateEventHandler;
+import com.codetaylor.mc.onslaught.modules.onslaught.event.handler.InvasionUpdateEventHandler;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
 import com.codetaylor.mc.onslaught.modules.onslaught.packet.SCPacketDeferredSpawn;
 import net.minecraft.entity.EntityLiving;

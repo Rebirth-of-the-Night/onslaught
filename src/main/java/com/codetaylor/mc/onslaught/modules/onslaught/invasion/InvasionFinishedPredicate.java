@@ -16,14 +16,14 @@ public class InvasionFinishedPredicate
       return true;
     }
 
+    if (invasionPlayerData.getInvasionState() != InvasionPlayerData.EnumInvasionState.Active) {
+      return false;
+    }
+
     InvasionPlayerData.InvasionData invasionData = invasionPlayerData.getInvasionData();
 
     if (invasionData == null) {
       return true;
-    }
-
-    if (invasionPlayerData.getInvasionState() != InvasionPlayerData.EnumInvasionState.Active) {
-      return false;
     }
 
     List<InvasionPlayerData.InvasionData.WaveData> waveDataList = invasionData.getWaveDataList();

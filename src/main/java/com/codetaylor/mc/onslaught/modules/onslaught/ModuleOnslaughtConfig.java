@@ -16,6 +16,37 @@ public class ModuleOnslaughtConfig {
     public boolean INVASION_SELECTOR = true;
   }
 
+  public static Client CLIENT = new Client();
+
+  public static class Client {
+
+    @Config.Comment({
+        "XY position of the invasion HUD.",
+        "Default: [16, 16]"
+    })
+    public int[] INVASION_HUD_POSITION_XY = new int[]{16, 16};
+
+    @Config.Comment({
+        "Width of the invasion HUD progress bars.",
+        "Default: " + 128
+    })
+    public int INVASION_HUD_BAR_WIDTH = 128;
+
+    @Config.Comment({
+        "RGB color of the invasion HUD progress bars.",
+        "Default: [0, 0, 255]"
+    })
+    @Config.RangeInt(min = 0, max = 255)
+    public int[] INVASION_HUD_BAR_COLOR_RGB = new int[]{0, 0, 255};
+
+    @Config.Comment({
+        "Displays active invasions of player within this block range.",
+        "A chunk is 16 blocks.",
+        "Default: " + (16 * 8)
+    })
+    public int INVASION_HUD_UPDATE_RANGE = 16 * 8;
+  }
+
   public static Invasion INVASION = new Invasion();
 
   public static class Invasion {

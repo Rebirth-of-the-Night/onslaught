@@ -21,14 +21,14 @@ import java.util.List;
  * Responsible for triggering the invasion entity cleanup in response to
  * specific events.
  */
-public class EntityInvasionCleanupEventHandler {
+public class InvasionCleanupEventHandler {
 
   private static final int INTERVAL_TICKS = 20 * 10;
 
   private final EntityInvasionPeriodicWorldCleanup entityInvasionPeriodicWorldCleanup;
   private final Int2LongMap lastRunMap;
 
-  public EntityInvasionCleanupEventHandler(EntityInvasionPeriodicWorldCleanup entityInvasionPeriodicWorldCleanup) {
+  public InvasionCleanupEventHandler(EntityInvasionPeriodicWorldCleanup entityInvasionPeriodicWorldCleanup) {
 
     this.entityInvasionPeriodicWorldCleanup = entityInvasionPeriodicWorldCleanup;
     this.lastRunMap = new Int2LongOpenHashMap();

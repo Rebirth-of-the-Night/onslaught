@@ -5,6 +5,7 @@ package com.codetaylor.mc.onslaught.modules.onslaught.template.invasion;
  */
 public class InvasionTemplate {
 
+  public String name = "";
   public InvasionTemplateSelector selector = new InvasionTemplateSelector();
   public InvasionTemplateMessages messages = new InvasionTemplateMessages();
   public InvasionTemplateCommands commands = new InvasionTemplateCommands();

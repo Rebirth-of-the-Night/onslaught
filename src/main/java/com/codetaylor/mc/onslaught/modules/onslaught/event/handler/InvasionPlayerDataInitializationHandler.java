@@ -14,11 +14,11 @@ import java.util.function.IntSupplier;
  * Responsible for initializing a player's invasion timer when they join for
  * the first time.
  */
-public class EntityInvasionPlayerDataInitializationHandler {
+public class InvasionPlayerDataInitializationHandler {
 
   private final IntSupplier invasionPlayerTimerValueSupplier;
 
-  public EntityInvasionPlayerDataInitializationHandler(IntSupplier invasionPlayerTimerValueSupplier) {
+  public InvasionPlayerDataInitializationHandler(IntSupplier invasionPlayerTimerValueSupplier) {
 
     this.invasionPlayerTimerValueSupplier = invasionPlayerTimerValueSupplier;
   }

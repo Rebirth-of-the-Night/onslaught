@@ -11,8 +11,12 @@ import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector.*;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.EffectApplicator;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.LootTableApplicator;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactory;
-import com.codetaylor.mc.onslaught.modules.onslaught.event.*;
+import com.codetaylor.mc.onslaught.modules.onslaught.event.handler.*;
+import com.codetaylor.mc.onslaught.modules.onslaught.event.handler.client.EntityAIAntiAirClientEventHandler;
+import com.codetaylor.mc.onslaught.modules.onslaught.event.handler.client.InvasionHudRenderEventHandler;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.*;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.render.InvasionHudRenderInfo;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.render.client.InvasionHudRenderer;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.SpawnSampler;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.predicate.SpawnPredicateFactory;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.selector.InvasionSelectorFunction;
@@ -26,6 +30,9 @@ import com.codetaylor.mc.onslaught.modules.onslaught.lib.JsonFileLocator;
 import com.codetaylor.mc.onslaught.modules.onslaught.loot.CustomLootTableManagerInjector;
 import com.codetaylor.mc.onslaught.modules.onslaught.loot.ExtraLootInjector;
 import com.codetaylor.mc.onslaught.modules.onslaught.packet.SCPacketAntiAir;
+import com.codetaylor.mc.onslaught.modules.onslaught.packet.SCPacketDeferredSpawn;
+import com.codetaylor.mc.onslaught.modules.onslaught.packet.SCPacketHudUpdate;
+import com.codetaylor.mc.onslaught.modules.onslaught.packet.SCPacketHudUpdateHandler;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.TemplateLoader;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.TemplateStore;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplate;
@@ -66,6 +73,12 @@ public class ModuleOnslaught
    * server when it starts.
    */
   private CommandBase[] commands;
+
+  /**
+   * Holds the hud render info on the client.
+   */
+  @SideOnly(Side.CLIENT)
+  private ArrayList<InvasionHudRenderInfo> invasionHudRenderInfoList = new ArrayList<>();
 
   public ModuleOnslaught() {
 
@@ -337,7 +350,7 @@ public class ModuleOnslaught
     );
 
     MinecraftForge.EVENT_BUS.register(
-        new EntityInvasionPlayerDataInitializationHandler(
+        new InvasionPlayerDataInitializationHandler(
             invasionPlayerTimerValueSupplier
         )
     );
@@ -349,7 +362,7 @@ public class ModuleOnslaught
     );
 
     MinecraftForge.EVENT_BUS.register(
-        new EntityInvasionCleanupEventHandler(
+        new InvasionCleanupEventHandler(
             new EntityInvasionPeriodicWorldCleanup(
                 () -> ModuleOnslaughtConfig.INVASION.OFFLINE_CLEANUP_DELAY_TICKS,
                 new EntityInvasionDataRemover()
@@ -381,7 +394,7 @@ public class ModuleOnslaught
     );
 
     MinecraftForge.EVENT_BUS.register(
-        new InvasionWaveCommandEventHandler(
+        new InvasionCommandEventHandler(
             new InvasionCommandExecutor(
                 idToInvasionTemplateFunction,
                 invasionTemplate -> invasionTemplate.commands.start
@@ -389,6 +402,15 @@ public class ModuleOnslaught
             new InvasionCommandExecutor(
                 idToInvasionTemplateFunction,
                 invasionTemplate -> invasionTemplate.commands.end
+            )
+        )
+    );
+
+    MinecraftForge.EVENT_BUS.register(
+        new InvasionClientUpdateEventHandler(
+            new InvasionClientHUDUpdateSender(
+                () -> ModuleOnslaughtConfig.CLIENT.INVASION_HUD_UPDATE_RANGE,
+                new InvasionCompletionPercentageCalculator()
             )
         )
     );
@@ -448,7 +470,25 @@ public class ModuleOnslaught
     // - AntiAir
     // -------------------------------------------------------------------------
 
-    MinecraftForge.EVENT_BUS.register(new EntityAIAntiAirClientEventHandler());
+    MinecraftForge.EVENT_BUS.register(
+        new EntityAIAntiAirClientEventHandler()
+    );
+
+    // -------------------------------------------------------------------------
+    // - HUD Render
+    // -------------------------------------------------------------------------
+
+    MinecraftForge.EVENT_BUS.register(
+        new InvasionHudRenderEventHandler(
+            new InvasionHudRenderer(
+                this.invasionHudRenderInfoList,
+                () -> ModuleOnslaughtConfig.CLIENT.INVASION_HUD_POSITION_XY[0],
+                () -> ModuleOnslaughtConfig.CLIENT.INVASION_HUD_POSITION_XY[1],
+                () -> ModuleOnslaughtConfig.CLIENT.INVASION_HUD_BAR_WIDTH,
+                () -> ModuleOnslaughtConfig.CLIENT.INVASION_HUD_BAR_COLOR_RGB
+            )
+        )
+    );
   }
 
   @Override
@@ -457,6 +497,20 @@ public class ModuleOnslaught
     registry.register(
         SCPacketAntiAir.class,
         SCPacketAntiAir.class,
+        Side.CLIENT
+    );
+
+    registry.register(
+        SCPacketDeferredSpawn.class,
+        SCPacketDeferredSpawn.class,
+        Side.CLIENT
+    );
+
+    registry.register(
+        new SCPacketHudUpdateHandler(
+            this.invasionHudRenderInfoList
+        ),
+        SCPacketHudUpdate.class,
         Side.CLIENT
     );
   }

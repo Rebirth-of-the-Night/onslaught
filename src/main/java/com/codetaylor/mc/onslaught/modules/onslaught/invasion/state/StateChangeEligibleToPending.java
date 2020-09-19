@@ -3,7 +3,7 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion.state;
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionStateChangedEvent;
-import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionUpdateEventHandler;
+import com.codetaylor.mc.onslaught.modules.onslaught.event.handler.InvasionUpdateEventHandler;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.*;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.management.PlayerList;

@@ -3,7 +3,9 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.Tag;
+import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionEntityKilledEvent;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.util.List;
 import java.util.UUID;
@@ -52,6 +54,8 @@ public class InvasionKillCountUpdater {
         ModOnslaught.LOG.fine(message);
         System.out.println(message);
       }
+
+      MinecraftForge.EVENT_BUS.post(new InvasionEntityKilledEvent());
     }
   }
 }

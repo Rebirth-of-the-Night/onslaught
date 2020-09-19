@@ -42,6 +42,7 @@ public class InvasionPlayerDataFactory {
 
     InvasionPlayerData.InvasionData invasionData = new InvasionPlayerData.InvasionData();
     invasionData.setInvasionTemplateId(templateId);
+    invasionData.setInvasionName(invasionTemplate.name);
     invasionData.setInvasionUuid(invasionUuid);
     invasionData.setTimestamp(timestamp);
     invasionData.setWarningMessageTimestamp(warningMessageTimestamp);

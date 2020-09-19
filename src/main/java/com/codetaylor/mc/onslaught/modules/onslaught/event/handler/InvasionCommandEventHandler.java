@@ -7,12 +7,12 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 /**
  * Responsible for executing commands in response to an invasion begin or end.
  */
-public class InvasionWaveCommandEventHandler {
+public class InvasionCommandEventHandler {
 
   private final InvasionCommandExecutor commandExecutorStart;
   private final InvasionCommandExecutor commandExecutorEnd;
 
-  public InvasionWaveCommandEventHandler(
+  public InvasionCommandEventHandler(
       InvasionCommandExecutor commandExecutorStart,
       InvasionCommandExecutor commandExecutorEnd
   ) {

@@ -24,6 +24,11 @@ public class TickCounter {
     this.count = 0;
   }
 
+  public void setCounter(int newValue) {
+
+    this.count = newValue;
+  }
+
   public boolean increment(int ticks) {
 
     this.count += ticks;

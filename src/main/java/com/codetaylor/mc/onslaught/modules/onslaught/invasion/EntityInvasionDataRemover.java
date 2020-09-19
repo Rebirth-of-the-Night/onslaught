@@ -5,7 +5,6 @@ import com.codetaylor.mc.onslaught.modules.onslaught.Tag;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.MethodHandleHelper;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 
 import java.lang.invoke.MethodHandle;
 import java.util.function.Consumer;
@@ -28,7 +27,7 @@ public class EntityInvasionDataRemover
     Side: BOTH
     AT: public net.minecraft.entity.EntityLiving field_82179_bU # persistenceRequired
      */
-    entityLiving$persistenceRequired = MethodHandleHelper.unreflectSetter(World.class, "field_82179_bU");
+    entityLiving$persistenceRequired = MethodHandleHelper.unreflectSetter(EntityLiving.class, "field_82179_bU");
   }
 
   @Override

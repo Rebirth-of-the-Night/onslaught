@@ -1,4 +1,4 @@
-package com.codetaylor.mc.onslaught.modules.onslaught.event;
+package com.codetaylor.mc.onslaught.modules.onslaught.event.client;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.CapabilityAntiAir;
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.IAntiAirPlayerData;
