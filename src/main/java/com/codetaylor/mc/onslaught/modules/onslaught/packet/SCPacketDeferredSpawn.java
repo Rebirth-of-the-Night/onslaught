@@ -65,7 +65,7 @@ public class SCPacketDeferredSpawn
       double x = message.x;
       double y = message.y;
       double z = message.z;
-      world.spawnParticle(EnumParticleTypes.MOB_APPEARANCE, x + offsetX, y + offsetY, z + offsetZ, 0.0, 0.0, 0.0);
+      world.spawnParticle(EnumParticleTypes.PORTAL, x + offsetX, y + offsetY, z + offsetZ, 0.0, 0.0, 0.0);
     }
 
     for (int i = 0; i < 4; i++) {
@@ -75,7 +75,7 @@ public class SCPacketDeferredSpawn
       double x = message.x;
       double y = message.y;
       double z = message.z;
-      world.spawnParticle(EnumParticleTypes.MOB_APPEARANCE, x + offsetX, y + offsetY, z + offsetZ, 0.0, 0.0, 0.0);
+      world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, x + offsetX, y + offsetY, z + offsetZ, 0.0, 0.0, 0.0);
     }
 
     for (int i = 0; i < 16; i++) {
@@ -85,7 +85,7 @@ public class SCPacketDeferredSpawn
       double x = message.x;
       double y = message.y;
       double z = message.z;
-      world.spawnParticle(EnumParticleTypes.MOB_APPEARANCE, x + offsetX, y + offsetY, z + offsetZ, 0.0, 0.0, 0.0);
+      world.spawnParticle(EnumParticleTypes.PORTAL, x + offsetX, y + offsetY, z + offsetZ, 0.0, 0.0, 0.0);
     }
 
     return null;
