@@ -23,10 +23,13 @@ public class ActiveWavePredicate
     for (InvasionPlayerData.InvasionData.WaveData waveData : waveDataList) {
       List<InvasionPlayerData.InvasionData.MobData> mobDataList = waveData.getMobDataList();
 
-      for (InvasionPlayerData.InvasionData.MobData mobData : mobDataList) {
+      if (waveData.getDelayTicks() <= 0) {
 
-        if (mobData.getKilledCount() < mobData.getTotalCount()) {
-          return true;
+        for (InvasionPlayerData.InvasionData.MobData mobData : mobDataList) {
+
+          if (mobData.getKilledCount() < mobData.getTotalCount()) {
+            return true;
+          }
         }
       }
     }
