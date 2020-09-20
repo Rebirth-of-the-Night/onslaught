@@ -1,7 +1,9 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
 
+import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionStateChangedEvent;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.util.Set;
 import java.util.UUID;
@@ -38,9 +40,10 @@ public class InvasionCommandStarter {
     InvasionGlobalSavedData invasionGlobalSavedData = InvasionGlobalSavedData.get(world);
     UUID uuid = player.getUniqueID();
     InvasionPlayerData data = invasionGlobalSavedData.getPlayerData(uuid);
+    InvasionPlayerData.EnumInvasionState invasionState = data.getInvasionState();
 
     // Skip players with an active invasion.
-    if (data.getInvasionState() == InvasionPlayerData.EnumInvasionState.Active) {
+    if (invasionState == InvasionPlayerData.EnumInvasionState.Active) {
       return false;
     }
 
@@ -52,6 +55,8 @@ public class InvasionCommandStarter {
 
     // Remove the player from the eligible set
     this.eligiblePlayers.remove(uuid);
+
+    MinecraftForge.EVENT_BUS.post(new InvasionStateChangedEvent(player, invasionState, InvasionPlayerData.EnumInvasionState.Active));
 
     return true;
   }
