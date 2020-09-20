@@ -7,6 +7,9 @@ import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.AntiAirPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.IAntiAirPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.command.*;
+import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.EntityAIChaseLongDistance;
+import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.EntityAIChaseLongDistanceGhast;
+import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.EntityAIPlayerTarget;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector.*;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.EffectApplicator;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.LootTableApplicator;
@@ -161,6 +164,13 @@ public class ModuleOnslaught
             new EntityAIAntiAirInjector()
         }
     ));
+
+    // The entity AI classes to strip from mobs during invasion cleanup
+    Class<?>[] entityAIToRemoveOnCleanup = {
+        EntityAIPlayerTarget.class,
+        EntityAIChaseLongDistance.class,
+        EntityAIChaseLongDistanceGhast.class
+    };
 
     // -------------------------------------------------------------------------
     // - Entity Capability Injection
@@ -366,7 +376,9 @@ public class ModuleOnslaught
         new InvasionCleanupEventHandler(
             new EntityInvasionPeriodicWorldCleanup(
                 () -> ModuleOnslaughtConfig.INVASION.OFFLINE_CLEANUP_DELAY_TICKS,
-                new EntityInvasionDataRemover()
+                new EntityInvasionDataRemover(
+                    entityAIToRemoveOnCleanup
+                )
             )
         )
     );
