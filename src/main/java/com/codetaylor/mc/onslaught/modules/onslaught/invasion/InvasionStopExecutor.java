@@ -38,6 +38,11 @@ public class InvasionStopExecutor {
   public boolean stopWithCheck(EntityPlayerMP player, InvasionGlobalSavedData invasionGlobalSavedData, InvasionPlayerData data) {
 
     if (this.invasionFinishedPredicate.test(data)) {
+      // We need to send the event before the invasion data is erased so that
+      // the event handlers interested in this event have access to the invasion
+      // that is ending.
+      MinecraftForge.EVENT_BUS.post(new InvasionStateChangedEvent(player, InvasionPlayerData.EnumInvasionState.Active, InvasionPlayerData.EnumInvasionState.Waiting));
+
       data.setTicksUntilEligible(this.invasionPlayerTimerValueSupplier.getAsInt());
       data.setInvasionState(InvasionPlayerData.EnumInvasionState.Waiting);
       data.setInvasionData(null);
@@ -50,7 +55,6 @@ public class InvasionStopExecutor {
         System.out.println(message);
       }
 
-      MinecraftForge.EVENT_BUS.post(new InvasionStateChangedEvent(player, InvasionPlayerData.EnumInvasionState.Active, InvasionPlayerData.EnumInvasionState.Waiting));
       return true;
     }
 
