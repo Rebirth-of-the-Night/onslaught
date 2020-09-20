@@ -79,7 +79,7 @@ public class SpawnerMob {
     if (spawnLocation == null) {
 
       if (ModuleOnslaughtConfig.DEBUG.INVASION_SPAWNERS) {
-        String message = "Unable to find spawn location";
+        String message = "Unable to find spawn location for: " + mobTemplateId;
         ModOnslaught.LOG.fine(message);
         System.out.println(message);
       }

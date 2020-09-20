@@ -31,6 +31,11 @@ public class InvasionTemplateWave {
     public int weight = 1;
 
     /**
+     * Try to force spawn the primary spawn.
+     */
+    public boolean forceSpawn = ModuleOnslaughtConfig.WAVE.DEFAULT_FORCE_SPAWN;
+
+    /**
      * The group's mobs. All mobs in this list will be spawned.
      */
     public Mob[] mobs = {};
@@ -63,34 +68,43 @@ public class InvasionTemplateWave {
     public String id = ModuleOnslaughtConfig.WAVE.DEFAULT_SECONDARY_MOB_ID;
 
     /**
-     * The weight of this mob.
-     */
-    public int weight = 1;
-
-    /**
      * The spawn parameters.
      */
-    public Spawn spawn = new Spawn() {{
-
-      this.type = ModuleOnslaughtConfig.WAVE.DEFAULT_SECONDARY_SPAWN.DEFAULT_TYPE;
-      this.light = ModuleOnslaughtConfig.WAVE.DEFAULT_SECONDARY_SPAWN.DEFAULT_LIGHT;
-      this.force = ModuleOnslaughtConfig.WAVE.DEFAULT_SECONDARY_SPAWN.DEFAULT_FORCE;
-      this.rangeXZ = ModuleOnslaughtConfig.WAVE.DEFAULT_SECONDARY_SPAWN.DEFAULT_RANGE_XZ;
-      this.rangeY = ModuleOnslaughtConfig.WAVE.DEFAULT_SECONDARY_SPAWN.DEFAULT_RANGE_Y;
-      this.stepRadius = ModuleOnslaughtConfig.WAVE.DEFAULT_SECONDARY_SPAWN.DEFAULT_STEP_RADIUS;
-      this.sampleDistance = ModuleOnslaughtConfig.WAVE.DEFAULT_SECONDARY_SPAWN.DEFAULT_SAMPLE_DISTANCE;
-    }};
+    public SecondarySpawn spawn = new SecondarySpawn();
   }
 
   public static class Spawn {
 
-    public EnumSpawnType type = ModuleOnslaughtConfig.WAVE.DEFAULT_SPAWN.DEFAULT_TYPE;
-    public int[] light = ModuleOnslaughtConfig.WAVE.DEFAULT_SPAWN.DEFAULT_LIGHT;
-    public boolean force = ModuleOnslaughtConfig.WAVE.DEFAULT_SPAWN.DEFAULT_FORCE;
-    public int[] rangeXZ = ModuleOnslaughtConfig.WAVE.DEFAULT_SPAWN.DEFAULT_RANGE_XZ;
-    public int rangeY = ModuleOnslaughtConfig.WAVE.DEFAULT_SPAWN.DEFAULT_RANGE_Y;
-    public int stepRadius = ModuleOnslaughtConfig.WAVE.DEFAULT_SPAWN.DEFAULT_STEP_RADIUS;
-    public int sampleDistance = ModuleOnslaughtConfig.WAVE.DEFAULT_SPAWN.DEFAULT_SAMPLE_DISTANCE;
+    public EnumSpawnType type;
+    public int[] light;
+    public int[] rangeXZ;
+    public int rangeY;
+    public int stepRadius;
+    public int sampleDistance;
+
+    public Spawn() {
+
+      this.type = ModuleOnslaughtConfig.WAVE.DEFAULT_SPAWN.DEFAULT_TYPE;
+      this.light = ModuleOnslaughtConfig.WAVE.DEFAULT_SPAWN.DEFAULT_LIGHT;
+      this.rangeXZ = ModuleOnslaughtConfig.WAVE.DEFAULT_SPAWN.DEFAULT_RANGE_XZ;
+      this.rangeY = ModuleOnslaughtConfig.WAVE.DEFAULT_SPAWN.DEFAULT_RANGE_Y;
+      this.stepRadius = ModuleOnslaughtConfig.WAVE.DEFAULT_SPAWN.DEFAULT_STEP_RADIUS;
+      this.sampleDistance = ModuleOnslaughtConfig.WAVE.DEFAULT_SPAWN.DEFAULT_SAMPLE_DISTANCE;
+    }
+  }
+
+  public static class SecondarySpawn
+      extends Spawn {
+
+    public SecondarySpawn() {
+
+      this.type = ModuleOnslaughtConfig.WAVE.DEFAULT_SECONDARY_SPAWN.DEFAULT_TYPE;
+      this.light = ModuleOnslaughtConfig.WAVE.DEFAULT_SECONDARY_SPAWN.DEFAULT_LIGHT;
+      this.rangeXZ = ModuleOnslaughtConfig.WAVE.DEFAULT_SECONDARY_SPAWN.DEFAULT_RANGE_XZ;
+      this.rangeY = ModuleOnslaughtConfig.WAVE.DEFAULT_SECONDARY_SPAWN.DEFAULT_RANGE_Y;
+      this.stepRadius = ModuleOnslaughtConfig.WAVE.DEFAULT_SECONDARY_SPAWN.DEFAULT_STEP_RADIUS;
+      this.sampleDistance = ModuleOnslaughtConfig.WAVE.DEFAULT_SECONDARY_SPAWN.DEFAULT_SAMPLE_DISTANCE;
+    }
   }
 
   public enum EnumSpawnType {

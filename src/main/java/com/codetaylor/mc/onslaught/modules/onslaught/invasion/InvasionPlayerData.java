@@ -375,6 +375,7 @@ public class InvasionPlayerData
         implements INBTSerializable<NBTTagCompound> {
 
       private String mobTemplateId;
+      private boolean forceSpawn;
       private int totalCount;
       private int killedCount;
       private SpawnData spawnData;
@@ -387,6 +388,16 @@ public class InvasionPlayerData
       public void setMobTemplateId(String mobTemplateId) {
 
         this.mobTemplateId = mobTemplateId;
+      }
+
+      public boolean isForceSpawn() {
+
+        return this.forceSpawn;
+      }
+
+      public void setForceSpawn(boolean forceSpawn) {
+
+        this.forceSpawn = forceSpawn;
       }
 
       public int getTotalCount() {
@@ -457,7 +468,6 @@ public class InvasionPlayerData
 
       public InvasionTemplateWave.EnumSpawnType type;
       public int[] light;
-      public boolean force;
       public int[] rangeXZ;
       public int rangeY;
       public int stepRadius;
@@ -468,7 +478,6 @@ public class InvasionPlayerData
         SpawnData copy = new SpawnData();
         copy.type = this.type;
         copy.light = Arrays.copyOf(this.light, this.light.length);
-        copy.force = this.force;
         copy.rangeXZ = Arrays.copyOf(this.rangeXZ, this.rangeXZ.length);
         copy.rangeY = this.rangeY;
         copy.stepRadius = this.stepRadius;
@@ -482,7 +491,6 @@ public class InvasionPlayerData
         return "SpawnData{" +
             "type=" + this.type +
             ", light=" + Arrays.toString(this.light) +
-            ", force=" + this.force +
             ", rangeXZ=" + Arrays.toString(this.rangeXZ) +
             ", rangeY=" + this.rangeY +
             ", stepRadius=" + this.stepRadius +
@@ -496,7 +504,6 @@ public class InvasionPlayerData
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("type", this.type.name());
         tag.setIntArray("light", this.light);
-        tag.setBoolean("force", this.force);
         tag.setIntArray("rangeXZ", this.rangeXZ);
         tag.setInteger("rangeY", this.rangeY);
         tag.setInteger("stepRadius", this.stepRadius);
@@ -509,7 +516,6 @@ public class InvasionPlayerData
 
         this.type = InvasionTemplateWave.EnumSpawnType.valueOf(tag.getString("type"));
         this.light = tag.getIntArray("light");
-        this.force = tag.getBoolean("force");
         this.rangeXZ = tag.getIntArray("rangeXZ");
         this.rangeY = tag.getInteger("rangeY");
         this.stepRadius = tag.getInteger("stepRadius");

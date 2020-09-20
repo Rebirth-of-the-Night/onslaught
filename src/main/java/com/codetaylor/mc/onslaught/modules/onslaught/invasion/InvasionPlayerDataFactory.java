@@ -62,21 +62,23 @@ public class InvasionPlayerDataFactory {
     InvasionTemplateWave.Group group = this.selectGroup(waveTemplate.groups, random);
 
     for (InvasionTemplateWave.Mob mob : group.mobs) {
-      waveData.getMobDataList().add(this.createMobData(mob, random));
+      waveData.getMobDataList().add(this.createMobData(mob, group.forceSpawn, random));
     }
 
     return waveData;
   }
 
   /**
-   * @param mob    the {@link InvasionTemplateWave.Mob}
-   * @param random the {@link Random} prng
+   * @param mob        the {@link InvasionTemplateWave.Mob}
+   * @param forceSpawn true to force spawn the mob
+   * @param random     the {@link Random} prng
    * @return an {@link InvasionPlayerData.InvasionData.MobData} generated from the given {@link InvasionTemplateWave.Mob} and {@link Random}
    */
-  private InvasionPlayerData.InvasionData.MobData createMobData(InvasionTemplateWave.Mob mob, Random random) {
+  private InvasionPlayerData.InvasionData.MobData createMobData(InvasionTemplateWave.Mob mob, boolean forceSpawn, Random random) {
 
     InvasionPlayerData.InvasionData.MobData mobData = new InvasionPlayerData.InvasionData.MobData();
     mobData.setMobTemplateId(mob.id);
+    mobData.setForceSpawn(forceSpawn);
     mobData.setTotalCount(this.evaluateRange(mob.count, random));
     mobData.setKilledCount(0);
     mobData.setSpawnData(this.invasionSpawnDataConverterFunction.apply(mob.spawn));

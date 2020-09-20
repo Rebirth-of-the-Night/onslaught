@@ -2,9 +2,9 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner;
 
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
-import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateWave;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionSpawnDataConverterFunction;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateWave;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -85,9 +85,7 @@ public class SpawnerWave {
         // Try to force spawn (magic spawns)
         // Try to spawn secondary mob normally
 
-        if (this.spawnerMob.attemptSpawnMob(world, position, invasionUuid, playerUuid, waveIndex, mobIndex, mobData.getMobTemplateId(), spawnData)
-            || (spawnData.force && this.spawnerMobForced.attemptSpawnMob(world, position, invasionUuid, playerUuid, waveIndex, mobIndex, mobData.getMobTemplateId(), spawnData, secondaryMob))
-            || this.spawnerMob.attemptSpawnMob(world, position, invasionUuid, playerUuid, waveIndex, mobIndex, secondaryMob.id, this.invasionSpawnDataConverterFunction.apply(secondaryMob.spawn))) {
+        if (this.attemptSpawn(invasionUuid, waveIndex, secondaryMob, mobIndex, mobData, world, position, playerUuid, spawnData)) {
 
           remainingMobs -= 1;
 
@@ -106,12 +104,31 @@ public class SpawnerWave {
 
         } else {
           // If we can't find a spawn location for a mob, break here else
-          // loop forevah!
+          // we loop forevah!
           break;
         }
       }
     }
 
     return false; // Continue spawning
+  }
+
+  private boolean attemptSpawn(UUID invasionUuid, int waveIndex, InvasionTemplateWave.SecondaryMob secondaryMob, int mobIndex, InvasionPlayerData.InvasionData.MobData mobData, World world, BlockPos position, UUID playerUuid, InvasionPlayerData.InvasionData.SpawnData spawnData) {
+
+    if (this.spawnerMob.attemptSpawnMob(world, position, invasionUuid, playerUuid, waveIndex, mobIndex, mobData.getMobTemplateId(), spawnData)) {
+      return true;
+    }
+
+    if ((mobData.isForceSpawn() && this.spawnerMobForced.attemptSpawnMob(world, position, invasionUuid, playerUuid, waveIndex, mobIndex, mobData.getMobTemplateId(), spawnData, secondaryMob))) {
+      return true;
+    }
+
+    InvasionPlayerData.InvasionData.SpawnData secondarySpawnData = this.invasionSpawnDataConverterFunction.apply(secondaryMob.spawn);
+
+    if (this.spawnerMob.attemptSpawnMob(world, position, invasionUuid, playerUuid, waveIndex, mobIndex, secondaryMob.id, secondarySpawnData)) {
+      return true;
+    }
+
+    return false;
   }
 }

@@ -86,14 +86,16 @@ public class ModuleOnslaughtConfig {
         "player is within range."
     })
     @Config.RequiresMcRestart
-    public String[] FORCED_SPAWN_EFFECTS = {};
+    public String[] FORCED_SPAWN_EFFECTS = {
+        "minecraft:slowness"
+    };
 
     @Config.Comment({
         "If a player is within this range of a forced spawn location, the forced",
         "spawn effects will be applied.",
-        "Default: " + 8
+        "Default: " + 16
     })
-    public int FORCED_SPAWN_EFFECT_RANGE = 8;
+    public int FORCED_SPAWN_EFFECT_RANGE = 16;
 
     @Config.Comment({
         "Duration of effects applied when a player is within range of a forced",
@@ -150,10 +152,16 @@ public class ModuleOnslaughtConfig {
 
     public String DEFAULT_SECONDARY_MOB_ID = "";
 
-    public Spawn DEFAULT_SECONDARY_SPAWN = new Spawn() {{
-      this.DEFAULT_TYPE = InvasionTemplateWave.EnumSpawnType.air;
-      this.DEFAULT_LIGHT = new int[]{0, 15};
-    }};
+    public boolean DEFAULT_FORCE_SPAWN = true;
+
+    public Spawn DEFAULT_SECONDARY_SPAWN = new Spawn(
+        InvasionTemplateWave.EnumSpawnType.air,
+        new int[]{0, 15},
+        new int[]{16, 128},
+        16,
+        4,
+        2
+    );
   }
 
   public static class Spawn {
@@ -162,11 +170,6 @@ public class ModuleOnslaughtConfig {
         "The default spawn type."
     })
     public InvasionTemplateWave.EnumSpawnType DEFAULT_TYPE = InvasionTemplateWave.EnumSpawnType.ground;
-
-    @Config.Comment({
-        "The default force value."
-    })
-    public boolean DEFAULT_FORCE = true;
 
     @Config.Comment({
         "The default light range."
@@ -197,6 +200,27 @@ public class ModuleOnslaughtConfig {
     })
     @Config.RangeInt(min = 1)
     public int DEFAULT_SAMPLE_DISTANCE = 2;
+
+    public Spawn() {
+      //
+    }
+
+    public Spawn(
+        InvasionTemplateWave.EnumSpawnType DEFAULT_TYPE,
+        int[] DEFAULT_LIGHT,
+        int[] DEFAULT_RANGE_XZ,
+        int DEFAULT_RANGE_Y,
+        int DEFAULT_STEP_RADIUS,
+        int DEFAULT_SAMPLE_DISTANCE
+    ) {
+
+      this.DEFAULT_TYPE = DEFAULT_TYPE;
+      this.DEFAULT_LIGHT = DEFAULT_LIGHT;
+      this.DEFAULT_RANGE_XZ = DEFAULT_RANGE_XZ;
+      this.DEFAULT_RANGE_Y = DEFAULT_RANGE_Y;
+      this.DEFAULT_STEP_RADIUS = DEFAULT_STEP_RADIUS;
+      this.DEFAULT_SAMPLE_DISTANCE = DEFAULT_SAMPLE_DISTANCE;
+    }
   }
 
   public static CustomAI CUSTOM_AI = new CustomAI();
