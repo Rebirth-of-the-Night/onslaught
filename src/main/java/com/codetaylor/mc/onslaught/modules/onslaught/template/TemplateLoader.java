@@ -2,14 +2,16 @@ package com.codetaylor.mc.onslaught.modules.onslaught.template;
 
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaught;
+import com.codetaylor.mc.onslaught.modules.onslaught.lib.FilePathCreator;
+import com.codetaylor.mc.onslaught.modules.onslaught.lib.JsonFileLocator;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateLoader;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateRegistry;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplateLoader;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplateRegistry;
-import com.codetaylor.mc.onslaught.modules.onslaught.lib.FilePathCreator;
-import com.codetaylor.mc.onslaught.modules.onslaught.lib.JsonFileLocator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -21,6 +23,8 @@ import java.util.logging.Level;
  * Responsible for loading mob templates and invasion templates into the data store.
  */
 public class TemplateLoader {
+
+  private static final Logger LOGGER = LogManager.getLogger(TemplateLoader.class);
 
   private final Consumer<MobTemplateRegistry> mobTemplateRegistryConsumer;
   private final Consumer<InvasionTemplateRegistry> invasionTemplateRegistryConsumer;
@@ -71,8 +75,11 @@ public class TemplateLoader {
       return true;
 
     } catch (Exception e) {
-      ModOnslaught.LOG.log(Level.SEVERE, "Error loading mob template data");
+      String message = "Error loading mob template data";
+      ModOnslaught.LOG.log(Level.SEVERE, message);
       ModOnslaught.LOG.log(Level.SEVERE, e.getMessage(), e);
+      LOGGER.error(message);
+      LOGGER.error(e.getMessage(), e);
     }
 
     return false;
@@ -94,8 +101,11 @@ public class TemplateLoader {
       return true;
 
     } catch (Exception e) {
-      ModOnslaught.LOG.log(Level.SEVERE, "Error loading invasion template data");
+      String message = "Error loading invasion template data";
+      ModOnslaught.LOG.log(Level.SEVERE, message);
       ModOnslaught.LOG.log(Level.SEVERE, e.getMessage(), e);
+      LOGGER.error(message);
+      LOGGER.error(e.getMessage(), e);
     }
 
     return false;
