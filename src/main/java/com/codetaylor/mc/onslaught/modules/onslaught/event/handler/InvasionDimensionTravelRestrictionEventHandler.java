@@ -28,6 +28,6 @@ public class InvasionDimensionTravelRestrictionEventHandler {
 
     InvasionGlobalSavedData invasionGlobalSavedData = InvasionGlobalSavedData.get(entity.world);
     InvasionPlayerData playerData = invasionGlobalSavedData.getPlayerData(entity.getUniqueID());
-    event.setCanceled(playerData.getInvasionState() != InvasionPlayerData.EnumInvasionState.Active);
+    event.setCanceled(playerData.getInvasionState() == InvasionPlayerData.EnumInvasionState.Active);
   }
 }
