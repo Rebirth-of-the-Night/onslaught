@@ -103,6 +103,11 @@ public class SpawnerWave {
 
             return true; // Stop spawning
           }
+
+        } else {
+          // If we can't find a spawn location for a mob, break here else
+          // loop forevah!
+          break;
         }
       }
     }
