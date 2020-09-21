@@ -199,6 +199,11 @@ public class InvasionPlayerData
     private long warningMessageTimestamp;
 
     /**
+     * Used as bitset flags for the staged commands.
+     */
+    private long stagedCommandFlags;
+
+    /**
      * The invasion's wave data.
      */
     private final List<WaveData> waveDataList = new ArrayList<>();
@@ -253,6 +258,16 @@ public class InvasionPlayerData
       this.warningMessageTimestamp = warningMessageTimestamp;
     }
 
+    public boolean isStagedCommandFlagSet(int index) {
+
+      return (this.stagedCommandFlags & (1 << index)) == (1 << index);
+    }
+
+    public void setStagedCommandFlag(int index) {
+
+      this.stagedCommandFlags = this.stagedCommandFlags | (1 << index);
+    }
+
     public List<WaveData> getWaveDataList() {
 
       return this.waveDataList;
@@ -263,9 +278,11 @@ public class InvasionPlayerData
 
       return "InvasionData{" +
           "invasionTemplateId='" + this.invasionTemplateId + '\'' +
+          ", invasionName='" + this.invasionName + '\'' +
           ", invasionUuid=" + this.invasionUuid +
           ", timestamp=" + this.timestamp +
           ", warningMessageTimestamp=" + this.warningMessageTimestamp +
+          ", stagedCommandFlags=" + this.stagedCommandFlags +
           ", waveDataList=" + this.waveDataList +
           '}';
     }
@@ -275,9 +292,11 @@ public class InvasionPlayerData
 
       NBTTagCompound tag = new NBTTagCompound();
       tag.setString("invasionTemplateId", this.invasionTemplateId);
+      tag.setString("invasionName", this.invasionName);
       tag.setString("invasionUuid", this.invasionUuid.toString());
       tag.setLong("timestamp", this.timestamp);
       tag.setLong("warningMessageTimestamp", this.warningMessageTimestamp);
+      tag.setLong("stagedCommandFlags", this.stagedCommandFlags);
 
       NBTTagList tagList = new NBTTagList();
 
@@ -294,9 +313,11 @@ public class InvasionPlayerData
     public void deserializeNBT(NBTTagCompound tag) {
 
       this.invasionTemplateId = tag.getString("invasionTemplateId");
+      this.invasionName = tag.getString("invasionName");
+      this.invasionUuid = UUID.fromString(tag.getString("invasionUuid"));
       this.timestamp = tag.getLong("timestamp");
       this.warningMessageTimestamp = tag.getLong("warningMessageTimestamp");
-      this.invasionUuid = UUID.fromString(tag.getString("invasionUuid"));
+      this.stagedCommandFlags = tag.getLong("stagedCommandFlags");
 
       NBTTagList waveDataList = tag.getTagList("waveDataList", Constants.NBT.TAG_COMPOUND);
 

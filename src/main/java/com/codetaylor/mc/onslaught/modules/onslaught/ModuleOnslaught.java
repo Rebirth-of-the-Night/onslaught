@@ -81,7 +81,7 @@ public class ModuleOnslaught
    * Holds the hud render info on the client.
    */
   @SideOnly(Side.CLIENT)
-  private ArrayList<InvasionHudRenderInfo> invasionHudRenderInfoList = new ArrayList<>();
+  private final ArrayList<InvasionHudRenderInfo> invasionHudRenderInfoList = new ArrayList<>();
 
   public ModuleOnslaught() {
 
@@ -233,6 +233,9 @@ public class ModuleOnslaught
         () -> ModuleOnslaughtConfig.INVASION.TIMING_RANGE_TICKS[0],
         () -> ModuleOnslaughtConfig.INVASION.TIMING_RANGE_TICKS[1]
     );
+
+    InvasionCommandSender invasionCommandSender = new InvasionCommandSender();
+    InvasionCompletionPercentageCalculator invasionCompletionPercentageCalculator = new InvasionCompletionPercentageCalculator();
 
     MinecraftForge.EVENT_BUS.register(
         new InvasionUpdateEventHandler(
@@ -410,11 +413,18 @@ public class ModuleOnslaught
         new InvasionCommandEventHandler(
             new InvasionCommandExecutor(
                 idToInvasionTemplateFunction,
-                invasionTemplate -> invasionTemplate.commands.start
+                invasionTemplate -> invasionTemplate.commands.start,
+                invasionCommandSender
             ),
             new InvasionCommandExecutor(
                 idToInvasionTemplateFunction,
-                invasionTemplate -> invasionTemplate.commands.end
+                invasionTemplate -> invasionTemplate.commands.end,
+                invasionCommandSender
+            ),
+            new InvasionCommandExecutorStaged(
+                idToInvasionTemplateFunction,
+                invasionCompletionPercentageCalculator,
+                invasionCommandSender
             )
         )
     );
@@ -423,7 +433,7 @@ public class ModuleOnslaught
         new InvasionClientUpdateEventHandler(
             new InvasionClientHUDUpdateSender(
                 () -> ModuleOnslaughtConfig.CLIENT.INVASION_HUD_UPDATE_RANGE,
-                new InvasionCompletionPercentageCalculator()
+                invasionCompletionPercentageCalculator
             )
         )
     );

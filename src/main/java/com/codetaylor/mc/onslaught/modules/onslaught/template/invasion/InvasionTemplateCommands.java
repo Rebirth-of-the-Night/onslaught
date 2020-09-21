@@ -7,4 +7,5 @@ public class InvasionTemplateCommands {
 
   public String[] start = new String[0];
   public String[] end = new String[0];
+  public InvasionTemplateCommandStaged[] staged = new InvasionTemplateCommandStaged[0];
 }

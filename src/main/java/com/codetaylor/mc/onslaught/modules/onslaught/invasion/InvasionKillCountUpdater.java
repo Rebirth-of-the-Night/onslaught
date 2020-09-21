@@ -4,18 +4,24 @@ import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.Tag;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionEntityKilledEvent;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Function;
 
 /**
  * Responsible for incrementing a player's kill count in their invasion data.
  */
 public class InvasionKillCountUpdater {
 
-  public void onDeath(InvasionGlobalSavedData invasionGlobalSavedData, NBTTagCompound entityData) {
+  public void onDeath(
+      InvasionGlobalSavedData invasionGlobalSavedData,
+      NBTTagCompound entityData,
+      Function<UUID, EntityPlayerMP> playerFunction
+  ) {
 
     if (!entityData.hasKey(Tag.ONSLAUGHT)) {
       return;
@@ -55,7 +61,7 @@ public class InvasionKillCountUpdater {
         System.out.println(message);
       }
 
-      MinecraftForge.EVENT_BUS.post(new InvasionEntityKilledEvent());
+      MinecraftForge.EVENT_BUS.post(new InvasionEntityKilledEvent(playerFunction.apply(playerUuid), invasionData));
     }
   }
 }
