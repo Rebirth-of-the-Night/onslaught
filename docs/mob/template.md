@@ -59,7 +59,7 @@ Mob definitions can define additional loot tables to roll when the mob dies.
 The extra tables can reference existing loot tables or new loot tables located in the `config/onslaught/loot` folder.
 
 ```js
-}
+{
   "zombie_loot": {
     "id": "minecraft:zombie",
     "extraLootTables": [

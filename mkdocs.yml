@@ -4,8 +4,10 @@ nav:
   - Introduction: index.md
   - ChangeLog: changelog.md
   - Commands: commands.md
-  - Mobs:
-      - Mob Templates: mob/template.md
+  - Invasion:
+      - Templates: invasion/template.md
+  - Mob:
+      - Templates: mob/template.md
       - Custom AI: mob/customai.md
 
 theme:
