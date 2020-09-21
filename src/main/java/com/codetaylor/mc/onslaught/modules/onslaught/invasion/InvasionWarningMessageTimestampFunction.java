@@ -11,6 +11,8 @@ import java.util.function.IntSupplier;
  */
 public class InvasionWarningMessageTimestampFunction {
 
+  public static final int MAX_TICKS = 10 * 60 * 20;
+
   private final Function<String, InvasionTemplate> idToInvasionTemplateFunction;
   private final IntSupplier defaultWarningTicks;
 
@@ -36,6 +38,10 @@ public class InvasionWarningMessageTimestampFunction {
       if (ticks < 0) {
         return -1;
       }
+    }
+
+    if (ticks > MAX_TICKS) {
+      ticks = MAX_TICKS;
     }
 
     return invasionTimestamp - ticks;
