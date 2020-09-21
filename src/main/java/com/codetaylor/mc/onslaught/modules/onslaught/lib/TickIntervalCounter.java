@@ -29,7 +29,13 @@ public class TickIntervalCounter {
       updateTicks = updateIntervalTicks;
 
     } else {
-      updateTicks = (int) (worldTime - this.previousWorldTime);
+      int amount = (int) (worldTime - this.previousWorldTime);
+
+      if (amount < 0) {
+        amount = 0;
+      }
+
+      updateTicks = amount;
     }
 
     this.previousWorldTime = worldTime;
