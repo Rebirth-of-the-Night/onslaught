@@ -435,6 +435,7 @@ public class InvasionPlayerData
 
         return "MobData{" +
             "mobTemplateId='" + this.mobTemplateId + '\'' +
+            ", forceSpawn=" + this.forceSpawn +
             ", totalCount=" + this.totalCount +
             ", killedCount=" + this.killedCount +
             ", spawnData=" + this.spawnData +
@@ -446,6 +447,7 @@ public class InvasionPlayerData
 
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("mobTemplateId", this.mobTemplateId);
+        tag.setBoolean("forceSpawn", this.forceSpawn);
         tag.setInteger("totalCount", this.totalCount);
         tag.setInteger("killedCount", this.killedCount);
         tag.setTag("spawnData", this.spawnData.serializeNBT());
@@ -456,6 +458,7 @@ public class InvasionPlayerData
       public void deserializeNBT(NBTTagCompound tag) {
 
         this.mobTemplateId = tag.getString("mobTemplateId");
+        this.forceSpawn = tag.getBoolean("forceSpawn");
         this.totalCount = tag.getInteger("totalCount");
         this.killedCount = tag.getInteger("killedCount");
         this.spawnData = new SpawnData();
