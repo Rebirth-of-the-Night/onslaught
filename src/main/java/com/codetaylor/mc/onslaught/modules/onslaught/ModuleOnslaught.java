@@ -390,7 +390,7 @@ public class ModuleOnslaught
         new InvasionMessageEventHandler(
             new InvasionMessageSender(
                 idToInvasionTemplateFunction,
-                invasionTemplate -> invasionTemplate.messages.begin,
+                invasionTemplate -> invasionTemplate.messages.start,
                 () -> ModuleOnslaughtConfig.INVASION.DEFAULT_MESSAGE_BEGIN
             ),
             new InvasionMessageSender(

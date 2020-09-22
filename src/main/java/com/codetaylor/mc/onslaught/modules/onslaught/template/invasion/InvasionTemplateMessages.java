@@ -9,7 +9,7 @@ package com.codetaylor.mc.onslaught.modules.onslaught.template.invasion;
 public class InvasionTemplateMessages {
 
   public Warn warn = new Warn();
-  public String begin;
+  public String start;
   public String end;
 
   public static class Warn {
