@@ -1,5 +1,37 @@
 # Changelog
 
+## 1.0.0
+
+* **Added:**
+    * Invasion templates
+        * Selectors
+            * Dimension
+            * Gamestages
+            * Weight
+        * Messages
+            * Start
+            * End
+            * Early warning
+        * Command execution
+            * Start
+            * End
+            * Staged
+        * Waves
+            * Groups
+            * Mobs
+            * Spawn type
+            * Secondary Mob
+    * Spawn system
+    * Invasion system
+    * Commands:
+        * `ostart` command to start an invasion
+        * `ostartrandom` command to start a random invasion
+        * `ostop` command to stop an invasion
+        * `ostopall` command to stop all invasions
+    * Documentation:
+        * Commands
+        * Invasion templates
+
 ## 0.1.0
 
 * **Added:**
