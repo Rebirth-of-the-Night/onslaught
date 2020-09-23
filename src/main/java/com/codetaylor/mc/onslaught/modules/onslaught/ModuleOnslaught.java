@@ -80,8 +80,7 @@ public class ModuleOnslaught
   /**
    * Holds the hud render info on the client.
    */
-  @SideOnly(Side.CLIENT)
-  private final ArrayList<InvasionHudRenderInfo> invasionHudRenderInfoList = new ArrayList<>();
+  private final List<InvasionHudRenderInfo> invasionHudRenderInfoList = new ArrayList<>(1);
 
   public ModuleOnslaught() {
 
