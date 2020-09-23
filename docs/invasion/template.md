@@ -344,6 +344,8 @@ ticks      | int   | [0, 12000] | how many ticks before the invasion starts shou
 
 ## Commands
 
+Commands can be executed at the start and end of an invasion as well as at different stages of an invasion's completion.
+
 !!! note
     All commands are executed as if they were executed by the invaded player with an elevated permission level. This allows the usage of things like `@p` to reference the player and relative coordinates like `~ ~10 ~`.
 
@@ -351,7 +353,7 @@ key | type | description
 :-|:-|:-
 start | string[] | defines an array of commands to be executed when a player's invasion starts
 end   | string[] | defines an array of commands to be executed when a player's invasion ends
-staged  | StagedMessage[] | defines an array of `StagedMessage` definitions
+staged  | StagedCommand[] | defines an array of `StagedCommand` definitions
 
 ```js
 {
@@ -371,13 +373,15 @@ staged  | StagedMessage[] | defines an array of `StagedMessage` definitions
 }
 ```
 
-#### StagedMessage
+#### StagedCommand
+
+Staged commands will be executed once after an invasion's completion percentage exceeds the staged command's given `complete` value.
 
 !!! note
     Due to the way that the invasion completion percentage is evaluated and the command executor is triggered, commands with a `complete` value of `0` will not be executed until an invasion mob dies. To run commands at the beginning of an invasion, use the `start` definition instead.
 
 !!! warning
-    You can define up to a maximum of 64 different `StagedMessage` definitions in the `invasion/commands/staged` array.
+    You can define up to a maximum of 64 different `StagedCommand` definitions in the `invasion/commands/staged` array.
 
 key | type | range | description
 :-|:-|:-|:-
@@ -397,7 +401,7 @@ commands    | string[]   | N/A | defines an array of commands to be executed
 
 Waves define the mobs that will be spawned in the invasion.
 
-Each wave listed in the `waves` definition will be spawned sequentially.
+Each wave listed in the `waves` definition will be spawned sequentially and each wave can be delayed from the start of the invasion.
 
 ```js
 {
