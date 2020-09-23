@@ -9,6 +9,7 @@ Each file can contain as many invasion definitions as you like so long as the id
 
 key | type | description
 :-|:-|:-
+name     | string   | defines the name of the invasion to show on progress bars
 selector | Selector | defines the selector logic to use when selecting an invasion
 messages | Messages | defines the messages sent to an invaded player
 commands | Commands | defines the commands executed by the invasion
@@ -17,6 +18,7 @@ waves    | Waves[]  | defines the waves spawned by the invasion
 ```js
 {
     "unique_invasion_id": {
+        "name": "Invasion Name",
         "selector": {
             ...
         },
@@ -34,6 +36,8 @@ waves    | Waves[]  | defines the waves spawned by the invasion
 ```
 
 The `unique_invasion_id` key denotes a unique name for the invasion definition and can be anything you like so long as it is unique across all invasion template files. This name is used to reference the invasion definition in Onslaught's `ostart` command. 
+
+The `name` key is optional and if omitted, defaults to `""` which will prevent the name from being displayed on the progress bar.
 
 ## Selector
 
@@ -373,7 +377,7 @@ staged  | StagedMessage[] | defines an array of `StagedMessage` definitions
     Due to the way that the invasion completion percentage is evaluated and the command executor is triggered, commands with a `complete` value of `0` will not be executed until an invasion mob dies. To run commands at the beginning of an invasion, use the `start` definition instead.
 
 !!! warning
-    You can only have a maximum of 64 different `StagedMessage` definitions in the `invasion/commands/staged` array.
+    You can define up to a maximum of 64 different `StagedMessage` definitions in the `invasion/commands/staged` array.
 
 key | type | range | description
 :-|:-|:-|:-

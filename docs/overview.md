@@ -20,11 +20,11 @@ When the time passes a `pending` player's timestamp, they are flagged as `active
 
 The wave spawner will notice an `active` player and attempt to spawn waves. It will attempt to keep the number of remaining mobs spawned near the player. If the spawner can't spawn a mob, it will attempt to use the delayed-spawn system which will show particles where the mobs will spawn for a time before spawning the mobs in lit areas. If the delayed-spawn is disabled or otherwise fails, the system will try to spawn the secondary mob.
 
-When an invasion mob dies, the invasion data is updated and staged commands are executed.
+When an invasion mob dies, the invasion data is updated and staged commands are checked and executed.
 
-If a player has no active mods, the next wave will start immediately.
+If a player has no active mobs, the next wave will start immediately.
 
-When all of the requisite mobs belonging to an invasion have been eliminated, the player is flagged as `waiting` and assigned a new timer value.
+When all of the requisite mobs belonging to an invasion have been eliminated, the player is flagged as `waiting` and assigned a new timer value. Any end messages are sent and end commands are executed at this time.
 
 ## Spawn Sampler
 
