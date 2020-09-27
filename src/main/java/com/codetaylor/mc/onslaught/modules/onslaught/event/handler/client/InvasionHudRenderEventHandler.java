@@ -22,6 +22,8 @@ public class InvasionHudRenderEventHandler {
   @SubscribeEvent
   public void on(RenderGameOverlayEvent.Post event) {
 
-    this.invasionHudRenderer.render();
+    if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
+      this.invasionHudRenderer.render();
+    }
   }
 }
