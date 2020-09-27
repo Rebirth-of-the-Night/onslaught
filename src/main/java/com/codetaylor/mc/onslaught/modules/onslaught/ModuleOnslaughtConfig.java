@@ -10,11 +10,11 @@ public class ModuleOnslaughtConfig {
 
   public static class Debug {
 
-    public boolean INVASION_STATE = true;
-    public boolean INVASION_SPAWNERS = true;
+    public boolean INVASION_STATE = false;
+    public boolean INVASION_SPAWNERS = false;
     public boolean INVASION_SPAWN_SAMPLER = false;
-    public boolean INVASION_DATA_UPDATES = true;
-    public boolean INVASION_SELECTOR = true;
+    public boolean INVASION_DATA_UPDATES = false;
+    public boolean INVASION_SELECTOR = false;
   }
 
   public static Client CLIENT = new Client();
