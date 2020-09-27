@@ -59,7 +59,7 @@ Here is an example of a full, working invasion with an initial wave of zombies, 
     "selector": {
       "weight": 1,
       "dimension": {
-        "type": "allow",
+        "type": "include",
         "dimensions": [0]
       }
     },
