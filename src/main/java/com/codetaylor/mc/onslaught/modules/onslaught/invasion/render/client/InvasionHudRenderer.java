@@ -111,19 +111,23 @@ public class InvasionHudRenderer {
         NetHandlerPlayClient nethandlerplayclient = minecraft.player.connection;
         NetworkPlayerInfo playerInfo = nethandlerplayclient.getPlayerInfo(info.playerUuid);
 
-        minecraft.getTextureManager().bindTexture(playerInfo.getLocationSkin());
-        int x = xCard + padCard;
-        int y = yCard + heightCard / 2 - headSize / 2;
+        // Can be null if player is no longer online
+        //noinspection ConstantConditions
+        if (playerInfo != null) {
+          minecraft.getTextureManager().bindTexture(playerInfo.getLocationSkin());
+          int x = xCard + padCard;
+          int y = yCard + heightCard / 2 - headSize / 2;
 
-        Gui.drawRect(x - 3, y - 3, x + headSize + 3, y + headSize + 3, BLACK);
-        Gui.drawRect(x - 2, y - 2, x + headSize + 2, y + headSize + 2, WHITE);
-        Gui.drawRect(x - 1, y - 1, x + headSize + 1, y + headSize + 1, BLACK);
+          Gui.drawRect(x - 3, y - 3, x + headSize + 3, y + headSize + 3, BLACK);
+          Gui.drawRect(x - 2, y - 2, x + headSize + 2, y + headSize + 2, WHITE);
+          Gui.drawRect(x - 1, y - 1, x + headSize + 1, y + headSize + 1, BLACK);
 
-        GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
-        GlStateManager.enableAlpha();
-        GlStateManager.enableBlend();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        Gui.drawScaledCustomSizeModalRect(x, y, 8, 8, 8, 8, headSize, headSize, 64, 64);
+          GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
+          GlStateManager.enableAlpha();
+          GlStateManager.enableBlend();
+          GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+          Gui.drawScaledCustomSizeModalRect(x, y, 8, 8, 8, 8, headSize, headSize, 64, 64);
+        }
       }
     }
 
