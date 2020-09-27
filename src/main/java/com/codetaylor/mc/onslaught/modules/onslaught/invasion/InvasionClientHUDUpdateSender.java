@@ -42,7 +42,7 @@ public class InvasionClientHUDUpdateSender {
       List<InvasionHudRenderInfo> infoList = new ArrayList<>(playersNearby.size());
 
       for (EntityPlayerMP entityPlayerMP : playersNearby) {
-        InvasionPlayerData playerData = invasionGlobalSavedData.getPlayerData(player.getUniqueID());
+        InvasionPlayerData playerData = invasionGlobalSavedData.getPlayerData(entityPlayerMP.getUniqueID());
 
         if (playerData.getInvasionState() != InvasionPlayerData.EnumInvasionState.Active) {
           continue;
