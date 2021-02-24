@@ -89,7 +89,9 @@ dimensions      | int[]   | N/A | the dimension id list
 
 ### GameStages
 
-The `gamestages` object is defined using nested sets of `Stages` objects. `Stages` objects use the keys `and`, `or`, and `not` to define their type.
+The `gamestages` object is defined using nested sets of `Stages` objects. GameStages is an external optional mod, linked [here](https://www.curseforge.com/minecraft/mc-mods/game-stages).
+
+`Stages` objects use the keys `and`, `or`, and `not` to define their type. Stage names do not need to follow any name classification - the names below are purely for example.
 
 Each `Stages` object can have only one key.
 
