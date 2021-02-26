@@ -45,7 +45,7 @@ public class SpawnPredicateGround
 
   private boolean testEntityPosition(EntityLiving entity) {
 
-    this.blockPos.setPos(entity);
+    this.blockPos.setPos(entity.posX, entity.posY, entity.posZ);
 
     if (!entity.world.isBlockLoaded(this.blockPos)) {
       return false;
