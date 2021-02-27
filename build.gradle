@@ -17,7 +17,7 @@ apply from: 'project.gradle'
 def getVersionName = { String workTree ->
     def stdout = new ByteArrayOutputStream()
     exec {
-        commandLine 'git', "--git-dir=\"${workTree}/.git\"", "--work-tree=\"${workTree}\"", 'describe', '--tags'
+        commandLine 'git', "--git-dir=${workTree}/.git", "--work-tree=${workTree}", 'describe', '--tags'
         standardOutput = stdout
     }
     return stdout.toString().trim()
