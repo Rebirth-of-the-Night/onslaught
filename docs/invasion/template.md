@@ -8,14 +8,14 @@ Each file can contain as many invasion definitions as you like so long as the id
 ## Definitions
 
 key | type | description
-:-|:-|:-
+:---|:---|:---
 name     | string   | defines the name of the invasion to show on progress bars
 selector | Selector | defines the selector logic to use when selecting an invasion
 messages | Messages | defines the messages sent to an invaded player
 commands | Commands | defines the commands executed by the invasion
 waves    | Waves[]  | defines the waves spawned by the invasion
 
-```js
+```json
 {
     "unique_invasion_id": {
         "name": "Invasion Name",
@@ -44,12 +44,12 @@ The `name` key is optional and if omitted, defaults to `""` which will prevent t
 The `selector` object defines the logic used to select an invasion for a player.
 
 key | type | description
-:-|:-|:-
+:---|:---|:---
 dimension  | Dimension  | defines the allowed or disallowed dimension ids
 gamestages | Stages | defines the gamestage matching logic
 weight     | int | defines the invasion selector's weight
 
-```js
+```json
 {
     "unique_invasion_id": {
         "selector": {
@@ -70,11 +70,11 @@ weight     | int | defines the invasion selector's weight
 Invasions can be selectively allowed or disallowed in dimensions using the `dimension` selector.
 
 key | type | range | description
-:-|:-|:-|:-
+:---|:---|:---|:---
 type            | string  | "include", "exclude" | whether to allow or disallow the listed dimensions
 dimensions      | int[]   | N/A | the dimension id list
 
-```js
+```json
 {
     "unique_invasion_id": {
         "selector": {
@@ -95,7 +95,7 @@ The `gamestages` object is defined using nested sets of `Stages` objects. GameSt
 
 Each `Stages` object can have only one key.
 
-```js
+```json
 {
     "unique_invasion_id": {
         "selector": {
@@ -123,7 +123,7 @@ The `Stages` object `and` consists of an array of elements that are either a `st
 
 `and` requires all of the elements to evaluate to true in order to evaluate to true.
 
-```js
+```json
 // "and": [<string|Stages>...]
 "and": ["stage0", "stage1"]
 ```
@@ -136,7 +136,7 @@ The `Stages` object `or` consists of an array of elements that are either a `str
 
 `or` requires at least one of the elements to evaluate to true in order to evaluate to true.
 
-```js
+```json
 // "or": [<string|Stages>...]
 "or": ["stage0", "stage1"]
 ```
@@ -149,7 +149,7 @@ The `Stages` object `not` is different from the others in that it does not use a
 
 `not` requires its value to evaluate to false in order to evaluate to true.
 
-```js
+```json
 // "not": <string|Stages>
 "not": "stage0"
 ```
@@ -160,7 +160,7 @@ In this example, the player must not have `stage0`.
 
 **Example A:**
 
-```js
+```json
 {
     "unique_invasion_id": {
         "selector": {
@@ -182,7 +182,7 @@ This example will match a player that:
 
 **Example B:**
 
-```js
+```json
 {
     "unique_invasion_id": {
         "selector": {
@@ -204,7 +204,7 @@ This example will match a player that:
 
 **Example C:**
 
-```js
+```json
 {
     "unique_invasion_id": {
         "selector": {
@@ -222,7 +222,7 @@ This example will match a player that:
 
 **Example D:**
 
-```js
+```json
 {
     "unique_invasion_id": {
         "selector": {
@@ -247,7 +247,7 @@ This example will match a player that:
 
 **Example E:**
 
-```js
+```json
 {
     "unique_invasion_id": {
         "selector": {
@@ -270,7 +270,7 @@ This example will match a player that:
 
 **Example F:**
 
-```js
+```json
 {
     "unique_invasion_id": {
         "selector": {
@@ -295,7 +295,7 @@ This example will match a player that:
 
 If an invasion's `dimension` and `gamestages` selectors allow the invasion to be selected, it is placed into a collection with all the other allowed invasions. One invasion is randomly selected from the collection and invasions with a larger weight will be selected more often, relative to the total weight of all invasions in the collection.
 
-```js
+```json
 {
     "unique_invasion_id": {
         "selector": {
@@ -310,12 +310,12 @@ If an invasion's `dimension` and `gamestages` selectors allow the invasion to be
 Messages that can be sent to an invaded player are defined in the `messages` object.
 
 key | type | description
-:-|:-|:-
+:---|:---|:---
 start | string  | defines the message sent to a player when their invasion starts
 end   | string  | defines the message sent to a player when their invasion ends
 warn  | Warning | defines the early warning message sent to a player before their invasion starts
 
-```js
+```json
 {
     "unique_invasion_id": {
         "messages": {
@@ -338,7 +338,7 @@ An early warning message can be sent to a player long before their invasion star
     Due to the way the invasion system works, early warning messages can only be sent up to 12000 ticks, or 10 minutes, early.
 
 key | type | range | description
-:-|:-|:-|:-
+:---|:---|:---|:---
 message    | string  | N/A | the early warning message sent to a player before their invasion starts
 ticks      | int   | [0, 12000] | how many ticks before the invasion starts should the message be sent
 
@@ -352,12 +352,12 @@ Commands can be executed at the start and end of an invasion as well as at diffe
     All commands are executed as if they were executed by the invaded player with an elevated permission level. This allows the usage of things like `@p` to reference the player and relative coordinates like `~ ~10 ~`.
 
 key | type | description
-:-|:-|:-
+:---|:---|:---
 start | string[] | defines an array of commands to be executed when a player's invasion starts
 end   | string[] | defines an array of commands to be executed when a player's invasion ends
 staged  | StagedCommand[] | defines an array of `StagedCommand` definitions
 
-```js
+```json
 {
     "unique_invasion_id": {
         "commands": {
@@ -386,11 +386,11 @@ Staged commands will be executed once after an invasion's completion percentage 
     You can define up to a maximum of 64 different `StagedCommand` definitions in the `invasion/commands/staged` array.
 
 key | type | range | description
-:-|:-|:-|:-
+:---|:---|:---|:---
 complete    | float  | [0, 1] | at what percentage complete should these commands be run
 commands    | string[]   | N/A | defines an array of commands to be executed
 
-```js
+```json
 {
     "complete": 0.25,
     "commands": [
@@ -405,7 +405,7 @@ Waves define the mobs that will be spawned in the invasion.
 
 Each wave listed in the `waves` definition will be spawned sequentially and each wave can be delayed from the start of the invasion.
 
-```js
+```json
 {
     "unique_invasion_id": {
         "waves": [
@@ -422,12 +422,12 @@ The `Wave` object defines the mobs that will spawn in the wave and how the spawn
 Each wave can be delayed from the start of the invasion. If the player hasn't defeated all previous waves by the time that the wave's delay expires, the wave will be spawned. The wave will also be spawned immediately after a player defeats all previous waves.
 
 key | type | optional | default| description
-:-|:-|:-|:-|:-
+:---|:---|:---|:---|:---
 delayTicks   | int[min, max] *or* int[fixed] | yes | `[0]` | defines how long to wait to spawn this wave after the invasions starts
 groups       | Group[]       | no  | - | defines an array of groups, one will be selected
 secondaryMob | SecondaryMob  | yes | config | defines a secondary mob to spawn when the primary mob spawn fails
 
-```js
+```json
 {
     "delayTicks": [3600, 4000],
     "groups": [
@@ -446,12 +446,12 @@ One group is randomly selected from the collection and groups with a larger weig
 Enabling `forceSpawn` will try to spawn the mob using the delayed spawn system if the primary spawn type fails. The delayed spawn system will ignore the light level when attempting spawns.
 
 key | type | optional | default| description
-:-|:-|:-|:-|:-
+:---|:---|:---|:---|:---
 weight     | int     | yes | `1` | defines the group's weight used for selection
 forceSpawn | boolean | yes | config | should the mob try to be force-spawned in the light if it fails to spawn in defined light levels
 mobs       | Mob[]   | no | - | all mobs defined here will be spawned for the wave
 
-```js
+```json
 {
     "weight": 100,
     "forceSpawn": true,
@@ -466,12 +466,12 @@ mobs       | Mob[]   | no | - | all mobs defined here will be spawned for the wa
 This defines the mob template to use, the number of this mob to spawn, and how to try and spawn it.
 
 key | type | optional | default| description
-:-|:-|:-|:-|:-
+:---|:---|:---|:---|:---
 id    | int                         | no  | - | defines the mob template id
 count | int[min, max] *or* int[fixed] | yes | `[1]` | defines how many of this mob should spawn
 spawn | SpawnType                   | yes | config | defines how to try and spawn the mob
 
-```js
+```json
 {
     "id": "invasion_zombie",
     "count": [8, 16],
@@ -486,7 +486,7 @@ spawn | SpawnType                   | yes | config | defines how to try and spaw
 This defines how the spawner will try to spawn a mob.
 
 key | type | optional | default| description
-:-|:-|:-|:-|:-
+:---|:---|:---|:---|:---
 type    | string             | yes | config | defines the spawn type, value values are `ground` and `air`
 light   | int[min, max]      | yes | config | defines the light range to spawn the mob in
 rangeXZ | int[min, max]      | yes | config | defines how far away from the player to try and spawn the mob
@@ -494,7 +494,7 @@ rangeY  | int                | yes | config | defines how far +/- Y to try and s
 stepRadius     | int         | yes | config | defines the step radius for the spawn sampler
 sampleDistance | int         | yes | config | defines the sample distance for the spawn sampler
 
-```js
+```json
 "spawn": {
     "type": "ground",
     "light": [0, 7],
@@ -510,11 +510,11 @@ sampleDistance | int         | yes | config | defines the sample distance for th
 This defines a mob template to try spawning if the primary spawn fails.
 
 key | type | optional | default| description
-:-|:-|:-|:-|:-
+:---|:---|:---|:---|:---
 id    | int                         | yes | config | defines the mob template id
 spawn | SpawnType                   | yes | config | defines how to try and spawn the mob
 
-```js
+```json
 "secondaryMob": {
     "id": "invasion_vex",
     "spawn": {

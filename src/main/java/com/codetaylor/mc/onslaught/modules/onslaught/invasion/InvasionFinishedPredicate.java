@@ -21,9 +21,7 @@ public class InvasionFinishedPredicate
       return false;
     }
 
-    InvasionPlayerData.InvasionData invasionData = invasionPlayerData.getInvasionData();
-
-    if (invasionData == null) {
+    if (invasionPlayerData.getInvasionData() == null) {
       return true;
     }
 
