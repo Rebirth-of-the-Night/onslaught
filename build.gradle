@@ -104,10 +104,3 @@ processResources {
 test {
     useJUnitPlatform()
 }
-
-/**
- * This task creates the wrapper files.
- */
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.9'
-}
