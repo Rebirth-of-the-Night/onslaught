@@ -7,13 +7,13 @@ Each file can contain as many mob definitions as you like so long as the id of e
 ## Definitions
 
 key | type | description
-:-|:-|:-
+:---|:---|:---
 id              | string   | resource location of the mob
 effects         | Effect[] | an array of effects to apply to the mob when spawned
 extraLootTables | string[] | additional loot to drop when the mob dies
 nbt             | NBT      | NBT data used to generate the mob
 
-```js
+```json
 {
   "zombie_basic": {
     "id": "minecraft:zombie"
@@ -26,13 +26,13 @@ The `zombie_basic` key denotes a unique name for the mob definition and can be a
 ## Effects
 
 key | type | range | description
-:-|:-|:-|:-
+:---|:---|:---|:---
 id            | string  | N/A   | resource location of the effect
 duration      | int     | [0,-) | effect duration in ticks
 amplifier     | int     | [0,-) | effect amplifier
 showParticles | boolean | N/A   | show effect particles
 
-```js
+```json
 {
   "zombie_effects": {
     "id": "minecraft:zombie",
@@ -58,7 +58,7 @@ Mob definitions can define additional loot tables to roll when the mob dies.
 
 The extra tables can reference existing loot tables or new loot tables located in the `config/onslaught/loot` folder.
 
-```js
+```json
 {
   "zombie_loot": {
     "id": "minecraft:zombie",
@@ -82,7 +82,7 @@ For loot table syntax, see the [Official Minecraft Wiki](https://minecraft.gamep
 
 NBT can be applied to the mob using the `nbt` key.
 
-```js
+```json
 {
   "zombie_nbt": {
     "id": "minecraft:zombie",

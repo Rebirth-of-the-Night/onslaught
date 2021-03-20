@@ -1,0 +1,82 @@
+{
+  "creepers": {
+    "name": "The Creepers",
+    "selector": {
+      "weight": 1,
+      "dimension": {
+        "type": "include",
+        "dimensions": [ 0 ]
+      }
+    },
+    "messages": {
+      "start": "F'n Creepers . . .",
+      "end": "Well that's over with!",
+      "warn": {
+        "ticks": 100,
+        "message": ". . . sizzle"
+      }
+    },
+    "waves": [
+      {
+        "delayTicks": [ 0 ],
+        "groups": [
+          {
+            "weight": 1,
+            "forceSpawn": true,
+            "mobs": [
+              {
+                "id": "creeper",
+                "count": [ 5 ],
+                "spawn": {
+                  "type": "ground",
+                  "light": [ 0, 15 ],
+                  "rangeXZ": [ 16, 32 ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "wither": {
+    "name": "The Wither!",
+    "selector": {
+      "weight": 1,
+      "dimension": {
+        "type": "include",
+        "dimensions": [ 0 ]
+      }
+    },
+    "messages": {
+      "start": "Vigor, triumphant skulls and screaming shivers!",
+      "end": "Slivers scattered and echoes, sinister.",
+      "warn": {
+        "ticks": 1000,
+        "message": "Hither came a wither"
+      }
+    },
+    "waves": [
+      {
+        "delayTicks": [ 0 ],
+        "groups": [
+          {
+            "weight": 1,
+            "forceSpawn": true,
+            "mobs": [
+              {
+                "id": "wither",
+                "count": [ 5 ],
+                "spawn": {
+                  "type": "ground",
+                  "light": [ 0, 15 ],
+                  "rangeXZ": [ 16, 32 ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

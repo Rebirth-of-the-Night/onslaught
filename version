@@ -199,7 +199,7 @@ elif [[ "${com}" == "set" ]]; then
   header "Tag Version"
   git tag -a "${val}" -m "version ${val}"
   assertExitCode
-  git push public refs/tags/"${val}"
+  git push origin refs/tags/"${val}"
   assertExitCode
 fi
 

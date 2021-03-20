@@ -1,0 +1,24 @@
+{
+  "creeper": {
+    "id": "minecraft:creeper",
+    "effects": [
+      {
+        "id": "minecraft:glowing",
+        "duration": 99999,
+        "amplifier": 0,
+        "showParticles": true
+      }
+    ]
+  },
+  "wither": {
+    "id": "minecraft:wither",
+    "effects": [
+      {
+        "id": "minecraft:glowing",
+        "duration": 99999,
+        "amplifier": 0,
+        "showParticles": true
+      }
+    ]
+  }
+}

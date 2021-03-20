@@ -14,7 +14,7 @@ Each task exposes some optionally configurable properties. If you omit any of th
 The `AntiAir` task will pull a player down from the air when the mob sees them.
 
 key | type | range | default | description
-:-|:-|:-|:-|:-
+:---|:---|:---|:---|:---
 Priority      | int     | N/A   | -4   | task priority
 Range         | int     | [1,-) | 128  | range within which a mob will pull the player down
 SightRequired | boolean | N/A   | true | does the mob need to have sight of the player to pull them down
@@ -55,7 +55,7 @@ The `AttackMelee` task allows a passive mob to attack.
     This task will only work with mobs that can be given an attack target. For example, attaching this task to a Pig will do nothing because the Pig does not naturally target entities to attack. This task will work with mobs spawned by the invasion system because they are given the ability to persistently target the invaded player.
     
 key | type | range | default | description
-:-|:-|:-|:-|:-
+:---|:---|:---|:---|:---
 Priority      | int     | N/A   | -3 | task priority
 Speed         | double  | [0,-) | 1  | movement speed when attacking
 AttackDamage  | int     | [0,-) | 1  | attack damage in half-hearts
@@ -89,7 +89,7 @@ The `ChaseLongDistance` task operates in tandem with the TargetPlayer task to al
     This task is automatically applied to mobs spawned by an invasion and should not be manually applied unless you want to change the task's default properties. This task can be applied manually along with the `TargetPlayer` task for testing purposes.
     
  key | type | range | default | description
- :-|:-|:-|:-|:-
+ :---|:---|:---|:---|:---
  Priority      | int     | N/A   | -10 | task priority
  Speed         | double  | [0,-) | 1   | movement speed when out of range
 
@@ -118,7 +118,7 @@ The `ChaseLongDistance` task operates in tandem with the TargetPlayer task to al
 The `CounterAttack` task will cause a mob to leap toward their target when hit with an attack.
 
 key | type | range | default | description
-:-|:-|:-|:-|:-
+:---|:---|:---|:---|:---
 Priority      | int     | N/A     | -2   | task priority
 LeapMotionXZ  | double  | [0,-)   | 0.4  | motion on the XZ plane when leaping
 LeapMotionY   | double  | [0,-)   | 0.4  | vertical motion when leaping
@@ -158,7 +158,7 @@ RangeMax      | double  | (min,-) | 4    | maximum range required to counteratta
 The `ExplodeWhenStuck` task will cause a mob to explode when it no longer has a path to its target.
 
 key | type | range | default | description
-:-|:-|:-|:-|:-
+:---|:---|:---|:---|:---
 Priority            | int     | N/A     | -5    | task priority
 SightRequired       | boolean | N/A     | false | does the mob need to see its target to explode
 RangeRequired       | boolean | N/A     | true  | does the mob need to be within the given range parameters to explode
@@ -201,7 +201,7 @@ ExplosionDamaging   | boolean | N/A     | true  | does the explosion break block
 The `Lunge` task will increase a mob's speed when it gets within range of its target.
 
 key | type | range | default | description
-:-|:-|:-|:-|:-
+:---|:---|:---|:---|:---
 Priority      | int    | N/A   | -15 | task priority
 Range         | int    | [1,-) | 6   | the range within which a mob will increase its speed
 SpeedModifier | double | [0,-) | 0.3 | multiplicative speed modifier
@@ -232,7 +232,7 @@ SpeedModifier | double | [0,-) | 0.3 | multiplicative speed modifier
 The `Mining` task allows a mob to break blocks to reach its target.
 
 key | type | range | default | description
-:-|:-|:-|:-|:-
+:---|:---|:---|:---|:---
 Priority      | int    | N/A   | -9 | task priority
 Range         | int    | [1,-) | 4  | the range within which a mob will break blocks
 SpeedModifier | double | [0,-) | 1  | multiplicative mining speed modifier
@@ -266,7 +266,7 @@ The `TargetPlayer` task will cause a mob to persistently target the given player
     This task is automatically applied to mobs spawned by an invasion and should not be manually applied. This task can be applied manually along with the `ChaseLongDistance` task for testing purposes.
 
 key | type | range | default | description
-:-|:-|:-|:-|:-
+:---|:---|:---|:---|:---
 Priority | int    | N/A | 10  | task priority
 UUID     | string | N/A | N/A | the UUID of the player to persistently target
 

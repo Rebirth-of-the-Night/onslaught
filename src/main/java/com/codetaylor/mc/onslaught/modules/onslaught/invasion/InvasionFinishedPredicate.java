@@ -1,6 +1,7 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
 
-import java.util.List;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData.InvasionData.MobData;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData.InvasionData.WaveData;
 import java.util.function.Predicate;
 
 /**
@@ -20,25 +21,17 @@ public class InvasionFinishedPredicate
       return false;
     }
 
-    InvasionPlayerData.InvasionData invasionData = invasionPlayerData.getInvasionData();
-
-    if (invasionData == null) {
+    if (invasionPlayerData.getInvasionData() == null) {
       return true;
     }
 
-    List<InvasionPlayerData.InvasionData.WaveData> waveDataList = invasionData.getWaveDataList();
-
-    for (InvasionPlayerData.InvasionData.WaveData waveData : waveDataList) {
-      List<InvasionPlayerData.InvasionData.MobData> mobDataList = waveData.getMobDataList();
-
-      for (InvasionPlayerData.InvasionData.MobData mobData : mobDataList) {
-
+    for (WaveData data : invasionPlayerData.getInvasionData().getWaveDataList()) {
+      for (MobData mobData : data.getMobDataList()) {
         if (mobData.getKilledCount() < mobData.getTotalCount()) {
           return false;
         }
       }
     }
-
     return true;
   }
 }
