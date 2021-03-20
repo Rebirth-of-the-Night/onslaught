@@ -76,8 +76,4 @@ public class InvasionKillCountUpdateEventHandler {
             .getPlayerList()::getPlayerByUUID
     );
   }
-
-  public void on(Event event) {
-
-  }
 }
