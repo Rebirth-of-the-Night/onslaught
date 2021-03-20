@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.2
+
+* **Bug Fixes:**
+    * Fix stuck invasions from creeper invader exploding not counting as a 'kill'
+    * Fix small edge case of progress bar getting stuck on client
+
 ## 1.0.0
 
 * **Added:**
