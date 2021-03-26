@@ -20,16 +20,11 @@ import java.util.logging.Logger;
 
 @Mod(
     modid = ModOnslaught.MOD_ID,
-    version = ModOnslaught.VERSION,
-    name = ModOnslaught.NAME,
-    dependencies = ModOnslaught.DEPENDENCIES
+    useMetadata=true
 )
 public class ModOnslaught {
 
   public static final String MOD_ID = "onslaught";
-  public static final String VERSION = "@@VERSION@@";
-  public static final String NAME = "Onslaught";
-  public static final String DEPENDENCIES = "";
 
   public static Logger LOG;
 
@@ -48,7 +43,7 @@ public class ModOnslaught {
 
   private final ModuleManager moduleManager;
 
-  private Set<Class<? extends ModuleBase>> registeredModules = new HashSet<>();
+  private final Set<Class<? extends ModuleBase>> registeredModules = new HashSet<>();
 
   public ModOnslaught() {
 

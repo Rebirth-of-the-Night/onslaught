@@ -1,18 +1,56 @@
 buildscript {
     repositories {
         jcenter()
-        maven { url "https://files.minecraftforge.net/maven" }
-        maven { url "https://plugins.gradle.org/m2/" }
+        maven {
+            name = 'forge'
+            url = 'https://files.minecraftforge.net/maven'
+        }
+        maven {
+            name = 'gradle plugins'
+            url = 'https://plugins.gradle.org/m2/'
+        }
+        maven {
+            name = 'CurseForge'
+            url = 'https://minecraft.curseforge.com/api/maven/'
+        }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
         classpath 'com.wynprice.cursemaven:CurseMaven:2.1.1'
     }
 }
+
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'com.wynprice.cursemaven'
 
-apply from: 'project.gradle'
+ext {
+
+    modid = 'onslaught'
+
+    forge = [
+            version: '1.12.2-14.23.5.2847'
+    ]
+
+    mappings = [
+            channel: 'snapshot',
+            version: 'snapshot_20171003'
+    ]
+
+    manifest = [
+            attributesEnabled: false,
+            attributes       : [
+                    'Specification-Title'     : 'Onslaught',
+                    'Specification-Vendor'    : 'Rebirth of the Night',
+                    'Specification-Version'   : '1', // We are version 1 of ourselves
+                    'Implementation-Title'    : project.name,
+                    'Implementation-Version'  : "${version}",
+                    'Implementation-Vendor'   : 'Rebirth of the Night',
+                    'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+            ]
+    ]
+
+    replace = []
+}
 
 def getVersionName = { String workTree ->
     def stdout = new ByteArrayOutputStream()
@@ -27,7 +65,6 @@ version = getVersionName("${project.projectDir}")
 group = 'com.codetaylor.mc.' + project.ext.modid
 archivesBaseName = project.ext.modid
 
-println()
 println("-------------------------------------------------------------")
 println("- Mod Id: " + project.ext.modid)
 println("- Version: " + version)
@@ -35,34 +72,6 @@ println("- Forge Version: " + project.ext.forge.version)
 println("- Mappings: " + project.ext.mappings.channel + " " + project.ext.mappings.version)
 println("-------------------------------------------------------------")
 println()
-
-compileJava.doFirst {
-    project.sourceSets.main.java.srcDirs.each { dir ->
-        copy {
-            from dir
-            into "${project.buildDir}/modifiedSrc"
-            include "**/*.java"
-            filter {
-                it.replaceAll('@@VERSION@@', project.version)
-            }
-            project.ext.replace.each{entry -> 
-                filter {
-                    it.replaceAll(entry.key, entry.value)
-                }
-            }
-            duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-        }
-        println "   [OK] Preprocessed [${dir}]"
-    }
-}
-compileJava.doFirst {
-    source = "${project.buildDir}/modifiedSrc"
-    classpath = project.sourceSets.main.compileClasspath
-    //destinationDir = file("${project.buildDir}/classes")
-}
-compileJava.doLast {
-    println "   [OK] Compiled [${project.name}]"
-}
 
 compileJava {
     sourceCompatibility = targetCompatibility = "1.8"
@@ -74,12 +83,19 @@ minecraft {
     mappings = project.ext.mappings.version
 }
 
-repositories {}
+repositories {
+    maven {
+        name = 'CurseForge'
+        url = 'https://minecraft.curseforge.com/api/maven/'
+    }
+}
 
-dependencies {}
+dependencies {
+    deobfCompile 'athenaeum:athenaeum:1.12.2:1.19.2'
 
-jar {
-    from sourceSets.api.output
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+    testImplementation 'org.assertj:assertj-core:3.6.2'
 }
 
 processResources {
@@ -95,7 +111,7 @@ processResources {
         expand 'version': project.version, 'mcversion': project.minecraft.version
     }
 
-    // copy everything else, thats not the mcmod.info
+    // copy everything else, that's not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
@@ -103,4 +119,8 @@ processResources {
 
 test {
     useJUnitPlatform()
+}
+
+jar {
+    from sourceSets.api.output
 }
