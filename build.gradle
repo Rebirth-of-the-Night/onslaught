@@ -65,13 +65,14 @@ version = getVersionName("${project.projectDir}")
 group = 'com.codetaylor.mc.' + project.ext.modid
 archivesBaseName = project.ext.modid
 
-println("-------------------------------------------------------------")
-println("- Mod Id: " + project.ext.modid)
-println("- Version: " + version)
-println("- Forge Version: " + project.ext.forge.version)
-println("- Mappings: " + project.ext.mappings.channel + " " + project.ext.mappings.version)
-println("-------------------------------------------------------------")
-println()
+println("""
+-------------------------------------------------------------
+- Mod Id:        ${project.ext.modid}
+- Version:       ${version}
+- Forge Version: ${project.ext.forge.version}
+- Mappings:      ${project.ext.mappings.channel} ${project.ext.mappings.version}
+-------------------------------------------------------------
+""")
 
 compileJava {
     sourceCompatibility = targetCompatibility = "1.8"
