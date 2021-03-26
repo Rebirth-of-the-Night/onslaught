@@ -5,7 +5,7 @@
 ## Using the Mod
 
 1. Add the appropriate jar to your modpack in the `./mods` folder. 
-2. [read the docs](https://onslaught.readthedocs.io/en/latest/) on how to configure your hordes.
+2. [Read the docs](https://onslaught.readthedocs.io/en/latest/) on how to configure your hordes.
 
 ## Development Quick Start
 
@@ -39,15 +39,15 @@ You should be good to build or run the client.
 
 ### Release to Github
 
-1. switch to the desired branch (presumably the latest master)
-2. run `./version set <minecraft-version>-<mod-version>`
+1. Switch to the desired branch (presumably the latest master)
+2. Run `./version set <minecraft-version>-<mod-version>`
     * Minecraft version is generally `1.12.2`
     * Use [Semantic Name Versioning](https://semver.org/) for the mod
-3. Enter your github credentials
-4. Amend the [Github Release](https://github.com/Rebirth-of-the-Night/onslaught/releases) with the main and sources jar
+3. Enter your GitHub credentials
+4. Amend the [GitHub Release](https://github.com/Rebirth-of-the-Night/onslaught/releases) with the main and sources jar
 
-### Release to Curse Forge
+### Release to CurseForge
 
-1. go to [Onslaught project's files](https://www.curseforge.com/minecraft/mc-mods/onslaught/files)
-2. click the file upload button in the top right
-3. follow the instructions
+1. Go to [Onslaught project's files](https://www.curseforge.com/minecraft/mc-mods/onslaught/files)
+2. Click the file upload button in the top right
+3. Follow the instructions
