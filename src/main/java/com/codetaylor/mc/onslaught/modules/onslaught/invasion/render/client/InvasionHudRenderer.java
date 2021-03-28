@@ -2,6 +2,7 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion.render.client;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.render.InvasionHudRenderInfo;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.network.NetworkPlayerInfo;
@@ -24,6 +25,8 @@ public class InvasionHudRenderer {
   private final IntSupplier widthSupplier;
   private final Supplier<int[]> barColorSupplier;
 
+  private final boolean debugRender = true;
+
   public InvasionHudRenderer(
       List<InvasionHudRenderInfo> invasionHudRenderInfoList,
       IntSupplier xPositionSupplier,
@@ -40,23 +43,20 @@ public class InvasionHudRenderer {
   }
 
   public void render() {
+    // Flip the switch to debug the list
+    if(this.debugRender){
+      this.invasionHudRenderInfoList.clear();
 
-    // Uncomment for testing
-//    this.invasionHudRenderInfoList.clear();
-//
-//    for (int i = 0; i < 4; i++) {
-//      InvasionHudRenderInfo info = new InvasionHudRenderInfo();
-//      info.invasionName = "Invasion " + i;
-//      info.invasionCompletionPercentage = i / 3f;
-//      Minecraft minecraft = Minecraft.getMinecraft();
-//      EntityPlayerSP player = minecraft.player;
-//
-//      info.playerUuid = player.getUniqueID();
-//      this.invasionHudRenderInfoList.add(info);
-//    }
+      for (int i = 0; i < 4; i++) {
+        InvasionHudRenderInfo info = new InvasionHudRenderInfo();
+        info.invasionName = "Invasion " + i;
+        info.invasionCompletionPercentage = i / 3f;
+        Minecraft minecraft = Minecraft.getMinecraft();
+        EntityPlayerSP player = minecraft.player;
 
-    if (this.invasionHudRenderInfoList.isEmpty()) {
-      return;
+        info.playerUuid = player.getUniqueID();
+        this.invasionHudRenderInfoList.add(info);
+      }
     }
 
     for (int i = 0; i < this.invasionHudRenderInfoList.size(); i++) {
@@ -68,37 +68,35 @@ public class InvasionHudRenderer {
 
     Minecraft minecraft = Minecraft.getMinecraft();
 
-    int headSize = 32;
-    int padCard = 4;
-    int marginCard = 2;
-    int widthCard = this.widthSupplier.getAsInt() + padCard + padCard;
-    int heightCard = 40 + padCard + padCard;
-    int xCard = this.xPositionSupplier.getAsInt();
-    int yCard = this.yPositionSupplier.getAsInt() + index * (heightCard + marginCard);
-    int heightBar = 16;
+    int headSize = 16;
+    int cardPadding = 4;
+    int cardMargin = 2;
+    int cardWidth = this.widthSupplier.getAsInt() + cardPadding + cardPadding;
+    int cardHeight = headSize + 6 + cardPadding + cardPadding;
+    int cardX = this.xPositionSupplier.getAsInt();
+    int cardY = this.yPositionSupplier.getAsInt() + index * (cardHeight + cardMargin);
+    int barHeight = headSize / 2;
 
     // Uncomment to render card -- for layout testing
-    // Gui.drawRect(xCard, yCard, xCard + widthCard, yCard + heightCard, new Color(1, 0, 0, 0.25f).getRGB());
+    // Gui.drawRect(cardX, yCard, cardX + widthCard, yCard + heightCard, new Color(1, 0, 0, 0.25f).getRGB());
 
     // -------------------------------------------------------------------------
     // - Bar
     // -------------------------------------------------------------------------
 
     {
-      int x = xCard + padCard + headSize + 3;
-      int y = yCard + heightCard / 2 - 2;
-      int right = xCard + widthCard - padCard;
+      int x = cardX + cardPadding + headSize + 3;
+      int y = cardY + cardHeight / 2 - 2;
+      int right = cardX + cardWidth - cardPadding;
       int rightFill = (int) ((right - x) * info.invasionCompletionPercentage) + x;
-      int bottom = y + heightBar;
-      Gui.drawRect(x - 3, y - 3, right + 3, bottom + 3, BLACK);
-      Gui.drawRect(x - 2, y - 2, right + 2, bottom + 2, WHITE);
+      int bottom = y + barHeight;
       Gui.drawRect(x - 1, y - 1, right + 1, bottom + 1, BLACK);
 
       Gui.drawRect(x, y, rightFill, bottom, this.encodeColorInt(this.barColorSupplier.get()));
 
       String text = (int) (info.invasionCompletionPercentage * 100) + "%";
       int xBarText = x + (right - x) / 2 - minecraft.fontRenderer.getStringWidth(text) / 2;
-      int yBarText = y + heightBar / 2 - minecraft.fontRenderer.FONT_HEIGHT / 2;
+      int yBarText = y + barHeight / 2 - minecraft.fontRenderer.FONT_HEIGHT / 2;
       minecraft.fontRenderer.drawStringWithShadow(text, xBarText, yBarText, WHITE);
     }
 
@@ -115,11 +113,9 @@ public class InvasionHudRenderer {
         //noinspection ConstantConditions
         if (playerInfo != null) {
           minecraft.getTextureManager().bindTexture(playerInfo.getLocationSkin());
-          int x = xCard + padCard;
-          int y = yCard + heightCard / 2 - headSize / 2;
+          int x = cardX + cardPadding;
+          int y = cardY + cardHeight / 2 - headSize / 2;
 
-          Gui.drawRect(x - 3, y - 3, x + headSize + 3, y + headSize + 3, BLACK);
-          Gui.drawRect(x - 2, y - 2, x + headSize + 2, y + headSize + 2, WHITE);
           Gui.drawRect(x - 1, y - 1, x + headSize + 1, y + headSize + 1, BLACK);
 
           GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
@@ -136,8 +132,8 @@ public class InvasionHudRenderer {
     // -------------------------------------------------------------------------
 
     if (info.invasionName.length() > 0) {
-      int x = xCard + padCard + headSize + 4;
-      int y = yCard + heightCard / 2 - heightBar / 2 - minecraft.fontRenderer.FONT_HEIGHT + 2;
+      int x = cardX + cardPadding + headSize + 4;
+      int y = cardY + cardHeight / 2 - barHeight / 2 - minecraft.fontRenderer.FONT_HEIGHT + 2;
       minecraft.fontRenderer.drawStringWithShadow(I18n.format(info.invasionName), x, y, WHITE);
     }
   }
