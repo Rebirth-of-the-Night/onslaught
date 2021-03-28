@@ -71,33 +71,28 @@ public class InvasionHudRenderer {
     int headSize = 16;
     int cardPadding = 4;
     int cardMargin = 2;
-    int cardWidth = this.widthSupplier.getAsInt() + cardPadding + cardPadding;
+    int cardWidth = this.widthSupplier.getAsInt() + ( 2* cardPadding);
     int cardHeight = headSize + 6 + cardPadding + cardPadding;
-    int cardX = this.xPositionSupplier.getAsInt();
-    int cardY = this.yPositionSupplier.getAsInt() + index * (cardHeight + cardMargin);
+    int offsetX = this.xPositionSupplier.getAsInt();
+    int offsetY = this.yPositionSupplier.getAsInt() + index * (cardHeight + cardMargin);
     int barHeight = headSize / 2;
 
     // Uncomment to render card -- for layout testing
-    // Gui.drawRect(cardX, yCard, cardX + widthCard, yCard + heightCard, new Color(1, 0, 0, 0.25f).getRGB());
+    // Gui.drawRect(offsetX, offsetY, offsetX + cardWidth, offsetY + cardHeight, new Color(1, 0, 0, 0.25f).getRGB());
 
     // -------------------------------------------------------------------------
     // - Bar
     // -------------------------------------------------------------------------
 
     {
-      int x = cardX + cardPadding + headSize + 3;
-      int y = cardY + cardHeight / 2 - 2;
-      int right = cardX + cardWidth - cardPadding;
+      int x = offsetX + cardPadding + headSize + 1;
+      int y = offsetY + cardHeight / 2 - 2;
+      int right = offsetX + cardWidth - cardPadding;
       int rightFill = (int) ((right - x) * info.invasionCompletionPercentage) + x;
       int bottom = y + barHeight;
       Gui.drawRect(x - 1, y - 1, right + 1, bottom + 1, BLACK);
 
       Gui.drawRect(x, y, rightFill, bottom, this.encodeColorInt(this.barColorSupplier.get()));
-
-      String text = (int) (info.invasionCompletionPercentage * 100) + "%";
-      int xBarText = x + (right - x) / 2 - minecraft.fontRenderer.getStringWidth(text) / 2;
-      int yBarText = y + barHeight / 2 - minecraft.fontRenderer.FONT_HEIGHT / 2;
-      minecraft.fontRenderer.drawStringWithShadow(text, xBarText, yBarText, WHITE);
     }
 
     // -------------------------------------------------------------------------
@@ -113,8 +108,8 @@ public class InvasionHudRenderer {
         //noinspection ConstantConditions
         if (playerInfo != null) {
           minecraft.getTextureManager().bindTexture(playerInfo.getLocationSkin());
-          int x = cardX + cardPadding;
-          int y = cardY + cardHeight / 2 - headSize / 2;
+          int x = offsetX + cardPadding;
+          int y = offsetY + cardHeight / 2 - headSize / 2;
 
           Gui.drawRect(x - 1, y - 1, x + headSize + 1, y + headSize + 1, BLACK);
 
@@ -131,11 +126,20 @@ public class InvasionHudRenderer {
     // - Name
     // -------------------------------------------------------------------------
 
-    if (info.invasionName.length() > 0) {
-      int x = cardX + cardPadding + headSize + 4;
-      int y = cardY + cardHeight / 2 - barHeight / 2 - minecraft.fontRenderer.FONT_HEIGHT + 2;
-      minecraft.fontRenderer.drawStringWithShadow(I18n.format(info.invasionName), x, y, WHITE);
+    {
+      if (info.invasionName.length() > 0) {
+        int right = offsetX + cardWidth - cardPadding;
+        int x = offsetX + cardPadding + headSize + 1;
+        int y = offsetY + cardHeight / 2 - 2;
+        String text = I18n.format(info.invasionName);
+
+
+        int textX = x + (right - x) / 2 - minecraft.fontRenderer.getStringWidth(text) / 2;
+        int textY = y + barHeight / 2 - minecraft.fontRenderer.FONT_HEIGHT / 2;
+        minecraft.fontRenderer.drawStringWithShadow(text, textX, textY, WHITE);
+      }
     }
+
   }
 
   private int encodeColorInt(int[] rgb) {
