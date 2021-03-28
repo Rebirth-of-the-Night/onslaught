@@ -1,6 +1,10 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.render.client;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.render.InvasionHudRenderInfo;
+import java.awt.Color;
+import java.util.List;
+import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.Gui;
@@ -8,11 +12,6 @@ import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
-
-import java.awt.*;
-import java.util.List;
-import java.util.function.IntSupplier;
-import java.util.function.Supplier;
 
 public class InvasionHudRenderer {
 
@@ -25,15 +24,14 @@ public class InvasionHudRenderer {
   private final IntSupplier widthSupplier;
   private final Supplier<int[]> barColorSupplier;
 
-  private final boolean debugRender = true;
+  private final boolean debugRender = false;
 
   public InvasionHudRenderer(
       List<InvasionHudRenderInfo> invasionHudRenderInfoList,
       IntSupplier xPositionSupplier,
       IntSupplier yPositionSupplier,
       IntSupplier widthSupplier,
-      Supplier<int[]> barColorSupplier
-  ) {
+      Supplier<int[]> barColorSupplier) {
 
     this.invasionHudRenderInfoList = invasionHudRenderInfoList;
     this.xPositionSupplier = xPositionSupplier;
@@ -44,12 +42,16 @@ public class InvasionHudRenderer {
 
   public void render() {
     // Flip the switch to debug the list
-    if(this.debugRender){
+    if (this.debugRender) {
       this.invasionHudRenderInfoList.clear();
 
+      String[] invasionNames =
+          new String[] {
+            "My Invasion", "Some other invasion", "Invasion with crazy things", "ALL CAPS INVASION"
+          };
       for (int i = 0; i < 4; i++) {
         InvasionHudRenderInfo info = new InvasionHudRenderInfo();
-        info.invasionName = "Invasion " + i;
+        info.invasionName = invasionNames[i];
         info.invasionCompletionPercentage = i / 3f;
         Minecraft minecraft = Minecraft.getMinecraft();
         EntityPlayerSP player = minecraft.player;
@@ -69,16 +71,18 @@ public class InvasionHudRenderer {
     Minecraft minecraft = Minecraft.getMinecraft();
 
     int headSize = 16;
-    int cardPadding = 4;
+    int cardPadding = 0;
     int cardMargin = 2;
-    int cardWidth = this.widthSupplier.getAsInt() + ( 2* cardPadding);
+    int cardWidth = this.widthSupplier.getAsInt() + (2 * cardPadding);
     int cardHeight = headSize + 6 + cardPadding + cardPadding;
     int offsetX = this.xPositionSupplier.getAsInt();
     int offsetY = this.yPositionSupplier.getAsInt() + index * (cardHeight + cardMargin);
     int barHeight = headSize / 2;
 
     // Uncomment to render card -- for layout testing
-    // Gui.drawRect(offsetX, offsetY, offsetX + cardWidth, offsetY + cardHeight, new Color(1, 0, 0, 0.25f).getRGB());
+    // Gui.drawRect(offsetX, offsetY, offsetX + cardWidth, offsetY + cardHeight, new Color(1, 0, 0,
+    // 0.25f).getRGB
+    // ());
 
     // -------------------------------------------------------------------------
     // - Bar
@@ -86,7 +90,7 @@ public class InvasionHudRenderer {
 
     {
       int x = offsetX + cardPadding + headSize + 1;
-      int y = offsetY + cardHeight / 2 - 2;
+      int y = offsetY + cardHeight / 2 - cardMargin;
       int right = offsetX + cardWidth - cardPadding;
       int rightFill = (int) ((right - x) * info.invasionCompletionPercentage) + x;
       int bottom = y + barHeight;
@@ -100,7 +104,8 @@ public class InvasionHudRenderer {
     // -------------------------------------------------------------------------
 
     {
-      if (minecraft.isIntegratedServerRunning() || minecraft.getConnection().getNetworkManager().isEncrypted()) {
+      if (minecraft.isIntegratedServerRunning()
+          || minecraft.getConnection().getNetworkManager().isEncrypted()) {
         NetHandlerPlayClient nethandlerplayclient = minecraft.player.connection;
         NetworkPlayerInfo playerInfo = nethandlerplayclient.getPlayerInfo(info.playerUuid);
 
@@ -116,7 +121,11 @@ public class InvasionHudRenderer {
           GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
           GlStateManager.enableAlpha();
           GlStateManager.enableBlend();
-          GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+          GlStateManager.tryBlendFuncSeparate(
+              GlStateManager.SourceFactor.SRC_ALPHA,
+              GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
+              GlStateManager.SourceFactor.ONE,
+              GlStateManager.DestFactor.ZERO);
           Gui.drawScaledCustomSizeModalRect(x, y, 8, 8, 8, 8, headSize, headSize, 64, 64);
         }
       }
@@ -131,22 +140,19 @@ public class InvasionHudRenderer {
         int right = offsetX + cardWidth - cardPadding;
         int x = offsetX + cardPadding + headSize + 1;
         int y = offsetY + cardHeight / 2 - 2;
-        String text = I18n.format(info.invasionName);
+        String full = I18n.format(info.invasionName);
 
-
-        int textX = x + (right - x) / 2 - minecraft.fontRenderer.getStringWidth(text) / 2;
+        String trimmed =
+            minecraft.fontRenderer.trimStringToWidth(full, cardWidth - headSize - cardMargin - 2);
+        int textX = x + (right - x) / 2 - minecraft.fontRenderer.getStringWidth(trimmed) / 2;
         int textY = y + barHeight / 2 - minecraft.fontRenderer.FONT_HEIGHT / 2;
-        minecraft.fontRenderer.drawStringWithShadow(text, textX, textY, WHITE);
+        minecraft.fontRenderer.drawString(trimmed, textX, textY, WHITE);
       }
     }
-
   }
 
   private int encodeColorInt(int[] rgb) {
 
-    return ((0xFF) << 24) |
-        ((rgb[0] & 0xFF) << 16) |
-        ((rgb[1] & 0xFF) << 8) |
-        ((rgb[2] & 0xFF));
+    return ((0xFF) << 24) | ((rgb[0] & 0xFF) << 16) | ((rgb[1] & 0xFF) << 8) | ((rgb[2] & 0xFF));
   }
 }
