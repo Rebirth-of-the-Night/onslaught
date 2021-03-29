@@ -2,14 +2,11 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateCommandStaged;
+import java.util.function.Function;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 
-import java.util.function.Function;
-
-/**
- * Responsible for executing staged invasion commands.
- */
+/** Responsible for executing staged invasion commands. */
 public class InvasionCommandExecutorStaged {
 
   private final Function<String, InvasionTemplate> idToInvasionTemplateFunction;
@@ -19,8 +16,7 @@ public class InvasionCommandExecutorStaged {
   public InvasionCommandExecutorStaged(
       Function<String, InvasionTemplate> idToInvasionTemplateFunction,
       InvasionCompletionPercentageCalculator invasionCompletionPercentageCalculator,
-      InvasionCommandSender invasionCommandSender
-  ) {
+      InvasionCommandSender invasionCommandSender) {
 
     this.idToInvasionTemplateFunction = idToInvasionTemplateFunction;
     this.invasionCompletionPercentageCalculator = invasionCompletionPercentageCalculator;

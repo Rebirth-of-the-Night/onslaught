@@ -8,8 +8,8 @@ import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
- * Responsible for cancelling a player travelling to a new dimension if they
- * have an active invasion.
+ * Responsible for cancelling a player travelling to a new dimension if they have an active
+ * invasion.
  */
 public class InvasionDimensionTravelRestrictionEventHandler {
 

@@ -1,8 +1,6 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.entity.ai;
 
-/**
- * Contains the default priorities for all custom AI tasks.
- */
+/** Contains the default priorities for all custom AI tasks. */
 public final class DefaultPriority {
 
   // AI Tasks

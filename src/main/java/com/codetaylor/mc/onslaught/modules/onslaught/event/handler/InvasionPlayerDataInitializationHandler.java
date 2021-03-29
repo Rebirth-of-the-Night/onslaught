@@ -2,18 +2,14 @@ package com.codetaylor.mc.onslaught.modules.onslaught.event.handler;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
+import java.util.function.IntSupplier;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.util.function.IntSupplier;
-
-/**
- * Responsible for initializing a player's invasion timer when they join for
- * the first time.
- */
+/** Responsible for initializing a player's invasion timer when they join for the first time. */
 public class InvasionPlayerDataInitializationHandler {
 
   private final IntSupplier invasionPlayerTimerValueSupplier;

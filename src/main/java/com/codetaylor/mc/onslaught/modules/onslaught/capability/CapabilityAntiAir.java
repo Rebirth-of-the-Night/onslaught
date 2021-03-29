@@ -13,5 +13,4 @@ public class CapabilityAntiAir {
 
     return player.getCapability(INSTANCE, null);
   }
-
 }

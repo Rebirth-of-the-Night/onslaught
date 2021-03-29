@@ -1,15 +1,12 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.template.mob;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Nullable;
 
-/**
- * Responsible for holding references to {@link MobTemplate}s and providing
- * access to them.
- */
+/** Responsible for holding references to {@link MobTemplate}s and providing access to them. */
 public class MobTemplateRegistry {
 
   private final Map<String, MobTemplate> templateMap;
@@ -29,9 +26,7 @@ public class MobTemplateRegistry {
     return this.templateMap.get(id);
   }
 
-  /**
-   * @return a list of all template ids for command tab completion
-   */
+  /** @return a list of all template ids for command tab completion */
   public List<String> getIdList() {
 
     return this.idList;

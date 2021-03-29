@@ -3,18 +3,15 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion.selector;
 import com.codetaylor.mc.athenaeum.integration.gamestages.GameStages;
 import com.codetaylor.mc.athenaeum.integration.gamestages.Stages;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplate;
+import java.util.Map;
+import java.util.function.Predicate;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.Loader;
 
-import java.util.Map;
-import java.util.function.Predicate;
-
 /**
- * Responsible for filtering out invasion templates that do not match the
- * given player's gamestages.
+ * Responsible for filtering out invasion templates that do not match the given player's gamestages.
  */
-public class SelectorFilterGamestages
-    implements Predicate<Map.Entry<String, InvasionTemplate>> {
+public class SelectorFilterGamestages implements Predicate<Map.Entry<String, InvasionTemplate>> {
 
   private static final String GAMESTAGES_MOD_ID = "gamestages";
 

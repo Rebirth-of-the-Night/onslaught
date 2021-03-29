@@ -1,17 +1,13 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.entity.ai;
 
+import java.util.function.Supplier;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
 
-import java.util.function.Supplier;
-
-/**
- * Responsible for providing a persistent player target.
- */
-public class EntityAIPlayerTarget
-    extends EntityAIBase {
+/** Responsible for providing a persistent player target. */
+public class EntityAIPlayerTarget extends EntityAIBase {
 
   private final EntityLiving taskOwner;
   private final Supplier<EntityPlayer> playerSupplier;
@@ -48,11 +44,8 @@ public class EntityAIPlayerTarget
     }
 
     // Ensure that the targeted player is in the same world as the mob
-    if (this.taskOwner.world.provider.getDimension() != this.targetPlayer.world.provider.getDimension()) {
-      return false;
-    }
-
-    return true;
+    return this.taskOwner.world.provider.getDimension() == this.targetPlayer.world.provider
+        .getDimension();
   }
 
   @Override

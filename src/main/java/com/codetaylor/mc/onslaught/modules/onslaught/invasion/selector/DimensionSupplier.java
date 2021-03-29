@@ -1,16 +1,12 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.selector;
 
+import java.util.function.IntSupplier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 
-import java.util.function.IntSupplier;
-
-/**
- * Responsible for supplying a player's current dimension id.
- */
-public class DimensionSupplier
-    implements IntSupplier {
+/** Responsible for supplying a player's current dimension id. */
+public class DimensionSupplier implements IntSupplier {
 
   private final EntityPlayer player;
 

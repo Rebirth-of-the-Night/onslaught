@@ -2,9 +2,7 @@ package com.codetaylor.mc.onslaught.modules.onslaught.lib;
 
 public class TickIntervalCounter {
 
-  /**
-   * Stores the previous world time, or -1 if first tick.
-   */
+  /** Stores the previous world time, or -1 if first tick. */
   private long previousWorldTime;
 
   public TickIntervalCounter() {
@@ -13,12 +11,11 @@ public class TickIntervalCounter {
   }
 
   /**
-   * This tracks the previous world time and uses it to derive the number of
-   * actual ticks passed. This will account for any changes made to world time
-   * via the /time add X command and sleeping.
+   * This tracks the previous world time and uses it to derive the number of actual ticks passed.
+   * This will account for any changes made to world time via the /time add X command and sleeping.
    *
    * @param updateIntervalTicks the update interval in ticks
-   * @param worldTime           the current world time
+   * @param worldTime the current world time
    * @return the number of actual interval ticks
    */
   public int updateAndGet(int updateIntervalTicks, long worldTime) {

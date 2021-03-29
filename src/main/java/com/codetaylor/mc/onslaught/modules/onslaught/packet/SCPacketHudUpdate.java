@@ -2,18 +2,14 @@ package com.codetaylor.mc.onslaught.modules.onslaught.packet;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.render.InvasionHudRenderInfo;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-/**
- * Packet sent to the client containing nearby invasion data for HUD rendering.
- */
-public class SCPacketHudUpdate
-    implements IMessage {
+/** Packet sent to the client containing nearby invasion data for HUD rendering. */
+public class SCPacketHudUpdate implements IMessage {
 
   private List<InvasionHudRenderInfo> invasionHudRenderInfoList;
 

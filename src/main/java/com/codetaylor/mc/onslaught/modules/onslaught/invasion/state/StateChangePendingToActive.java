@@ -10,14 +10,16 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.management.PlayerList;
 import net.minecraftforge.common.MinecraftForge;
 
-/**
- * Responsible for executing an invasion state transition from pending to active.
- */
+/** Responsible for executing an invasion state transition from pending to active. */
 public class StateChangePendingToActive
     implements InvasionUpdateEventHandler.IInvasionUpdateComponent {
 
   @Override
-  public void update(int updateIntervalTicks, InvasionGlobalSavedData invasionGlobalSavedData, PlayerList playerList, long worldTime) {
+  public void update(
+      int updateIntervalTicks,
+      InvasionGlobalSavedData invasionGlobalSavedData,
+      PlayerList playerList,
+      long worldTime) {
 
     for (EntityPlayerMP player : playerList.getPlayers()) {
       InvasionPlayerData data = invasionGlobalSavedData.getPlayerData(player.getUniqueID());
@@ -37,12 +39,17 @@ public class StateChangePendingToActive
         invasionGlobalSavedData.markDirty();
 
         if (ModuleOnslaughtConfig.DEBUG.INVASION_STATE) {
-          String message = String.format("Set invasion state to %s for player %s", "Active", player.getName());
+          String message =
+              String.format("Set invasion state to %s for player %s", "Active", player.getName());
           ModOnslaught.LOG.fine(message);
           System.out.println(message);
         }
 
-        MinecraftForge.EVENT_BUS.post(new InvasionStateChangedEvent(player, InvasionPlayerData.EnumInvasionState.Pending, InvasionPlayerData.EnumInvasionState.Active));
+        MinecraftForge.EVENT_BUS.post(
+            new InvasionStateChangedEvent(
+                player,
+                InvasionPlayerData.EnumInvasionState.Pending,
+                InvasionPlayerData.EnumInvasionState.Active));
       }
     }
   }

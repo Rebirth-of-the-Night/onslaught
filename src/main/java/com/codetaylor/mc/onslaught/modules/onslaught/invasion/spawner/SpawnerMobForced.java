@@ -7,6 +7,11 @@ import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.SpawnSampler;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateWave;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplate;
+import java.util.List;
+import java.util.UUID;
+import java.util.function.Function;
+import java.util.function.IntSupplier;
+import java.util.logging.Level;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -14,15 +19,7 @@ import net.minecraft.world.World;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.function.Function;
-import java.util.function.IntSupplier;
-import java.util.logging.Level;
-
-/**
- * Responsible for attempting a forced invasion spawn.
- */
+/** Responsible for attempting a forced invasion spawn. */
 public class SpawnerMobForced {
 
   private static final Logger LOGGER = LogManager.getLogger(SpawnerMobForced.class);
@@ -38,8 +35,7 @@ public class SpawnerMobForced {
       Function<String, MobTemplate> mobTemplateFunction,
       MobTemplateEntityFactory mobTemplateEntityFactory,
       List<DeferredSpawnData> deferredSpawnDataList,
-      IntSupplier forcedSpawnDelayTicksSupplier
-  ) {
+      IntSupplier forcedSpawnDelayTicksSupplier) {
 
     this.mobTemplateFunction = mobTemplateFunction;
     this.mobTemplateEntityFactory = mobTemplateEntityFactory;
@@ -48,9 +44,7 @@ public class SpawnerMobForced {
     this.forcedSpawnDelayTicksSupplier = forcedSpawnDelayTicksSupplier;
   }
 
-  /**
-   * @return true if the mob was spawned
-   */
+  /** @return true if the mob was spawned */
   public boolean attemptSpawnMob(
       World world,
       BlockPos playerPos,
@@ -60,8 +54,7 @@ public class SpawnerMobForced {
       int mobIndex,
       String mobTemplateId,
       InvasionPlayerData.InvasionData.SpawnData spawnData,
-      InvasionTemplateWave.SecondaryMob secondaryMob
-  ) {
+      InvasionTemplateWave.SecondaryMob secondaryMob) {
 
     MobTemplate mobTemplate = this.mobTemplateFunction.apply(mobTemplateId);
 
@@ -82,7 +75,7 @@ public class SpawnerMobForced {
     }
 
     InvasionPlayerData.InvasionData.SpawnData spawnDataCopy = spawnData.copy();
-    spawnDataCopy.light = new int[]{0, 15};
+    spawnDataCopy.light = new int[] {0, 15};
 
     Vec3d spawnLocation = this.spawnSampler.getSpawnLocation(entity, playerPos, spawnDataCopy);
 
@@ -97,18 +90,18 @@ public class SpawnerMobForced {
       return false;
     }
 
-    DeferredSpawnData deferredSpawnData = new DeferredSpawnData(
-        entity,
-        world.provider.getDimension(),
-        entity.getPosition(),
-        invasionUuid,
-        playerUuid,
-        waveIndex,
-        mobIndex,
-        spawnDataCopy.type,
-        secondaryMob,
-        this.forcedSpawnDelayTicksSupplier.getAsInt()
-    );
+    DeferredSpawnData deferredSpawnData =
+        new DeferredSpawnData(
+            entity,
+            world.provider.getDimension(),
+            entity.getPosition(),
+            invasionUuid,
+            playerUuid,
+            waveIndex,
+            mobIndex,
+            spawnDataCopy.type,
+            secondaryMob,
+            this.forcedSpawnDelayTicksSupplier.getAsInt());
 
     this.deferredSpawnDataList.add(deferredSpawnData);
 

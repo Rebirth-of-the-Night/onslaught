@@ -4,26 +4,25 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
+import java.util.regex.Pattern;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
 import org.apache.commons.io.output.StringBuilderWriter;
 
-import java.io.IOException;
-import java.util.regex.Pattern;
-
 /**
- * This class is registered with the Gson instance used to deserialize
- * Onslaught json files. It is responsible for converting the json into
- * an {@link NBTTagCompound}. This adapter does not support serialization
- * and will throw an {@link UnsupportedOperationException} on write.
+ * This class is registered with the Gson instance used to deserialize Onslaught json files. It is
+ * responsible for converting the json into an {@link NBTTagCompound}. This adapter does not support
+ * serialization and will throw an {@link UnsupportedOperationException} on write.
  */
-public class NBTTagCompoundTypeAdapter
-    extends TypeAdapter<NBTTagCompound> {
+public class NBTTagCompoundTypeAdapter extends TypeAdapter<NBTTagCompound> {
 
   public static final NBTTagCompoundTypeAdapter INSTANCE = new NBTTagCompoundTypeAdapter();
 
-  private static final Pattern DOUBLE_PATTERN = Pattern.compile("[-+]?(?:[0-9]+[.]|[0-9]*[.][0-9]+)(?:e[-+]?[0-9]+)?", Pattern.CASE_INSENSITIVE);
+  private static final Pattern DOUBLE_PATTERN =
+      Pattern.compile(
+          "[-+]?(?:[0-9]+[.]|[0-9]*[.][0-9]+)(?:e[-+]?[0-9]+)?", Pattern.CASE_INSENSITIVE);
   private static final Pattern INT_PATTERN = Pattern.compile("[-+]?(?:0|[1-9][0-9]*)");
 
   @Override
@@ -55,7 +54,6 @@ public class NBTTagCompoundTypeAdapter
     JsonToken peek = in.peek();
 
     switch (peek) {
-
       case BEGIN_ARRAY:
         this.writeArray(in, out);
         return true;

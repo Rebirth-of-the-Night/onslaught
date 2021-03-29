@@ -4,31 +4,29 @@ import com.codetaylor.mc.onslaught.modules.onslaught.lib.NBTTagCompoundTypeAdapt
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import net.minecraft.nbt.NBTTagCompound;
-
 import java.lang.reflect.Type;
 import java.util.Map;
+import net.minecraft.nbt.NBTTagCompound;
 
-/**
- * Responsible for consuming a json string and returning a map of
- * {@link MobTemplate}s.
- */
+/** Responsible for consuming a json string and returning a map of {@link MobTemplate}s. */
 public class MobTemplateAdapter {
 
   private final Gson gson;
 
   public MobTemplateAdapter() {
 
-    this.gson = new GsonBuilder()
-        .registerTypeAdapter(NBTTagCompound.class, NBTTagCompoundTypeAdapter.INSTANCE)
-        .create();
+    this.gson =
+        new GsonBuilder()
+            .registerTypeAdapter(NBTTagCompound.class, NBTTagCompoundTypeAdapter.INSTANCE)
+            .create();
   }
 
   public Map<String, MobTemplate> adapt(String json) {
 
-    Type type = new TypeToken<Map<String, MobTemplate>>() {
-      //
-    }.getType();
+    Type type =
+        new TypeToken<Map<String, MobTemplate>>() {
+          //
+        }.getType();
 
     return this.gson.fromJson(json, type);
   }

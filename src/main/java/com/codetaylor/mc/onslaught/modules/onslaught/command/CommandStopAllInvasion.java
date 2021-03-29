@@ -2,6 +2,9 @@ package com.codetaylor.mc.onslaught.modules.onslaught.command;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionStopExecutor;
+import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -10,15 +13,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.text.TextComponentTranslation;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.List;
-
-/**
- * Stops an invasion for a single player.
- */
-public class CommandStopAllInvasion
-    extends CommandBase {
+/** Stops an invasion for a single player. */
+public class CommandStopAllInvasion extends CommandBase {
 
   private static final String USAGE = "commands.onslaught.stopall.usage";
   private static final String SUCCESS = "commands.onslaught.stopall.success";
@@ -52,7 +48,8 @@ public class CommandStopAllInvasion
 
   @ParametersAreNonnullByDefault
   @Override
-  public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+  public void execute(MinecraftServer server, ICommandSender sender, String[] args)
+      throws CommandException {
 
     EntityPlayerMP player;
 

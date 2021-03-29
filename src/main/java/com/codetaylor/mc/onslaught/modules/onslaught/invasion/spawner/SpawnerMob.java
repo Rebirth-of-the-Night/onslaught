@@ -2,10 +2,13 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner;
 
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
-import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactory;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.SpawnSampler;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplate;
+import java.util.UUID;
+import java.util.function.Function;
+import java.util.logging.Level;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -13,13 +16,7 @@ import net.minecraft.world.World;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.UUID;
-import java.util.function.Function;
-import java.util.logging.Level;
-
-/**
- * Responsible for attempting an invasion spawn.
- */
+/** Responsible for attempting an invasion spawn. */
 public class SpawnerMob {
 
   private static final Logger LOGGER = LogManager.getLogger(SpawnerMob.class);
@@ -33,8 +30,7 @@ public class SpawnerMob {
       SpawnSampler spawnSampler,
       Function<String, MobTemplate> mobTemplateFunction,
       MobTemplateEntityFactory mobTemplateEntityFactory,
-      EntityInvasionDataInjector entityInvasionDataInjector
-  ) {
+      EntityInvasionDataInjector entityInvasionDataInjector) {
 
     this.spawnSampler = spawnSampler;
     this.mobTemplateFunction = mobTemplateFunction;
@@ -42,9 +38,7 @@ public class SpawnerMob {
     this.entityInvasionDataInjector = entityInvasionDataInjector;
   }
 
-  /**
-   * @return true if the mob was spawned
-   */
+  /** @return true if the mob was spawned */
   public boolean attemptSpawnMob(
       World world,
       BlockPos playerPos,
@@ -53,8 +47,7 @@ public class SpawnerMob {
       int waveIndex,
       int mobIndex,
       String mobTemplateId,
-      InvasionPlayerData.InvasionData.SpawnData spawnData
-  ) {
+      InvasionPlayerData.InvasionData.SpawnData spawnData) {
 
     MobTemplate mobTemplate = this.mobTemplateFunction.apply(mobTemplateId);
 

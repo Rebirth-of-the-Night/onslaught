@@ -1,5 +1,7 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.entity.ai;
 
+import java.util.Random;
+import javax.annotation.Nullable;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -11,15 +13,11 @@ import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-import javax.annotation.Nullable;
-import java.util.Random;
-
 /**
- * Responsible for pathing an entity toward its target over a long distance by
- * splitting the path into smaller sections.
+ * Responsible for pathing an entity toward its target over a long distance by splitting the path
+ * into smaller sections.
  */
-public class EntityAIChaseLongDistance
-    extends EntityAIBase {
+public class EntityAIChaseLongDistance extends EntityAIBase {
 
   private final EntityLiving taskOwner;
   private final double speed;
@@ -41,7 +39,8 @@ public class EntityAIChaseLongDistance
       return false;
     }
 
-    double followRange = this.taskOwner.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue();
+    double followRange =
+        this.taskOwner.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue();
 
     if (this.taskOwner.getDistanceSq(target) < followRange * followRange) {
       return false;
@@ -53,13 +52,13 @@ public class EntityAIChaseLongDistance
       return false;
     }
 
-//    if (target instanceof EntityPlayer) {
-//      EntityPlayer player = (EntityPlayer) target;
-//
-//      if (player.isSpectator() || player.isCreative()) {
-//        return false;
-//      }
-//    }
+    //    if (target instanceof EntityPlayer) {
+    //      EntityPlayer player = (EntityPlayer) target;
+    //
+    //      if (player.isSpectator() || player.isCreative()) {
+    //        return false;
+    //      }
+    //    }
 
     Vec3d originVector = this.taskOwner.getPositionVector();
     Vec3d targetVector = target.getPositionVector();
@@ -68,17 +67,27 @@ public class EntityAIChaseLongDistance
     int searchRangeY = 16;
     int distance = (int) Math.max(0, followRange - searchRangeXZ * 2);
 
-    Vec3d pathVec = this.findTargetBlock(this.taskOwner, navigator, random, originVector, targetVector, distance, searchRangeXZ, searchRangeY);
+    Vec3d pathVec =
+        this.findTargetBlock(
+            this.taskOwner,
+            navigator,
+            random,
+            originVector,
+            targetVector,
+            distance,
+            searchRangeXZ,
+            searchRangeY);
 
-//    if (pathVec == null) {
-//      pathVec = RandomPositionGenerator.findRandomTargetBlockTowards(this.taskOwner, (int) (followRange * 0.75), 64, targetVector);
-//    }
+    //    if (pathVec == null) {
+    //      pathVec = RandomPositionGenerator.findRandomTargetBlockTowards(this.taskOwner, (int)
+    // (followRange * 0.75), 64, targetVector);
+    //    }
 
     if (pathVec != null) {
       this.path = navigator.getPathToXYZ(pathVec.x, pathVec.y, pathVec.z);
     }
 
-//    System.out.println(this.path);
+    //    System.out.println(this.path);
 
     return (this.path != null);
   }
@@ -100,15 +109,16 @@ public class EntityAIChaseLongDistance
       return false;
     }
 
-//    if (target instanceof EntityPlayer) {
-//      EntityPlayer player = (EntityPlayer) target;
-//
-//      if (player.isSpectator() || player.isCreative()) {
-//        return false;
-//      }
-//    }
+    //    if (target instanceof EntityPlayer) {
+    //      EntityPlayer player = (EntityPlayer) target;
+    //
+    //      if (player.isSpectator() || player.isCreative()) {
+    //        return false;
+    //      }
+    //    }
 
-    double followRange = this.taskOwner.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue();
+    double followRange =
+        this.taskOwner.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue();
 
     return (this.taskOwner.getDistanceSq(target) >= followRange * followRange);
   }
@@ -126,14 +136,22 @@ public class EntityAIChaseLongDistance
   }
 
   /**
-   * Searches 10 blocks at random within searchRangeXZ and searchRangeY distance
-   * from a point located between origin and target at the given distance.
+   * Searches 10 blocks at random within searchRangeXZ and searchRangeY distance from a point
+   * located between origin and target at the given distance.
    *
    * @see RandomPositionGenerator#generateRandomPos(EntityCreature, int, int, Vec3d, boolean)
    */
   @SuppressWarnings("JavadocReference")
   @Nullable
-  private Vec3d findTargetBlock(EntityLiving entity, PathNavigate navigator, Random random, Vec3d origin, Vec3d target, int distance, int searchRangeXZ, int searchRangeY) {
+  private Vec3d findTargetBlock(
+      EntityLiving entity,
+      PathNavigate navigator,
+      Random random,
+      Vec3d origin,
+      Vec3d target,
+      int distance,
+      int searchRangeXZ,
+      int searchRangeY) {
 
     Vec3d subTarget = target.subtract(origin).normalize().scale(distance).add(origin);
 
@@ -157,7 +175,10 @@ public class EntityAIChaseLongDistance
 
       if (navigator.canEntityStandOnPos(blockPos)) {
 
-        float blockPathWeight = (entity instanceof EntityCreature) ? ((EntityCreature) entity).getBlockPathWeight(blockPos) : 0;
+        float blockPathWeight =
+            (entity instanceof EntityCreature)
+                ? ((EntityCreature) entity).getBlockPathWeight(blockPos)
+                : 0;
 
         if (blockPathWeight > largestBlockPathWeight) {
           largestBlockPathWeight = blockPathWeight;

@@ -1,20 +1,16 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.command;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.template.TemplateLoader;
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
-
-/**
- * Responsible for spawning a mob from a mob template.
- */
-public class CommandReload
-    extends CommandBase {
+/** Responsible for spawning a mob from a mob template. */
+public class CommandReload extends CommandBase {
 
   private static final String USAGE = "commands.onslaught.reload.usage";
   private static final String SUCCESS = "commands.onslaught.reload.success";
@@ -49,7 +45,8 @@ public class CommandReload
 
   @ParametersAreNonnullByDefault
   @Override
-  public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+  public void execute(MinecraftServer server, ICommandSender sender, String[] args)
+      throws CommandException {
 
     if (args.length > 0) {
       throw new WrongUsageException(USAGE);

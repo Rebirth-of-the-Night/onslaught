@@ -6,6 +6,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.invasion.EntityInvasionPeri
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import it.unimi.dsi.fastutil.ints.Int2LongMap;
 import it.unimi.dsi.fastutil.ints.Int2LongOpenHashMap;
+import java.util.List;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerList;
@@ -16,12 +17,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
-import java.util.List;
-
-/**
- * Responsible for triggering the invasion entity cleanup in response to
- * specific events.
- */
+/** Responsible for triggering the invasion entity cleanup in response to specific events. */
 public class InvasionCleanupEventHandler {
 
   private static final int INTERVAL_TICKS = 20 * 10;
@@ -29,7 +25,8 @@ public class InvasionCleanupEventHandler {
   private final EntityInvasionPeriodicWorldCleanup entityInvasionPeriodicWorldCleanup;
   private final Int2LongMap lastRunMap;
 
-  public InvasionCleanupEventHandler(EntityInvasionPeriodicWorldCleanup entityInvasionPeriodicWorldCleanup) {
+  public InvasionCleanupEventHandler(
+      EntityInvasionPeriodicWorldCleanup entityInvasionPeriodicWorldCleanup) {
 
     this.entityInvasionPeriodicWorldCleanup = entityInvasionPeriodicWorldCleanup;
     this.lastRunMap = new Int2LongOpenHashMap();
@@ -93,14 +90,15 @@ public class InvasionCleanupEventHandler {
     if (worldTime - this.lastRunMap.get(dimensionId) >= INTERVAL_TICKS) {
       this.lastRunMap.put(dimensionId, worldTime);
 
-      List<EntityLiving> entityLivingList = world.getEntities(
-          EntityLiving.class,
-          entity -> entity != null && entity.getEntityData().hasKey(Tag.ONSLAUGHT)
-      );
+      List<EntityLiving> entityLivingList =
+          world.getEntities(
+              EntityLiving.class,
+              entity -> entity != null && entity.getEntityData().hasKey(Tag.ONSLAUGHT));
 
       PlayerList playerList = minecraftServer.getPlayerList();
 
-      this.entityInvasionPeriodicWorldCleanup.cleanup(worldTime, entityLivingList, playerList::getPlayerByUUID);
+      this.entityInvasionPeriodicWorldCleanup.cleanup(
+          worldTime, entityLivingList, playerList::getPlayerByUUID);
     }
   }
 }

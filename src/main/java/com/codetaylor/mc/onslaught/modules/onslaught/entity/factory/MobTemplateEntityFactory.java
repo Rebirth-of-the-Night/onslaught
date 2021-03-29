@@ -2,6 +2,7 @@ package com.codetaylor.mc.onslaught.modules.onslaught.entity.factory;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.Tag;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplate;
+import javax.annotation.Nullable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
@@ -9,20 +10,14 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-
-/**
- * Responsible for consuming a mob template and producing an entity.
- */
+/** Responsible for consuming a mob template and producing an entity. */
 public class MobTemplateEntityFactory {
 
   private final EffectApplicator effectApplicator;
   private final LootTableApplicator lootTableApplicator;
 
   public MobTemplateEntityFactory(
-      EffectApplicator effectApplicator,
-      LootTableApplicator lootTableApplicator
-  ) {
+      EffectApplicator effectApplicator, LootTableApplicator lootTableApplicator) {
 
     this.effectApplicator = effectApplicator;
     this.lootTableApplicator = lootTableApplicator;
@@ -53,7 +48,8 @@ public class MobTemplateEntityFactory {
 
     // Ensure that the entity can path away from its home restriction.
     if (entity instanceof EntityCreature) {
-      boolean detachHome = (!tagCompound.hasKey(Tag.DETACH_HOME) || tagCompound.getBoolean(Tag.DETACH_HOME));
+      boolean detachHome =
+          (!tagCompound.hasKey(Tag.DETACH_HOME) || tagCompound.getBoolean(Tag.DETACH_HOME));
 
       if (detachHome) {
         ((EntityCreature) entity).detachHome();

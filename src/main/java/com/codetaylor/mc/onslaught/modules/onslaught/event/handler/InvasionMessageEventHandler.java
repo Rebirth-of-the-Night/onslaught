@@ -5,9 +5,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionMessageSen
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-/**
- * Responsible for triggering the begin and end messages in response to events.
- */
+/** Responsible for triggering the begin and end messages in response to events. */
 public class InvasionMessageEventHandler {
 
   private final InvasionMessageSender invasionMessageSenderBegin;
@@ -15,8 +13,7 @@ public class InvasionMessageEventHandler {
 
   public InvasionMessageEventHandler(
       InvasionMessageSender invasionMessageSenderBegin,
-      InvasionMessageSender invasionMessageSenderEnd
-  ) {
+      InvasionMessageSender invasionMessageSenderEnd) {
 
     this.invasionMessageSenderBegin = invasionMessageSenderBegin;
     this.invasionMessageSenderEnd = invasionMessageSenderEnd;

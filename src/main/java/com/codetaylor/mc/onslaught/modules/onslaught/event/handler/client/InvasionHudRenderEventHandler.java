@@ -6,9 +6,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-/**
- * Responsible for calling the render method on the {@link InvasionHudRenderer}.
- */
+/** Responsible for calling the render method on the {@link InvasionHudRenderer}. */
 public class InvasionHudRenderEventHandler {
 
   private final InvasionHudRenderer invasionHudRenderer;

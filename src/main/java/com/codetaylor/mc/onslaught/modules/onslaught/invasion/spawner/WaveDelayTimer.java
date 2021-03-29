@@ -3,17 +3,13 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.handler.InvasionUpdateEventHandler;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
+import java.util.List;
+import java.util.function.Predicate;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.management.PlayerList;
 
-import java.util.List;
-import java.util.function.Predicate;
-
-/**
- * Responsible for updating the wave delay timers for all active invasions.
- */
-public class WaveDelayTimer
-    implements InvasionUpdateEventHandler.IInvasionUpdateComponent {
+/** Responsible for updating the wave delay timers for all active invasions. */
+public class WaveDelayTimer implements InvasionUpdateEventHandler.IInvasionUpdateComponent {
 
   private final Predicate<InvasionPlayerData.InvasionData> activeWavePredicate;
 
@@ -23,7 +19,11 @@ public class WaveDelayTimer
   }
 
   @Override
-  public void update(int updateIntervalTicks, InvasionGlobalSavedData invasionGlobalSavedData, PlayerList playerList, long worldTime) {
+  public void update(
+      int updateIntervalTicks,
+      InvasionGlobalSavedData invasionGlobalSavedData,
+      PlayerList playerList,
+      long worldTime) {
 
     for (EntityPlayerMP player : playerList.getPlayers()) {
       InvasionPlayerData data = invasionGlobalSavedData.getPlayerData(player.getUniqueID());
@@ -43,7 +43,7 @@ public class WaveDelayTimer
       // Force a wave to 0 delay if it is the first wave found with remaining
       // delay and the invasion has no active waves. Else, decrement all
       // remaining wave delay timers.
-      
+
       boolean hasActiveWave = this.activeWavePredicate.test(invasionData);
       boolean forcedWaveStart = false;
 

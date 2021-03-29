@@ -5,11 +5,8 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.util.math.AxisAlignedBB;
 
-/**
- * Responsible for moving a Ghast in the direction of its target.
- */
-public class EntityAIChaseLongDistanceGhast
-    extends EntityAIBase {
+/** Responsible for moving a Ghast in the direction of its target. */
+public class EntityAIChaseLongDistanceGhast extends EntityAIBase {
 
   private final EntityGhast taskOwner;
   private final double speed;
@@ -45,11 +42,7 @@ public class EntityAIChaseLongDistanceGhast
 
     AxisAlignedBB axisalignedbb = this.taskOwner.getEntityBoundingBox();
 
-    if (!this.taskOwner.world.getCollisionBoxes(this.taskOwner, axisalignedbb).isEmpty()) {
-      return false;
-    }
-
-    return true;
+    return this.taskOwner.world.getCollisionBoxes(this.taskOwner, axisalignedbb).isEmpty();
   }
 
   @Override

@@ -1,14 +1,11 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplate;
+import java.util.function.Function;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 
-import java.util.function.Function;
-
-/**
- * Responsible for executing an invasion command.
- */
+/** Responsible for executing an invasion command. */
 public class InvasionCommandExecutor {
 
   private final Function<String, InvasionTemplate> idToInvasionTemplateFunction;
@@ -18,8 +15,7 @@ public class InvasionCommandExecutor {
   public InvasionCommandExecutor(
       Function<String, InvasionTemplate> idToInvasionTemplateFunction,
       Function<InvasionTemplate, String[]> commandFunction,
-      InvasionCommandSender invasionCommandSender
-  ) {
+      InvasionCommandSender invasionCommandSender) {
 
     this.idToInvasionTemplateFunction = idToInvasionTemplateFunction;
     this.commandFunction = commandFunction;

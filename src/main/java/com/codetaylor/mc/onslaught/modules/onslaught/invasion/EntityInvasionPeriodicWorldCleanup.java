@@ -1,14 +1,13 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.Tag;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
-
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.LongSupplier;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class EntityInvasionPeriodicWorldCleanup {
 
@@ -17,8 +16,7 @@ public class EntityInvasionPeriodicWorldCleanup {
 
   public EntityInvasionPeriodicWorldCleanup(
       LongSupplier offlineCleanupDelayTicksSupplier,
-      EntityInvasionDataRemover entityInvasionDataRemover
-  ) {
+      EntityInvasionDataRemover entityInvasionDataRemover) {
 
     this.offlineCleanupDelayTicksSupplier = offlineCleanupDelayTicksSupplier;
     this.entityInvasionDataRemover = entityInvasionDataRemover;
@@ -27,8 +25,7 @@ public class EntityInvasionPeriodicWorldCleanup {
   public void cleanup(
       long worldTime,
       List<EntityLiving> entityLivingList,
-      Function<UUID, EntityPlayerMP> uuidEntityPlayerFunction
-  ) {
+      Function<UUID, EntityPlayerMP> uuidEntityPlayerFunction) {
 
     if (entityLivingList.isEmpty()) {
       return;
@@ -57,7 +54,8 @@ public class EntityInvasionPeriodicWorldCleanup {
         if (modTag.hasKey(Tag.INVASION_OFFLINE_TIMESTAMP)) {
 
           // check timestamp and remove if expired
-          if (worldTime - modTag.getLong(Tag.INVASION_OFFLINE_TIMESTAMP) >= this.offlineCleanupDelayTicksSupplier.getAsLong()) {
+          if (worldTime - modTag.getLong(Tag.INVASION_OFFLINE_TIMESTAMP)
+              >= this.offlineCleanupDelayTicksSupplier.getAsLong()) {
             this.entityInvasionDataRemover.accept(entity);
           }
 
@@ -101,5 +99,4 @@ public class EntityInvasionPeriodicWorldCleanup {
       }
     }
   }
-
 }

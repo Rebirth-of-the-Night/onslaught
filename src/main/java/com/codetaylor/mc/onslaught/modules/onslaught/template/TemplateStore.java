@@ -2,12 +2,9 @@ package com.codetaylor.mc.onslaught.modules.onslaught.template;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateRegistry;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplateRegistry;
-
 import java.util.Collections;
 
-/**
- * Responsible for holding references to mob templates and invasion templates.
- */
+/** Responsible for holding references to mob templates and invasion templates. */
 public class TemplateStore {
 
   private MobTemplateRegistry mobTemplateRegistry;
@@ -20,8 +17,8 @@ public class TemplateStore {
   }
 
   /**
-   * The {@link MobTemplateRegistry} returned by this method should not be cached
-   * as it will change when the templates are reloaded.
+   * The {@link MobTemplateRegistry} returned by this method should not be cached as it will change
+   * when the templates are reloaded.
    *
    * @return the {@link MobTemplateRegistry}
    */
@@ -36,8 +33,8 @@ public class TemplateStore {
   }
 
   /**
-   * The {@link InvasionTemplateRegistry} returned by this method should not be
-   * cached as it will change when the templates are reloaded.
+   * The {@link InvasionTemplateRegistry} returned by this method should not be cached as it will
+   * change when the templates are reloaded.
    *
    * @return the {@link InvasionTemplateRegistry}
    */

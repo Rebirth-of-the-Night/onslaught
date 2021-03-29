@@ -3,96 +3,28 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateWave;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+import javax.annotation.Nullable;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+/** Responsible for containing and serializing the state of a player's invasion. */
+public class InvasionPlayerData implements INBTSerializable<NBTTagCompound> {
 
-/**
- * Responsible for containing and serializing the state of a player's invasion.
- */
-public class InvasionPlayerData
-    implements INBTSerializable<NBTTagCompound> {
-
-  /**
-   * This is the number of ticks left until the player is flagged as pending an
-   * invasion.
-   */
+  /** This is the number of ticks left until the player is flagged as pending an invasion. */
   private int ticksUntilEligible;
 
-  /**
-   * This holds the state of the player's invasion.
-   */
+  /** This holds the state of the player's invasion. */
   private EnumInvasionState invasionState;
 
-  /**
-   * The data for the player's invasion.
-   */
+  /** The data for the player's invasion. */
   private InvasionData invasionData;
-
-  public enum EnumInvasionState {
-
-    /**
-     * Player's timer is still ticking down.
-     */
-    Waiting(0),
-
-    /**
-     * Player's timer has expired and they have been flagged as eligible for
-     * an invasion.
-     */
-    Eligible(1),
-
-    /**
-     * Player has been selected from the collection of eligible players and their
-     * invasion data has been assigned.
-     */
-    Pending(2),
-
-    /**
-     * Player's invasion has begun and waves are spawning.
-     */
-    Active(3);
-
-    private static final Int2ObjectMap<EnumInvasionState> MAP;
-
-    static {
-      EnumInvasionState[] states = EnumInvasionState.values();
-      MAP = new Int2ObjectOpenHashMap<>(states.length);
-
-      for (EnumInvasionState state : states) {
-        MAP.put(state.id, state);
-      }
-    }
-
-    private final int id;
-
-    EnumInvasionState(int id) {
-
-      this.id = id;
-    }
-
-    public int getId() {
-
-      return this.id;
-    }
-
-    public static EnumInvasionState from(int id) {
-
-      if (!MAP.containsKey(id)) {
-        throw new IllegalArgumentException("Unknown id for state: " + id);
-      }
-
-      return MAP.get(id);
-    }
-  }
 
   public InvasionPlayerData() {
 
@@ -100,14 +32,14 @@ public class InvasionPlayerData
     this.invasionState = EnumInvasionState.Waiting;
   }
 
-  // ---------------------------------------------------------------------------
-  // - Accessors
-  // ---------------------------------------------------------------------------
-
   public int getTicksUntilEligible() {
 
     return this.ticksUntilEligible;
   }
+
+  // ---------------------------------------------------------------------------
+  // - Accessors
+  // ---------------------------------------------------------------------------
 
   public void setTicksUntilEligible(int ticksUntilEligible) {
 
@@ -135,10 +67,6 @@ public class InvasionPlayerData
     this.invasionData = invasionData;
   }
 
-  // ---------------------------------------------------------------------------
-  // - Serialization
-  // ---------------------------------------------------------------------------
-
   @Override
   public NBTTagCompound serializeNBT() {
 
@@ -153,6 +81,10 @@ public class InvasionPlayerData
     return tag;
   }
 
+  // ---------------------------------------------------------------------------
+  // - Serialization
+  // ---------------------------------------------------------------------------
+
   @Override
   public void deserializeNBT(NBTTagCompound tag) {
 
@@ -165,48 +97,79 @@ public class InvasionPlayerData
     }
   }
 
+  public enum EnumInvasionState {
+
+    /** Player's timer is still ticking down. */
+    Waiting(0),
+
+    /** Player's timer has expired and they have been flagged as eligible for an invasion. */
+    Eligible(1),
+
+    /**
+     * Player has been selected from the collection of eligible players and their invasion data has
+     * been assigned.
+     */
+    Pending(2),
+
+    /** Player's invasion has begun and waves are spawning. */
+    Active(3);
+
+    private static final Int2ObjectMap<EnumInvasionState> MAP;
+
+    static {
+      EnumInvasionState[] states = EnumInvasionState.values();
+      MAP = new Int2ObjectOpenHashMap<>(states.length);
+
+      for (EnumInvasionState state : states) {
+        MAP.put(state.id, state);
+      }
+    }
+
+    private final int id;
+
+    EnumInvasionState(int id) {
+
+      this.id = id;
+    }
+
+    public static EnumInvasionState from(int id) {
+
+      if (!MAP.containsKey(id)) {
+        throw new IllegalArgumentException("Unknown id for state: " + id);
+      }
+
+      return MAP.get(id);
+    }
+
+    public int getId() {
+
+      return this.id;
+    }
+  }
+
   // ---------------------------------------------------------------------------
   // - Invasion Data
   // ---------------------------------------------------------------------------
 
-  public static class InvasionData
-      implements INBTSerializable<NBTTagCompound> {
+  public static class InvasionData implements INBTSerializable<NBTTagCompound> {
 
-    /**
-     * The template id of the invasion.
-     */
+    /** The invasion's wave data. */
+    private final List<WaveData> waveDataList = new ArrayList<>();
+    /** The template id of the invasion. */
     private String invasionTemplateId;
-
-    /**
-     * The invasion name.
-     */
+    /** The invasion name. */
     private String invasionName;
-
-    /**
-     * The unique id for the invasion.
-     */
+    /** The unique id for the invasion. */
     private UUID invasionUuid;
-
-    /**
-     * The timestamp after which the invasion becomes active.
-     */
+    /** The timestamp after which the invasion becomes active. */
     private long timestamp;
-
     /**
-     * The timestamp after which the warning message is sent. If the value
-     * is -1, the message will not be sent.
+     * The timestamp after which the warning message is sent. If the value is -1, the message will
+     * not be sent.
      */
     private long warningMessageTimestamp;
-
-    /**
-     * Used as bitset flags for the staged commands.
-     */
+    /** Used as bitset flags for the staged commands. */
     private long stagedCommandFlags;
-
-    /**
-     * The invasion's wave data.
-     */
-    private final List<WaveData> waveDataList = new ArrayList<>();
 
     public String getInvasionTemplateId() {
 
@@ -276,15 +239,24 @@ public class InvasionPlayerData
     @Override
     public String toString() {
 
-      return "InvasionData{" +
-          "invasionTemplateId='" + this.invasionTemplateId + '\'' +
-          ", invasionName='" + this.invasionName + '\'' +
-          ", invasionUuid=" + this.invasionUuid +
-          ", timestamp=" + this.timestamp +
-          ", warningMessageTimestamp=" + this.warningMessageTimestamp +
-          ", stagedCommandFlags=" + this.stagedCommandFlags +
-          ", waveDataList=" + this.waveDataList +
-          '}';
+      return "InvasionData{"
+          + "invasionTemplateId='"
+          + this.invasionTemplateId
+          + '\''
+          + ", invasionName='"
+          + this.invasionName
+          + '\''
+          + ", invasionUuid="
+          + this.invasionUuid
+          + ", timestamp="
+          + this.timestamp
+          + ", warningMessageTimestamp="
+          + this.warningMessageTimestamp
+          + ", stagedCommandFlags="
+          + this.stagedCommandFlags
+          + ", waveDataList="
+          + this.waveDataList
+          + '}';
     }
 
     @Override
@@ -328,12 +300,10 @@ public class InvasionPlayerData
       }
     }
 
-    public static class WaveData
-        implements INBTSerializable<NBTTagCompound> {
-
-      private int delayTicks = 0;
+    public static class WaveData implements INBTSerializable<NBTTagCompound> {
 
       private final List<MobData> mobDataList = new ArrayList<>();
+      private int delayTicks = 0;
 
       public int getDelayTicks() {
 
@@ -353,10 +323,12 @@ public class InvasionPlayerData
       @Override
       public String toString() {
 
-        return "WaveData{" +
-            "delayTicks=" + this.delayTicks +
-            ", mobDataList=" + this.mobDataList +
-            '}';
+        return "WaveData{"
+            + "delayTicks="
+            + this.delayTicks
+            + ", mobDataList="
+            + this.mobDataList
+            + '}';
       }
 
       @Override
@@ -392,8 +364,7 @@ public class InvasionPlayerData
       }
     }
 
-    public static class MobData
-        implements INBTSerializable<NBTTagCompound> {
+    public static class MobData implements INBTSerializable<NBTTagCompound> {
 
       private String mobTemplateId;
       private boolean forceSpawn;
@@ -454,13 +425,19 @@ public class InvasionPlayerData
       @Override
       public String toString() {
 
-        return "MobData{" +
-            "mobTemplateId='" + this.mobTemplateId + '\'' +
-            ", forceSpawn=" + this.forceSpawn +
-            ", totalCount=" + this.totalCount +
-            ", killedCount=" + this.killedCount +
-            ", spawnData=" + this.spawnData +
-            '}';
+        return "MobData{"
+            + "mobTemplateId='"
+            + this.mobTemplateId
+            + '\''
+            + ", forceSpawn="
+            + this.forceSpawn
+            + ", totalCount="
+            + this.totalCount
+            + ", killedCount="
+            + this.killedCount
+            + ", spawnData="
+            + this.spawnData
+            + '}';
       }
 
       @Override
@@ -487,8 +464,7 @@ public class InvasionPlayerData
       }
     }
 
-    public static class SpawnData
-        implements INBTSerializable<NBTTagCompound> {
+    public static class SpawnData implements INBTSerializable<NBTTagCompound> {
 
       public InvasionTemplateWave.EnumSpawnType type;
       public int[] light;
@@ -512,14 +488,20 @@ public class InvasionPlayerData
       @Override
       public String toString() {
 
-        return "SpawnData{" +
-            "type=" + this.type +
-            ", light=" + Arrays.toString(this.light) +
-            ", rangeXZ=" + Arrays.toString(this.rangeXZ) +
-            ", rangeY=" + this.rangeY +
-            ", stepRadius=" + this.stepRadius +
-            ", sampleDistance=" + this.sampleDistance +
-            '}';
+        return "SpawnData{"
+            + "type="
+            + this.type
+            + ", light="
+            + Arrays.toString(this.light)
+            + ", rangeXZ="
+            + Arrays.toString(this.rangeXZ)
+            + ", rangeY="
+            + this.rangeY
+            + ", stepRadius="
+            + this.stepRadius
+            + ", sampleDistance="
+            + this.sampleDistance
+            + '}';
       }
 
       @Override
@@ -547,5 +529,4 @@ public class InvasionPlayerData
       }
     }
   }
-
 }

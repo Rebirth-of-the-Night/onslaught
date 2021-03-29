@@ -11,12 +11,9 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-/**
- * Responsible for spawning deferred spawn particles at the given location.
- */
+/** Responsible for spawning deferred spawn particles at the given location. */
 public class SCPacketDeferredSpawn
-    implements IMessage,
-    IMessageHandler<SCPacketDeferredSpawn, IMessage> {
+    implements IMessage, IMessageHandler<SCPacketDeferredSpawn, IMessage> {
 
   private double x;
   private double y;
@@ -65,7 +62,8 @@ public class SCPacketDeferredSpawn
       double x = message.x;
       double y = message.y;
       double z = message.z;
-      world.spawnParticle(EnumParticleTypes.PORTAL, x + offsetX, y + offsetY, z + offsetZ, 0.0, 0.0, 0.0);
+      world.spawnParticle(
+          EnumParticleTypes.PORTAL, x + offsetX, y + offsetY, z + offsetZ, 0.0, 0.0, 0.0);
     }
 
     for (int i = 0; i < 4; i++) {
@@ -75,7 +73,8 @@ public class SCPacketDeferredSpawn
       double x = message.x;
       double y = message.y;
       double z = message.z;
-      world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, x + offsetX, y + offsetY, z + offsetZ, 0.0, 0.0, 0.0);
+      world.spawnParticle(
+          EnumParticleTypes.SMOKE_LARGE, x + offsetX, y + offsetY, z + offsetZ, 0.0, 0.0, 0.0);
     }
 
     for (int i = 0; i < 16; i++) {
@@ -85,10 +84,10 @@ public class SCPacketDeferredSpawn
       double x = message.x;
       double y = message.y;
       double z = message.z;
-      world.spawnParticle(EnumParticleTypes.PORTAL, x + offsetX, y + offsetY, z + offsetZ, 0.0, 0.0, 0.0);
+      world.spawnParticle(
+          EnumParticleTypes.PORTAL, x + offsetX, y + offsetY, z + offsetZ, 0.0, 0.0, 0.0);
     }
 
     return null;
   }
-
 }

@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-/**
- * Responsible for creating the given path if it doesn't exist.
- */
+/** Responsible for creating the given path if it doesn't exist. */
 public class FilePathCreator {
 
   public void initialize(Path path) throws IOException {

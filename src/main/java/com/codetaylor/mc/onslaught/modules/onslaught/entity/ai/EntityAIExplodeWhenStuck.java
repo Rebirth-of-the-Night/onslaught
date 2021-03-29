@@ -5,11 +5,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 
 /**
- * Responsible for causing a mob to explode when they don't have a path
- * to their attack target for N ticks.
+ * Responsible for causing a mob to explode when they don't have a path to their attack target for N
+ * ticks.
  */
-public class EntityAIExplodeWhenStuck
-    extends EntityAIBase {
+public class EntityAIExplodeWhenStuck extends EntityAIBase {
 
   private final EntityLiving taskOwner;
   private final boolean sightRequired;
@@ -32,8 +31,7 @@ public class EntityAIExplodeWhenStuck
       int explosionDelayTicks,
       float explosionStrength,
       boolean explosionCausesFire,
-      boolean explosionDamaging
-  ) {
+      boolean explosionDamaging) {
 
     this.taskOwner = taskOwner;
     this.sightRequired = sightRequired;
@@ -79,8 +77,7 @@ public class EntityAIExplodeWhenStuck
           this.taskOwner.posZ,
           this.explosionStrength,
           this.explosionCausesFire,
-          this.explosionDamaging
-      );
+          this.explosionDamaging);
       this.taskOwner.onKillCommand();
     }
   }
@@ -108,9 +105,7 @@ public class EntityAIExplodeWhenStuck
     if (this.rangeRequired) {
       double distanceSq = this.taskOwner.getDistanceSq(attackTarget);
 
-      if (distanceSq < this.rangeMinSq || distanceSq > this.rangeMaxSq) {
-        return false;
-      }
+      return !(distanceSq < this.rangeMinSq) && !(distanceSq > this.rangeMaxSq);
     }
 
     return true;

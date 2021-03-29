@@ -1,5 +1,7 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler;
 
+import static com.codetaylor.mc.onslaught.ModOnslaught.LOG;
+
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.predicate.SpawnPredicateFactory;
@@ -7,20 +9,16 @@ import com.codetaylor.mc.onslaught.modules.onslaught.lib.Util;
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
 import it.unimi.dsi.fastutil.doubles.DoubleLists;
+import java.util.Random;
+import java.util.function.Predicate;
+import javax.annotation.Nullable;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-import javax.annotation.Nullable;
-import java.util.Random;
-import java.util.function.Predicate;
-
-import static com.codetaylor.mc.onslaught.ModOnslaught.LOG;
-
 /**
- * Responsible for sampling spawn locations within range of the player,
- * evaluating each using the given predicate, and returning the first
- * valid location found.
+ * Responsible for sampling spawn locations within range of the player, evaluating each using the
+ * given predicate, and returning the first valid location found.
  */
 public class SpawnSampler {
 
@@ -34,10 +32,7 @@ public class SpawnSampler {
   }
 
   public Vec3d getSpawnLocation(
-      EntityLiving entity,
-      BlockPos origin,
-      InvasionPlayerData.InvasionData.SpawnData spawnData
-  ) {
+      EntityLiving entity, BlockPos origin, InvasionPlayerData.InvasionData.SpawnData spawnData) {
 
     Predicate<EntityLiving> predicate = this.spawnPredicateFactory.create(spawnData);
 
@@ -50,18 +45,17 @@ public class SpawnSampler {
         rangeXZ[1],
         spawnData.stepRadius,
         spawnData.sampleDistance,
-        predicate
-    );
+        predicate);
   }
 
   /**
-   * @param entity         the entity attempting to spawn
-   * @param origin         the origin to sample around
-   * @param radiusMin      the minimum radius of the sample circles
-   * @param radiusMax      the maximum radius of the sampler circles
-   * @param stepRadius     the radial distance between sample circles
+   * @param entity the entity attempting to spawn
+   * @param origin the origin to sample around
+   * @param radiusMin the minimum radius of the sample circles
+   * @param radiusMax the maximum radius of the sampler circles
+   * @param stepRadius the radial distance between sample circles
    * @param sampleDistance the linear distance between sample points on a circle
-   * @param predicate      the predicate used to check sampled points
+   * @param predicate the predicate used to check sampled points
    * @return valid spawn location
    */
   @Nullable
@@ -72,13 +66,12 @@ public class SpawnSampler {
       int radiusMax,
       int stepRadius,
       int sampleDistance,
-      Predicate<EntityLiving> predicate
-  ) {
+      Predicate<EntityLiving> predicate) {
 
-//    int radiusMax = 128;
-//    int radiusMin = 16;
-//    int stepRadius = 4;
-//    int sampleDistance = 2;
+    //    int radiusMax = 128;
+    //    int radiusMin = 16;
+    //    int stepRadius = 4;
+    //    int sampleDistance = 2;
 
     if (ModuleOnslaughtConfig.DEBUG.INVASION_SPAWN_SAMPLER) {
       LOG.fine("Entity: " + entity.getClass().getName());
@@ -112,14 +105,19 @@ public class SpawnSampler {
       // Derive our current angle step. This will be added to the current angle
       // in order to walk around the circle. This formula ensures a distance
       // of sampleDistance between the previous sampled point and the next.
-      double angleStepRadians = Math.acos((2 * currentRadius * currentRadius - (sampleDistance * sampleDistance)) / (2 * currentRadius * currentRadius));
+      double angleStepRadians =
+          Math.acos(
+              (2 * currentRadius * currentRadius - (sampleDistance * sampleDistance))
+                  / (2 * currentRadius * currentRadius));
 
       // Create a list of all the angles to sample with.
       DoubleList angleList = new DoubleArrayList((int) (TWO_PI / angleStepRadians) + 1);
 
       // Start at angle 0 and walk the circle, adding the angle step each loop.
       // Save each angle in a list.
-      for (double currentAngleRadians = 0; currentAngleRadians < TWO_PI; currentAngleRadians += angleStepRadians) {
+      for (double currentAngleRadians = 0;
+          currentAngleRadians < TWO_PI;
+          currentAngleRadians += angleStepRadians) {
         angleList.add(currentAngleRadians);
       }
 

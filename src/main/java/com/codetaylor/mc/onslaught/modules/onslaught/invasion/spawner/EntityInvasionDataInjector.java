@@ -3,18 +3,18 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.Tag;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.DefaultPriority;
+import java.util.UUID;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.nbt.NBTTagCompound;
 
-import java.util.UUID;
-
 /**
- * Responsible for tagging mobs with invasion data and applying the TargetPlayer
- * and ChaseLongDistance AI task NBT.
+ * Responsible for tagging mobs with invasion data and applying the TargetPlayer and
+ * ChaseLongDistance AI task NBT.
  */
 public class EntityInvasionDataInjector {
 
-  public void inject(EntityLiving entity, UUID invasionUuid, UUID playerUuid, int waveIndex, int mobIndex) {
+  public void inject(
+      EntityLiving entity, UUID invasionUuid, UUID playerUuid, int waveIndex, int mobIndex) {
 
     NBTTagCompound entityData = entity.getEntityData();
 
@@ -26,7 +26,8 @@ public class EntityInvasionDataInjector {
     this.injectInvasionData(invasionUuid, playerUuid, waveIndex, mobIndex, entityData);
   }
 
-  private void injectInvasionData(UUID invasionUuid, UUID playerUuid, int waveIndex, int mobIndex, NBTTagCompound entityData) {
+  private void injectInvasionData(
+      UUID invasionUuid, UUID playerUuid, int waveIndex, int mobIndex, NBTTagCompound entityData) {
 
     NBTTagCompound modTag = entityData.getCompoundTag(Tag.ONSLAUGHT);
 
@@ -65,7 +66,8 @@ public class EntityInvasionDataInjector {
     }
 
     if (!aiTag.hasKey(Tag.AI_PARAM_SPEED)) {
-      aiTag.setDouble(Tag.AI_PARAM_SPEED, ModuleOnslaughtConfig.CUSTOM_AI.LONG_DISTANCE_CHASE.DEFAULT_SPEED);
+      aiTag.setDouble(
+          Tag.AI_PARAM_SPEED, ModuleOnslaughtConfig.CUSTOM_AI.LONG_DISTANCE_CHASE.DEFAULT_SPEED);
     }
   }
 
@@ -83,5 +85,4 @@ public class EntityInvasionDataInjector {
 
     aiTag.setString(Tag.AI_PARAM_UUID, uuid.toString());
   }
-
 }

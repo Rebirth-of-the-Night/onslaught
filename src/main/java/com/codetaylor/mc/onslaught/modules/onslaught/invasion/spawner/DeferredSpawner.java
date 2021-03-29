@@ -2,14 +2,18 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner;
 
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
-import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateWave;
-import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactory;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.handler.InvasionUpdateEventHandler;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionSpawnDataConverterFunction;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.predicate.SpawnPredicateFactory;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateWave;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplate;
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.logging.Level;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.management.PlayerList;
@@ -20,16 +24,8 @@ import net.minecraft.world.World;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.List;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.logging.Level;
-
-/**
- * Responsible for spawning a deferred mob when its delay timer is expired.
- */
-public class DeferredSpawner
-    implements InvasionUpdateEventHandler.IInvasionUpdateComponent {
+/** Responsible for spawning a deferred mob when its delay timer is expired. */
+public class DeferredSpawner implements InvasionUpdateEventHandler.IInvasionUpdateComponent {
 
   private static final Logger LOGGER = LogManager.getLogger(DeferredSpawner.class);
 
@@ -46,8 +42,7 @@ public class DeferredSpawner
       InvasionSpawnDataConverterFunction invasionSpawnDataConverterFunction,
       Function<String, MobTemplate> mobTemplateFunction,
       MobTemplateEntityFactory mobTemplateEntityFactory,
-      List<DeferredSpawnData> deferredSpawnDataList
-  ) {
+      List<DeferredSpawnData> deferredSpawnDataList) {
 
     this.entityInvasionDataInjector = entityInvasionDataInjector;
     this.spawnPredicateFactory = spawnPredicateFactory;
@@ -58,7 +53,11 @@ public class DeferredSpawner
   }
 
   @Override
-  public void update(int updateIntervalTicks, InvasionGlobalSavedData invasionGlobalSavedData, PlayerList playerList, long worldTime) {
+  public void update(
+      int updateIntervalTicks,
+      InvasionGlobalSavedData invasionGlobalSavedData,
+      PlayerList playerList,
+      long worldTime) {
 
     if (this.deferredSpawnDataList.isEmpty()) {
       return;
@@ -66,7 +65,8 @@ public class DeferredSpawner
 
     for (int i = this.deferredSpawnDataList.size() - 1; i >= 0; i--) {
       DeferredSpawnData deferredSpawnData = this.deferredSpawnDataList.get(i);
-      deferredSpawnData.setTicksRemaining(deferredSpawnData.getTicksRemaining() - updateIntervalTicks);
+      deferredSpawnData.setTicksRemaining(
+          deferredSpawnData.getTicksRemaining() - updateIntervalTicks);
 
       if (deferredSpawnData.getTicksRemaining() <= 0) {
         EntityPlayerMP player = playerList.getPlayerByUUID(deferredSpawnData.getPlayerUuid());
@@ -89,7 +89,9 @@ public class DeferredSpawner
       InvasionTemplateWave.SecondaryMob secondaryMob = deferredSpawnData.getSecondaryMob();
 
       if (ModuleOnslaughtConfig.DEBUG.INVASION_SPAWNERS) {
-        String message = String.format("Solid ground missing, attempting to spawn secondary mob %s", secondaryMob.id);
+        String message =
+            String.format(
+                "Solid ground missing, attempting to spawn secondary mob %s", secondaryMob.id);
         ModOnslaught.LOG.fine(message);
         System.out.println(message);
       }
@@ -113,9 +115,11 @@ public class DeferredSpawner
       }
 
       EntityLiving deferredSpawnDataEntity = deferredSpawnData.getEntityLiving();
-      entity.setPosition(deferredSpawnDataEntity.posX, deferredSpawnDataEntity.posY, deferredSpawnDataEntity.posZ);
+      entity.setPosition(
+          deferredSpawnDataEntity.posX, deferredSpawnDataEntity.posY, deferredSpawnDataEntity.posZ);
 
-      InvasionPlayerData.InvasionData.SpawnData spawnData = this.invasionSpawnDataConverterFunction.apply(secondaryMob.spawn);
+      InvasionPlayerData.InvasionData.SpawnData spawnData =
+          this.invasionSpawnDataConverterFunction.apply(secondaryMob.spawn);
       Predicate<EntityLiving> predicate = this.spawnPredicateFactory.create(spawnData);
 
       if (!predicate.test(entity)) {
@@ -130,7 +134,12 @@ public class DeferredSpawner
       }
 
       // apply player target, chase long distance, and invasion data tags
-      this.entityInvasionDataInjector.inject(entity, deferredSpawnData.getInvasionUuid(), deferredSpawnData.getPlayerUuid(), deferredSpawnData.getWaveIndex(), deferredSpawnData.getMobIndex());
+      this.entityInvasionDataInjector.inject(
+          entity,
+          deferredSpawnData.getInvasionUuid(),
+          deferredSpawnData.getPlayerUuid(),
+          deferredSpawnData.getWaveIndex(),
+          deferredSpawnData.getMobIndex());
 
       if (world.spawnEntity(entity)) {
         entity.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(entity)), null);
@@ -148,7 +157,12 @@ public class DeferredSpawner
       this.checkAndClearCollisions(world, entity);
 
       // apply player target, chase long distance, and invasion data tags
-      this.entityInvasionDataInjector.inject(entity, deferredSpawnData.getInvasionUuid(), deferredSpawnData.getPlayerUuid(), deferredSpawnData.getWaveIndex(), deferredSpawnData.getMobIndex());
+      this.entityInvasionDataInjector.inject(
+          entity,
+          deferredSpawnData.getInvasionUuid(),
+          deferredSpawnData.getPlayerUuid(),
+          deferredSpawnData.getWaveIndex(),
+          deferredSpawnData.getMobIndex());
 
       if (world.spawnEntity(entity)) {
         entity.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(entity)), null);
@@ -163,7 +177,8 @@ public class DeferredSpawner
 
   private void checkAndClearCollisions(World world, EntityLiving entity) {
 
-    List<AxisAlignedBB> collisionBoxes = world.getCollisionBoxes(entity, entity.getEntityBoundingBox());
+    List<AxisAlignedBB> collisionBoxes =
+        world.getCollisionBoxes(entity, entity.getEntityBoundingBox());
 
     if (!collisionBoxes.isEmpty()) {
 

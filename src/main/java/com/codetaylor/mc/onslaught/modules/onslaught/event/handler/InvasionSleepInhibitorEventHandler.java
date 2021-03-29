@@ -10,9 +10,7 @@ import net.minecraftforge.event.entity.player.SleepingTimeCheckEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-/**
- * Responsible for denying the sleep check if any player has an active invasion.
- */
+/** Responsible for denying the sleep check if any player has an active invasion. */
 public class InvasionSleepInhibitorEventHandler {
 
   @SubscribeEvent
@@ -35,7 +33,8 @@ public class InvasionSleepInhibitorEventHandler {
     }
 
     PlayerList playerList = minecraftServer.getPlayerList();
-    InvasionGlobalSavedData invasionGlobalSavedData = InvasionGlobalSavedData.get(entityPlayer.world);
+    InvasionGlobalSavedData invasionGlobalSavedData =
+        InvasionGlobalSavedData.get(entityPlayer.world);
 
     for (EntityPlayerMP player : playerList.getPlayers()) {
       InvasionPlayerData playerData = invasionGlobalSavedData.getPlayerData(player.getUniqueID());

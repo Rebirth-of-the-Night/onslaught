@@ -1,16 +1,15 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
 
 import com.codetaylor.mc.athenaeum.util.RandomHelper;
-
 import java.util.function.IntSupplier;
 
-public class InvasionPlayerTimerValueSupplier
-    implements IntSupplier {
+public class InvasionPlayerTimerValueSupplier implements IntSupplier {
 
   private final IntSupplier invasionTimingRangeMin;
   private final IntSupplier invasionTimingRangeMax;
 
-  public InvasionPlayerTimerValueSupplier(IntSupplier invasionTimingRangeMin, IntSupplier invasionTimingRangeMax) {
+  public InvasionPlayerTimerValueSupplier(
+      IntSupplier invasionTimingRangeMin, IntSupplier invasionTimingRangeMax) {
 
     this.invasionTimingRangeMin = invasionTimingRangeMin;
     this.invasionTimingRangeMax = invasionTimingRangeMax;

@@ -7,9 +7,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraftforge.common.util.Constants;
 
-/**
- * Responsible for applying additional loot tables to an {@link Entity}.
- */
+/** Responsible for applying additional loot tables to an {@link Entity}. */
 public class LootTableApplicator {
 
   public void apply(String[] lootTableIds, Entity entity) {

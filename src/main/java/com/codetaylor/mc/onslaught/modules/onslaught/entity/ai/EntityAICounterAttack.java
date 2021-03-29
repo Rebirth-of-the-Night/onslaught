@@ -10,8 +10,7 @@ import net.minecraft.util.math.MathHelper;
  *
  * @see net.minecraft.entity.ai.EntityAILeapAtTarget
  */
-public class EntityAICounterAttack
-    extends EntityAIBase {
+public class EntityAICounterAttack extends EntityAIBase {
 
   private final EntityLiving taskOwner;
   private final float leapMotionY;
@@ -23,7 +22,13 @@ public class EntityAICounterAttack
   private EntityLivingBase target;
   private int revengeTimer;
 
-  public EntityAICounterAttack(EntityLiving taskOwner, float leapMotionXZ, float leapMotionY, float chance, float rangeMin, float rangeMax) {
+  public EntityAICounterAttack(
+      EntityLiving taskOwner,
+      float leapMotionXZ,
+      float leapMotionY,
+      float chance,
+      float rangeMin,
+      float rangeMax) {
 
     this.taskOwner = taskOwner;
     this.leapMotionY = leapMotionY;
@@ -72,8 +77,10 @@ public class EntityAICounterAttack
     float distance = MathHelper.sqrt(dx * dx + dz * dz);
 
     if ((double) distance >= 0.0001) {
-      this.taskOwner.motionX += dx / (double) distance * this.leapMotionXZ + this.taskOwner.motionX * 0.2;
-      this.taskOwner.motionZ += dz / (double) distance * this.leapMotionXZ + this.taskOwner.motionZ * 0.2;
+      this.taskOwner.motionX +=
+          dx / (double) distance * this.leapMotionXZ + this.taskOwner.motionX * 0.2;
+      this.taskOwner.motionZ +=
+          dz / (double) distance * this.leapMotionXZ + this.taskOwner.motionZ * 0.2;
     }
 
     this.taskOwner.motionY = this.leapMotionY;

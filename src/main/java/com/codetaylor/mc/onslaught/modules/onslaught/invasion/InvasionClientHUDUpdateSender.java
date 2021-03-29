@@ -3,12 +3,11 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.render.InvasionHudRenderInfo;
 import com.codetaylor.mc.onslaught.modules.onslaught.packet.SCPacketHudUpdate;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.world.World;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.IntSupplier;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.world.World;
 
 public class InvasionClientHUDUpdateSender {
 
@@ -17,8 +16,7 @@ public class InvasionClientHUDUpdateSender {
 
   public InvasionClientHUDUpdateSender(
       IntSupplier rangeSupplier,
-      InvasionCompletionPercentageCalculator invasionCompletionPercentageCalculator
-  ) {
+      InvasionCompletionPercentageCalculator invasionCompletionPercentageCalculator) {
 
     this.rangeSupplier = rangeSupplier;
     this.invasionCompletionPercentageCalculator = invasionCompletionPercentageCalculator;
@@ -33,16 +31,17 @@ public class InvasionClientHUDUpdateSender {
 
       World world = player.world;
 
-      List<EntityPlayerMP> playersNearby = world.getEntities(
-          EntityPlayerMP.class,
-          entity -> entity != null && entity.getDistanceSq(player) <= rangeSq
-      );
+      List<EntityPlayerMP> playersNearby =
+          world.getEntities(
+              EntityPlayerMP.class,
+              entity -> entity != null && entity.getDistanceSq(player) <= rangeSq);
 
       InvasionGlobalSavedData invasionGlobalSavedData = InvasionGlobalSavedData.get(world);
       List<InvasionHudRenderInfo> infoList = new ArrayList<>(playersNearby.size());
 
       for (EntityPlayerMP entityPlayerMP : playersNearby) {
-        InvasionPlayerData playerData = invasionGlobalSavedData.getPlayerData(entityPlayerMP.getUniqueID());
+        InvasionPlayerData playerData =
+            invasionGlobalSavedData.getPlayerData(entityPlayerMP.getUniqueID());
 
         if (playerData.getInvasionState() != InvasionPlayerData.EnumInvasionState.Active) {
           continue;
@@ -56,15 +55,13 @@ public class InvasionClientHUDUpdateSender {
 
         InvasionHudRenderInfo info = new InvasionHudRenderInfo();
         info.playerUuid = entityPlayerMP.getUniqueID();
-        info.invasionCompletionPercentage = this.invasionCompletionPercentageCalculator.calculate(playerData.getInvasionData());
+        info.invasionCompletionPercentage =
+            this.invasionCompletionPercentageCalculator.calculate(playerData.getInvasionData());
         info.invasionName = invasionData.getInvasionName();
         infoList.add(info);
       }
 
-      ModuleOnslaught.PACKET_SERVICE.sendTo(
-          new SCPacketHudUpdate(infoList),
-          player
-      );
+      ModuleOnslaught.PACKET_SERVICE.sendTo(new SCPacketHudUpdate(infoList), player);
     }
   }
 }

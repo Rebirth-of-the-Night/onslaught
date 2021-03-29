@@ -1,15 +1,11 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
-
 import java.util.List;
 import java.util.function.Predicate;
 
-/**
- * Responsible for returning true if the given invasion data has an active wave.
- */
-public class ActiveWavePredicate
-    implements Predicate<InvasionPlayerData.InvasionData> {
+/** Responsible for returning true if the given invasion data has an active wave. */
+public class ActiveWavePredicate implements Predicate<InvasionPlayerData.InvasionData> {
 
   @Override
   public boolean test(InvasionPlayerData.InvasionData invasionData) {

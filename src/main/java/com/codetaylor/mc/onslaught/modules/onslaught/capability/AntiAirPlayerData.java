@@ -1,24 +1,16 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.capability;
 
+import javax.annotation.Nullable;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 
-import javax.annotation.Nullable;
-
 public class AntiAirPlayerData
-    implements IAntiAirPlayerData,
-    Capability.IStorage<IAntiAirPlayerData> {
+    implements IAntiAirPlayerData, Capability.IStorage<IAntiAirPlayerData> {
 
   private int ticksOffGround;
   private double motionY;
-
-  @Override
-  public void setMotionY(double motionY) {
-
-    this.motionY = motionY;
-  }
 
   @Override
   public double getMotionY() {
@@ -27,15 +19,21 @@ public class AntiAirPlayerData
   }
 
   @Override
-  public void setTicksOffGround(int value) {
+  public void setMotionY(double motionY) {
 
-    this.ticksOffGround = value;
+    this.motionY = motionY;
   }
 
   @Override
   public int getTicksOffGround() {
 
     return this.ticksOffGround;
+  }
+
+  @Override
+  public void setTicksOffGround(int value) {
+
+    this.ticksOffGround = value;
   }
 
   // ---------------------------------------------------------------------------
@@ -46,13 +44,18 @@ public class AntiAirPlayerData
 
   @Nullable
   @Override
-  public NBTBase writeNBT(Capability<IAntiAirPlayerData> capability, IAntiAirPlayerData instance, EnumFacing side) {
+  public NBTBase writeNBT(
+      Capability<IAntiAirPlayerData> capability, IAntiAirPlayerData instance, EnumFacing side) {
 
     return new NBTTagCompound();
   }
 
   @Override
-  public void readNBT(Capability<IAntiAirPlayerData> capability, IAntiAirPlayerData instance, EnumFacing side, NBTBase nbt) {
+  public void readNBT(
+      Capability<IAntiAirPlayerData> capability,
+      IAntiAirPlayerData instance,
+      EnumFacing side,
+      NBTBase nbt) {
     //
   }
 }

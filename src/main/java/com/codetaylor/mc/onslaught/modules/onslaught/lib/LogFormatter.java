@@ -7,15 +7,12 @@ import java.util.Date;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
-/**
- * Responsible for formatting log output.
- */
-public class LogFormatter
-    extends Formatter {
+/** Responsible for formatting log output. */
+public class LogFormatter extends Formatter {
 
   private static final String LOG_FORMAT = "%1$s %2$s%n%4$s: %5$s%6$s%n";
-  SimpleDateFormat dateFormat = new SimpleDateFormat("[HH:mm:ss.SSS]");
   private final Date date = new Date();
+  SimpleDateFormat dateFormat = new SimpleDateFormat("[HH:mm:ss.SSS]");
 
   @Override
   public synchronized String format(LogRecord record) {
@@ -53,7 +50,6 @@ public class LogFormatter
         record.getLoggerName(),
         record.getLevel(),
         message,
-        throwable
-    );
+        throwable);
   }
 }

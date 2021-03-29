@@ -1,14 +1,11 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateWave;
+import java.util.UUID;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.BlockPos;
 
-import java.util.UUID;
-
-/**
- * Responsible for containing all the data necessary to perform a deferred spawn.
- */
+/** Responsible for containing all the data necessary to perform a deferred spawn. */
 public class DeferredSpawnData {
 
   private final EntityLiving entityLiving;
@@ -33,8 +30,7 @@ public class DeferredSpawnData {
       int mobIndex,
       InvasionTemplateWave.EnumSpawnType spawnType,
       InvasionTemplateWave.SecondaryMob secondaryMob,
-      int ticksRemaining
-  ) {
+      int ticksRemaining) {
 
     this.entityLiving = entityLiving;
     this.dimensionId = dimensionId;
@@ -106,17 +102,27 @@ public class DeferredSpawnData {
   @Override
   public String toString() {
 
-    return "DeferredSpawnData{" +
-        "entityLiving=" + this.entityLiving +
-        ", dimensionId=" + this.dimensionId +
-        ", pos=" + this.pos +
-        ", invasionUuid=" + this.invasionUuid +
-        ", playerUuid=" + this.playerUuid +
-        ", waveIndex=" + this.waveIndex +
-        ", mobIndex=" + this.mobIndex +
-        ", spawnType=" + this.spawnType +
-        ", secondaryMob=" + this.secondaryMob +
-        ", ticksRemaining=" + this.ticksRemaining +
-        '}';
+    return "DeferredSpawnData{"
+        + "entityLiving="
+        + this.entityLiving
+        + ", dimensionId="
+        + this.dimensionId
+        + ", pos="
+        + this.pos
+        + ", invasionUuid="
+        + this.invasionUuid
+        + ", playerUuid="
+        + this.playerUuid
+        + ", waveIndex="
+        + this.waveIndex
+        + ", mobIndex="
+        + this.mobIndex
+        + ", spawnType="
+        + this.spawnType
+        + ", secondaryMob="
+        + this.secondaryMob
+        + ", ticksRemaining="
+        + this.ticksRemaining
+        + '}';
   }
 }

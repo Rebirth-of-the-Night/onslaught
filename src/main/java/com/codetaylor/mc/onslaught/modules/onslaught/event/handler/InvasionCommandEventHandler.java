@@ -7,9 +7,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionCommandExe
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-/**
- * Responsible for executing commands in response to an invasion begin or end.
- */
+/** Responsible for executing commands in response to an invasion begin or end. */
 public class InvasionCommandEventHandler {
 
   private final InvasionCommandExecutor commandExecutorStart;
@@ -19,8 +17,7 @@ public class InvasionCommandEventHandler {
   public InvasionCommandEventHandler(
       InvasionCommandExecutor commandExecutorStart,
       InvasionCommandExecutor commandExecutorEnd,
-      InvasionCommandExecutorStaged commandExecutorStaged
-  ) {
+      InvasionCommandExecutorStaged commandExecutorStaged) {
 
     this.commandExecutorStart = commandExecutorStart;
     this.commandExecutorEnd = commandExecutorEnd;

@@ -1,7 +1,14 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.command;
 
-import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.MobTemplateEntityFactory;
+import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplate;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -12,19 +19,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
-/**
- * Responsible for spawning a mob from a mob template.
- */
-public class CommandSummon
-    extends CommandBase {
+/** Responsible for spawning a mob from a mob template. */
+public class CommandSummon extends CommandBase {
 
   private static final String USAGE = "commands.onslaught.summon.usage";
   private static final String OUT_OF_WORLD = "commands.summon.outOfWorld";
@@ -39,8 +35,7 @@ public class CommandSummon
   public CommandSummon(
       Function<String, MobTemplate> mobTemplateFunction,
       Supplier<List<String>> mobTemplateIdListSupplier,
-      MobTemplateEntityFactory mobTemplateEntityFactory
-  ) {
+      MobTemplateEntityFactory mobTemplateEntityFactory) {
 
     this.mobTemplateFunction = mobTemplateFunction;
     this.mobTemplateIdListSupplier = mobTemplateIdListSupplier;
@@ -69,7 +64,8 @@ public class CommandSummon
 
   @ParametersAreNonnullByDefault
   @Override
-  public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+  public void execute(MinecraftServer server, ICommandSender sender, String[] args)
+      throws CommandException {
 
     if (args.length < 1) {
       throw new WrongUsageException(USAGE);
@@ -123,13 +119,16 @@ public class CommandSummon
   @ParametersAreNonnullByDefault
   @Nonnull
   @Override
-  public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
+  public List<String> getTabCompletions(
+      MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
 
     if (args.length == 1) {
       return getListOfStringsMatchingLastWord(args, this.mobTemplateIdListSupplier.get());
 
     } else {
-      return args.length > 1 && args.length <= 4 ? getTabCompletionCoordinate(args, 1, targetPos) : Collections.emptyList();
+      return args.length > 1 && args.length <= 4
+          ? getTabCompletionCoordinate(args, 1, targetPos)
+          : Collections.emptyList();
     }
   }
 }

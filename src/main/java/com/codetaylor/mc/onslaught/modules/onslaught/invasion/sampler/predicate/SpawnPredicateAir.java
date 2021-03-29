@@ -1,15 +1,11 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.predicate;
 
+import java.util.function.Predicate;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.math.BlockPos;
 
-import java.util.function.Predicate;
-
-/**
- * Responsible for testing a pillar of blocks for a valid air spawn location.
- */
-public class SpawnPredicateAir
-    implements Predicate<EntityLiving> {
+/** Responsible for testing a pillar of blocks for a valid air spawn location. */
+public class SpawnPredicateAir implements Predicate<EntityLiving> {
 
   private final BlockPos.MutableBlockPos blockPos;
   private final int lightMin;
@@ -63,10 +59,6 @@ public class SpawnPredicateAir
     }
 
     // Ensure the entity isn't colliding with blocks or fluids
-    if (!entity.isNotColliding()) {
-      return false;
-    }
-
-    return true;
+    return entity.isNotColliding();
   }
 }

@@ -6,16 +6,13 @@ import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionStateChangedE
 import com.codetaylor.mc.onslaught.modules.onslaught.event.handler.InvasionUpdateEventHandler;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
+import java.util.Set;
+import java.util.UUID;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.management.PlayerList;
 import net.minecraftforge.common.MinecraftForge;
 
-import java.util.Set;
-import java.util.UUID;
-
-/**
- * Responsible for transitioning a player's invasion state from waiting to eligible.
- */
+/** Responsible for transitioning a player's invasion state from waiting to eligible. */
 public class StateChangeWaitingToEligible
     implements InvasionUpdateEventHandler.IInvasionUpdateComponent {
 
@@ -27,7 +24,11 @@ public class StateChangeWaitingToEligible
   }
 
   @Override
-  public void update(int updateIntervalTicks, InvasionGlobalSavedData invasionGlobalSavedData, PlayerList playerList, long worldTime) {
+  public void update(
+      int updateIntervalTicks,
+      InvasionGlobalSavedData invasionGlobalSavedData,
+      PlayerList playerList,
+      long worldTime) {
 
     for (EntityPlayerMP player : playerList.getPlayers()) {
       InvasionPlayerData data = invasionGlobalSavedData.getPlayerData(player.getUniqueID());
@@ -61,12 +62,18 @@ public class StateChangeWaitingToEligible
         if (previousInvasionState != InvasionPlayerData.EnumInvasionState.Eligible) {
 
           if (ModuleOnslaughtConfig.DEBUG.INVASION_STATE) {
-            String message = String.format("Set invasion state to %s for player %s", "Eligible", player.getName());
+            String message =
+                String.format(
+                    "Set invasion state to %s for player %s", "Eligible", player.getName());
             ModOnslaught.LOG.fine(message);
             System.out.println(message);
           }
 
-          MinecraftForge.EVENT_BUS.post(new InvasionStateChangedEvent(player, InvasionPlayerData.EnumInvasionState.Waiting, InvasionPlayerData.EnumInvasionState.Eligible));
+          MinecraftForge.EVENT_BUS.post(
+              new InvasionStateChangedEvent(
+                  player,
+                  InvasionPlayerData.EnumInvasionState.Waiting,
+                  InvasionPlayerData.EnumInvasionState.Eligible));
         }
       }
 

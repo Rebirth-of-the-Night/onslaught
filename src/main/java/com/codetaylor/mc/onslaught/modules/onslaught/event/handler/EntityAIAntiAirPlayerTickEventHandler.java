@@ -10,9 +10,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-/**
- * Responsible for updating each player's motionY.
- */
+/** Responsible for updating each player's motionY. */
 public class EntityAIAntiAirPlayerTickEventHandler {
 
   @SubscribeEvent
@@ -37,7 +35,8 @@ public class EntityAIAntiAirPlayerTickEventHandler {
         data.setTicksOffGround(data.getTicksOffGround() + 1);
 
         if (data.getTicksOffGround() >= ModuleOnslaughtConfig.CUSTOM_AI.ANTI_AIR.DELAY_TICKS) {
-          SCPacketAntiAir packet = new SCPacketAntiAir(entityPlayer.getEntityId(), 0, dataMotionY, 0);
+          SCPacketAntiAir packet =
+              new SCPacketAntiAir(entityPlayer.getEntityId(), 0, dataMotionY, 0);
           ModuleOnslaught.PACKET_SERVICE.sendTo(packet, (EntityPlayerMP) entityPlayer);
           data.setMotionY(0);
         }

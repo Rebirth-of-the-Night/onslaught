@@ -4,16 +4,16 @@ import com.codetaylor.mc.onslaught.modules.onslaught.Tag;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.nbt.NBTTagCompound;
 
-/**
- * Contains common methods used by all subclasses.
- */
+/** Contains common methods used by all subclasses. */
 public abstract class EntityAIInjectorBase {
 
   public abstract void inject(EntityLiving entity, NBTTagCompound tag);
 
   protected int getPriority(NBTTagCompound aiTag, int defaultPriority) {
 
-    return aiTag.hasKey(Tag.AI_PARAM_PRIORITY) ? aiTag.getInteger(Tag.AI_PARAM_PRIORITY) : defaultPriority;
+    return aiTag.hasKey(Tag.AI_PARAM_PRIORITY)
+        ? aiTag.getInteger(Tag.AI_PARAM_PRIORITY)
+        : defaultPriority;
   }
 
   protected double getDouble(NBTTagCompound aiTag, String key, double defaultValue) {
