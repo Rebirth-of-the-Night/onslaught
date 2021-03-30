@@ -23,6 +23,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector.EntityAI
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector.EntityAIInjectorBase;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector.EntityAILungeInjector;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector.EntityAIMiningInjector;
+import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector.EntityAIOffscreenTeleportInjector;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector.EntityAIPlayerTargetInjector;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.EffectApplicator;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.LootTableApplicator;
@@ -205,7 +206,8 @@ public class ModuleOnslaught extends ModuleBase {
               new EntityAICounterAttackInjector(),
               new EntityAIExplodeWhenStuckInjector(),
               new EntityAILungeInjector(),
-              new EntityAIAntiAirInjector()
+              new EntityAIAntiAirInjector(),
+              new EntityAIOffscreenTeleportInjector()
             }));
 
     // The entity AI classes to strip from mobs during invasion cleanup

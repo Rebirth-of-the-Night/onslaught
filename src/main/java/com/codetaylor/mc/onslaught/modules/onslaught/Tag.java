@@ -10,6 +10,7 @@ public final class Tag {
   public static final String EXTRA_LOOT_TABLES = "ExtraLootTables";
   public static final String ONSLAUGHT = "Onslaught";
 
+  public static final String AI_OFFSCREEN_TELEPORT = "OffscreenTeleport";
   public static final String AI_ANTI_AIR = "AntiAir";
   public static final String AI_ATTACK_MELEE = "AttackMelee";
   public static final String AI_CHASE_LONG_DISTANCE = "ChaseLongDistance";
