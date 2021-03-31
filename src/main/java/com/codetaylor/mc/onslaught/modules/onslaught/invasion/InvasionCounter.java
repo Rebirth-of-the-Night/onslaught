@@ -1,17 +1,16 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
 
-import net.minecraft.entity.player.EntityPlayerMP;
-
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
+import net.minecraft.entity.player.EntityPlayerMP;
 
-/**
- * Responsible for counting active invasions.
- */
+/** Responsible for counting active invasions. */
 public class InvasionCounter {
 
-  public int count(Function<UUID, InvasionPlayerData.EnumInvasionState> invasionStateFunction, List<EntityPlayerMP> players) {
+  public int count(
+      Function<UUID, InvasionPlayerData.EnumInvasionState> invasionStateFunction,
+      List<EntityPlayerMP> players) {
 
     int result = 0;
 

@@ -1,8 +1,6 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.lib;
 
-/**
- * Responsible for counting ticks.
- */
+/** Responsible for counting ticks. */
 public class TickCounter {
 
   private final int max;

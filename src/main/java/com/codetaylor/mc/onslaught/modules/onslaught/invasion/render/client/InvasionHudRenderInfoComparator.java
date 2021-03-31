@@ -3,13 +3,12 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion.render.client;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.render.InvasionHudRenderInfo;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
-
 import java.util.Comparator;
 
-public class InvasionHudRenderInfoComparator
-    implements Comparator<InvasionHudRenderInfo> {
+public class InvasionHudRenderInfoComparator implements Comparator<InvasionHudRenderInfo> {
 
-  public static final Ordering<InvasionHudRenderInfo> ORDERING_INSTANCE = Ordering.from(new InvasionHudRenderInfoComparator());
+  public static final Ordering<InvasionHudRenderInfo> ORDERING_INSTANCE =
+      Ordering.from(new InvasionHudRenderInfoComparator());
 
   @Override
   public int compare(InvasionHudRenderInfo o1, InvasionHudRenderInfo o2) {

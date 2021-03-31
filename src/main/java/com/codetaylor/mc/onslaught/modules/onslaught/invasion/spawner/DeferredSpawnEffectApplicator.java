@@ -3,6 +3,11 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner;
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.handler.InvasionUpdateEventHandler;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.IntSupplier;
+import java.util.function.Supplier;
+import java.util.logging.Level;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -12,16 +17,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.IntSupplier;
-import java.util.function.Supplier;
-import java.util.logging.Level;
-
-/**
- * Responsible for applying potion effects to players within range of a
- * deferred spawn location.
- */
+/** Responsible for applying potion effects to players within range of a deferred spawn location. */
 public class DeferredSpawnEffectApplicator
     implements InvasionUpdateEventHandler.IInvasionUpdateComponent {
 
@@ -34,8 +30,7 @@ public class DeferredSpawnEffectApplicator
       List<DeferredSpawnData> deferredSpawnDataList,
       Supplier<List<Potion>> effectListSupplier,
       IntSupplier effectDurationSupplier,
-      IntSupplier effectRangeSupplier
-  ) {
+      IntSupplier effectRangeSupplier) {
 
     this.deferredSpawnDataList = deferredSpawnDataList;
     this.effectListSupplier = effectListSupplier;
@@ -44,7 +39,11 @@ public class DeferredSpawnEffectApplicator
   }
 
   @Override
-  public void update(int updateIntervalTicks, InvasionGlobalSavedData invasionGlobalSavedData, PlayerList playerList, long worldTime) {
+  public void update(
+      int updateIntervalTicks,
+      InvasionGlobalSavedData invasionGlobalSavedData,
+      PlayerList playerList,
+      long worldTime) {
 
     if (this.deferredSpawnDataList.isEmpty()) {
       return;
@@ -85,8 +84,7 @@ public class DeferredSpawnEffectApplicator
     }
   }
 
-  public static class EffectListSupplier
-      implements Supplier<List<Potion>> {
+  public static class EffectListSupplier implements Supplier<List<Potion>> {
 
     private static final Logger LOGGER = LogManager.getLogger(EffectListSupplier.class);
 

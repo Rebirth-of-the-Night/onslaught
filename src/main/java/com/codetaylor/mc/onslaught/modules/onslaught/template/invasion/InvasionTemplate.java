@@ -1,8 +1,6 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.template.invasion;
 
-/**
- * Responsible for holding invasion template data read from json files.
- */
+/** Responsible for holding invasion template data read from json files. */
 public class InvasionTemplate {
 
   public String name = "";

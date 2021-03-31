@@ -1,15 +1,12 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplate;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.text.TextComponentTranslation;
 
-import java.util.function.Function;
-import java.util.function.Supplier;
-
-/**
- * Responsible for sending invasion messages to the given player.
- */
+/** Responsible for sending invasion messages to the given player. */
 public class InvasionMessageSender {
 
   private final Function<String, InvasionTemplate> idToInvasionTemplateFunction;
@@ -19,8 +16,7 @@ public class InvasionMessageSender {
   public InvasionMessageSender(
       Function<String, InvasionTemplate> idToInvasionTemplateFunction,
       Function<InvasionTemplate, String> messageFunction,
-      Supplier<String> defaultMessageSupplier
-  ) {
+      Supplier<String> defaultMessageSupplier) {
 
     this.idToInvasionTemplateFunction = idToInvasionTemplateFunction;
     this.messageFunction = messageFunction;
@@ -29,10 +25,10 @@ public class InvasionMessageSender {
 
   /**
    * Sends a message to the given player.
-   * <p>
-   * If the template message is null, the default message is used.
-   * <p>
-   * If the template message or the default message is empty, no message is sent.
+   *
+   * <p>If the template message is null, the default message is used.
+   *
+   * <p>If the template message or the default message is empty, no message is sent.
    *
    * @param player the player to receive the message
    */
@@ -44,7 +40,8 @@ public class InvasionMessageSender {
 
     if (invasionData != null) {
       String invasionTemplateId = invasionData.getInvasionTemplateId();
-      InvasionTemplate invasionTemplate = this.idToInvasionTemplateFunction.apply(invasionTemplateId);
+      InvasionTemplate invasionTemplate =
+          this.idToInvasionTemplateFunction.apply(invasionTemplateId);
       String messageKey = this.messageFunction.apply(invasionTemplate);
 
       if (messageKey == null) {
@@ -52,7 +49,8 @@ public class InvasionMessageSender {
       }
 
       if (messageKey != null && !messageKey.isEmpty()) {
-        TextComponentTranslation textComponentTranslation = new TextComponentTranslation(messageKey);
+        TextComponentTranslation textComponentTranslation =
+            new TextComponentTranslation(messageKey);
         player.sendMessage(textComponentTranslation);
       }
     }

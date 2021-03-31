@@ -4,24 +4,20 @@ import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.Tag;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionEntityKilledEvent;
+import java.util.List;
+import java.util.UUID;
+import java.util.function.Function;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.function.Function;
-
-/**
- * Responsible for incrementing a player's kill count in their invasion data.
- */
+/** Responsible for incrementing a player's kill count in their invasion data. */
 public class InvasionKillCountUpdater {
 
   public void onDeath(
       InvasionGlobalSavedData invasionGlobalSavedData,
       NBTTagCompound entityData,
-      Function<UUID, EntityPlayerMP> playerFunction
-  ) {
+      Function<UUID, EntityPlayerMP> playerFunction) {
 
     if (!entityData.hasKey(Tag.ONSLAUGHT)) {
       return;
@@ -45,8 +41,7 @@ public class InvasionKillCountUpdater {
     InvasionPlayerData playerData = invasionGlobalSavedData.getPlayerData(playerUuid);
     InvasionPlayerData.InvasionData invasionData = playerData.getInvasionData();
 
-    if (invasionData != null
-        && invasionData.getInvasionUuid().equals(invasionUuid)) {
+    if (invasionData != null && invasionData.getInvasionUuid().equals(invasionUuid)) {
       List<InvasionPlayerData.InvasionData.WaveData> waveDataList = invasionData.getWaveDataList();
       InvasionPlayerData.InvasionData.WaveData waveData = waveDataList.get(waveIndex);
       List<InvasionPlayerData.InvasionData.MobData> mobDataList = waveData.getMobDataList();
@@ -56,12 +51,16 @@ public class InvasionKillCountUpdater {
       invasionGlobalSavedData.markDirty();
 
       if (ModuleOnslaughtConfig.DEBUG.INVASION_DATA_UPDATES) {
-        String message = String.format("Kill count updated for wave index %d mob id %s from %d to %d", waveIndex, mobData.getMobTemplateId(), killedCount, killedCount + 1);
+        String message =
+            String.format(
+                "Kill count updated for wave index %d mob id %s from %d to %d",
+                waveIndex, mobData.getMobTemplateId(), killedCount, killedCount + 1);
         ModOnslaught.LOG.fine(message);
         System.out.println(message);
       }
 
-      MinecraftForge.EVENT_BUS.post(new InvasionEntityKilledEvent(playerFunction.apply(playerUuid), invasionData));
+      MinecraftForge.EVENT_BUS.post(
+          new InvasionEntityKilledEvent(playerFunction.apply(playerUuid), invasionData));
     }
   }
 }

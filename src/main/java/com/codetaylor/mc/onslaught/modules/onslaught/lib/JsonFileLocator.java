@@ -7,10 +7,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Responsible for iterating files in a folder and returning a list of paths
- * to each json file.
- */
+/** Responsible for iterating files in a folder and returning a list of paths to each json file. */
 public class JsonFileLocator {
 
   public List<Path> locate(Path path) throws IOException {
@@ -18,10 +15,10 @@ public class JsonFileLocator {
     DirectoryStream<Path> stream;
 
     try {
-      stream = Files.newDirectoryStream(
-          path,
-          entry -> Files.isRegularFile(entry) && entry.toFile().getName().endsWith(".json")
-      );
+      stream =
+          Files.newDirectoryStream(
+              path,
+              entry -> Files.isRegularFile(entry) && entry.toFile().getName().endsWith(".json"));
 
     } catch (Exception e) {
       throw new IOException("Error iterating files in path: " + path, e);

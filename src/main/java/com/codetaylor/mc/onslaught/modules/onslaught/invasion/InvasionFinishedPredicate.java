@@ -4,11 +4,8 @@ import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData.InvasionData.WaveData;
 import java.util.function.Predicate;
 
-/**
- * Responsible for returning true if an active invasion is complete.
- */
-public class InvasionFinishedPredicate
-    implements Predicate<InvasionPlayerData> {
+/** Responsible for returning true if an active invasion is complete. */
+public class InvasionFinishedPredicate implements Predicate<InvasionPlayerData> {
 
   @Override
   public boolean test(InvasionPlayerData invasionPlayerData) {

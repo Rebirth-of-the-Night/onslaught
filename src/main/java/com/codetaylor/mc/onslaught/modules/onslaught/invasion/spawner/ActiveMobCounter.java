@@ -1,15 +1,12 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.Tag;
+import java.util.List;
+import java.util.UUID;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 
-import java.util.List;
-import java.util.UUID;
-
-/**
- * Responsible for counting active mobs for a specific player, wave, and mob type.
- */
+/** Responsible for counting active mobs for a specific player, wave, and mob type. */
 public class ActiveMobCounter {
 
   private final List<DeferredSpawnData> deferredSpawnDataList;
@@ -19,7 +16,8 @@ public class ActiveMobCounter {
     this.deferredSpawnDataList = deferredSpawnDataList;
   }
 
-  public int countActiveMobs(List<Entity> entityList, UUID invasionUuid, UUID playerUuid, int waveIndex, int mobIndex) {
+  public int countActiveMobs(
+      List<Entity> entityList, UUID invasionUuid, UUID playerUuid, int waveIndex, int mobIndex) {
 
     int result = 0;
     String playerUuidString = playerUuid.toString();

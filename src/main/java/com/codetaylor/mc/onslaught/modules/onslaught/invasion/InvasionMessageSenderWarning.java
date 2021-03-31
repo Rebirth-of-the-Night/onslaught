@@ -5,8 +5,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.management.PlayerList;
 
 /**
- * Responsible for periodically checking all players and sending a warning message
- * when applicable.
+ * Responsible for periodically checking all players and sending a warning message when applicable.
  */
 public class InvasionMessageSenderWarning
     implements InvasionUpdateEventHandler.IInvasionUpdateComponent {
@@ -19,7 +18,11 @@ public class InvasionMessageSenderWarning
   }
 
   @Override
-  public void update(int updateIntervalTicks, InvasionGlobalSavedData invasionGlobalSavedData, PlayerList playerList, long worldTime) {
+  public void update(
+      int updateIntervalTicks,
+      InvasionGlobalSavedData invasionGlobalSavedData,
+      PlayerList playerList,
+      long worldTime) {
 
     for (EntityPlayerMP player : playerList.getPlayers()) {
       InvasionPlayerData playerData = invasionGlobalSavedData.getPlayerData(player.getUniqueID());

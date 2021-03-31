@@ -1,8 +1,6 @@
 package com.codetaylor.mc.onslaught.modules.onslaught;
 
-/**
- * Contains all NBT tags used by the mod.
- */
+/** Contains all NBT tags used by the mod. */
 public final class Tag {
 
   public static final String DETACH_HOME = "DetachHome";

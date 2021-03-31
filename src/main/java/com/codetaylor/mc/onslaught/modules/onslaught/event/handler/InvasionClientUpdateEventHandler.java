@@ -5,6 +5,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionStateChangedE
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionClientHUDUpdateSender;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.TickCounter;
+import java.util.List;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerList;
@@ -15,11 +16,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.List;
-
-/**
- * Responsible for triggering HUD updates to the clients.
- */
+/** Responsible for triggering HUD updates to the clients. */
 public class InvasionClientUpdateEventHandler {
 
   private static final int INTERVAL_TICKS = 20 * 10;
@@ -27,7 +24,8 @@ public class InvasionClientUpdateEventHandler {
   private final InvasionClientHUDUpdateSender invasionClientHUDUpdateSender;
   private final TickCounter tickCounter;
 
-  public InvasionClientUpdateEventHandler(InvasionClientHUDUpdateSender invasionClientHUDUpdateSender) {
+  public InvasionClientUpdateEventHandler(
+      InvasionClientHUDUpdateSender invasionClientHUDUpdateSender) {
 
     this.invasionClientHUDUpdateSender = invasionClientHUDUpdateSender;
     this.tickCounter = new TickCounter(INTERVAL_TICKS);

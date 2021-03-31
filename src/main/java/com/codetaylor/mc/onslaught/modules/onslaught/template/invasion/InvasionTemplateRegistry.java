@@ -1,12 +1,13 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.template.invasion;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import javax.annotation.Nullable;
-import java.util.*;
 
-/**
- * Responsible for holding references to {@link InvasionTemplate}s and providing
- * access to them.
- */
+/** Responsible for holding references to {@link InvasionTemplate}s and providing access to them. */
 public class InvasionTemplateRegistry {
 
   private final Map<String, InvasionTemplate> templateMap;
@@ -36,9 +37,7 @@ public class InvasionTemplateRegistry {
     return Collections.unmodifiableMap(this.templateMap).entrySet();
   }
 
-  /**
-   * @return a list of all template ids for command tab completion
-   */
+  /** @return a list of all template ids for command tab completion */
   public List<String> getIdList() {
 
     return this.idList;

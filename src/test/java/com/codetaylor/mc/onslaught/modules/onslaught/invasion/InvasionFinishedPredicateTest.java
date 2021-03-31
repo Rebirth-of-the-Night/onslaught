@@ -16,10 +16,7 @@ class InvasionFinishedPredicateTest {
   /**
    * Testing method naming convention: "{METHOD}: {PREMISE}, then {EXPECTATION}
    *
-   * A good unit test does these things in this order:
-   *   1. Setup
-   *   2. Change
-   *   3. Assertion
+   * <p>A good unit test does these things in this order: 1. Setup 2. Change 3. Assertion
    */
   @Test
   @DisplayName("test: If player data is missing, then invasion is finished")
@@ -35,17 +32,8 @@ class InvasionFinishedPredicateTest {
     playerData.setInvasionData(iData);
 
     playerData.setInvasionState(EnumInvasionState.Active);
-    iData.getWaveDataList().add(
-        waveOf(
-            mobDataOf(1,1),
-            mobDataOf(3,3)
-        )
-    );
-    iData.getWaveDataList().add(
-        waveOf(
-            mobDataOf(5,5)
-        )
-    );
+    iData.getWaveDataList().add(waveOf(mobDataOf(1, 1), mobDataOf(3, 3)));
+    iData.getWaveDataList().add(waveOf(mobDataOf(5, 5)));
 
     assertThat(subject.test(playerData)).isTrue();
   }
@@ -58,17 +46,8 @@ class InvasionFinishedPredicateTest {
     playerData.setInvasionData(iData);
 
     playerData.setInvasionState(EnumInvasionState.Active);
-    iData.getWaveDataList().add(
-        waveOf(
-            mobDataOf(7,7),
-            mobDataOf(3,3)
-        )
-    );
-    iData.getWaveDataList().add(
-        waveOf(
-            mobDataOf(0,1)
-        )
-    );
+    iData.getWaveDataList().add(waveOf(mobDataOf(7, 7), mobDataOf(3, 3)));
+    iData.getWaveDataList().add(waveOf(mobDataOf(0, 1)));
 
     assertThat(subject.test(playerData)).isFalse();
   }
@@ -82,18 +61,16 @@ class InvasionFinishedPredicateTest {
     assertThat(subject.test(playerData)).isFalse();
   }
 
-
-
-  MobData mobDataOf(int killed, int total){
+  MobData mobDataOf(int killed, int total) {
     MobData mobData = new MobData();
     mobData.setKilledCount(killed);
     mobData.setTotalCount(total);
     return mobData;
   }
 
-  WaveData waveOf( MobData... mobDatas){
+  WaveData waveOf(MobData... mobDatas) {
     WaveData waveData = new WaveData();
-    for(MobData mobData : mobDatas ){
+    for (MobData mobData : mobDatas) {
       waveData.getMobDataList().add(mobData);
     }
     return waveData;

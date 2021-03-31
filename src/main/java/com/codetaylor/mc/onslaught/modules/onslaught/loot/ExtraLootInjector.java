@@ -3,6 +3,9 @@ package com.codetaylor.mc.onslaught.modules.onslaught.loot;
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.Tag;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.MethodHandleHelper;
+import java.lang.invoke.MethodHandle;
+import java.util.List;
+import java.util.logging.Level;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -17,13 +20,7 @@ import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraftforge.common.util.Constants;
 
-import java.lang.invoke.MethodHandle;
-import java.util.List;
-import java.util.logging.Level;
-
-/**
- * Responsible for adding loot from the extra tables to the given loot list.
- */
+/** Responsible for adding loot from the extra tables to the given loot list. */
 public class ExtraLootInjector {
 
   private static final MethodHandle entityLiving$attackingPlayerGetter;
@@ -36,10 +33,12 @@ public class ExtraLootInjector {
     Side: BOTH
     AT: public net.minecraft.entity.EntityLivingBase field_70717_bb # attackingPlayer
      */
-    entityLiving$attackingPlayerGetter = MethodHandleHelper.unreflectGetter(EntityLivingBase.class, "field_70717_bb");
+    entityLiving$attackingPlayerGetter =
+        MethodHandleHelper.unreflectGetter(EntityLivingBase.class, "field_70717_bb");
   }
 
-  public void inject(Entity entity, DamageSource source, boolean recentlyHit, List<EntityItem> drops) {
+  public void inject(
+      Entity entity, DamageSource source, boolean recentlyHit, List<EntityItem> drops) {
 
     NBTTagCompound entityData = entity.getEntityData();
 
@@ -57,7 +56,11 @@ public class ExtraLootInjector {
 
     for (int i = 0; i < tagList.tagCount(); i++) {
       String lootTableId = tagList.getStringTagAt(i);
-      LootTable lootTable = entity.world.getLootTableManager().getLootTableFromLocation(new ResourceLocation(lootTableId));
+      LootTable lootTable =
+          entity
+              .world
+              .getLootTableManager()
+              .getLootTableFromLocation(new ResourceLocation(lootTableId));
 
       LootContext.Builder builder = new LootContext.Builder((WorldServer) entity.world);
       builder.withLootedEntity(entity);
@@ -66,7 +69,9 @@ public class ExtraLootInjector {
       try {
 
         if (recentlyHit) {
-          EntityPlayer attackingPlayer = (EntityPlayer) entityLiving$attackingPlayerGetter.invokeExact((EntityLivingBase) entity);
+          EntityPlayer attackingPlayer =
+              (EntityPlayer)
+                  entityLiving$attackingPlayerGetter.invokeExact((EntityLivingBase) entity);
 
           if (attackingPlayer != null) {
             builder.withPlayer(attackingPlayer);
@@ -79,10 +84,12 @@ public class ExtraLootInjector {
       }
 
       LootContext lootContext = builder.build();
-      List<ItemStack> itemStackList = lootTable.generateLootForPools(entity.world.rand, lootContext);
+      List<ItemStack> itemStackList =
+          lootTable.generateLootForPools(entity.world.rand, lootContext);
 
       for (ItemStack itemStack : itemStackList) {
-        EntityItem entityItem = new EntityItem(entity.world, entity.posX, entity.posY, entity.posZ, itemStack);
+        EntityItem entityItem =
+            new EntityItem(entity.world, entity.posX, entity.posY, entity.posZ, itemStack);
         drops.add(entityItem);
       }
     }

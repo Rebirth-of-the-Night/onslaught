@@ -5,32 +5,30 @@ import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSave
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateWave;
+import java.util.List;
+import java.util.function.Function;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.management.PlayerList;
 
-import java.util.List;
-import java.util.function.Function;
-
-/**
- * Responsible for triggering spawn attempts for active invasions.
- */
-public class Spawner
-    implements InvasionUpdateEventHandler.IInvasionUpdateComponent {
+/** Responsible for triggering spawn attempts for active invasions. */
+public class Spawner implements InvasionUpdateEventHandler.IInvasionUpdateComponent {
 
   private final Function<String, InvasionTemplate> invasionTemplateFunction;
   private final SpawnerWave spawnerWave;
 
   public Spawner(
-      Function<String, InvasionTemplate> invasionTemplateFunction,
-      SpawnerWave spawnerWave
-  ) {
+      Function<String, InvasionTemplate> invasionTemplateFunction, SpawnerWave spawnerWave) {
 
     this.invasionTemplateFunction = invasionTemplateFunction;
     this.spawnerWave = spawnerWave;
   }
 
   @Override
-  public void update(int updateIntervalTicks, InvasionGlobalSavedData invasionGlobalSavedData, PlayerList playerList, long worldTime) {
+  public void update(
+      int updateIntervalTicks,
+      InvasionGlobalSavedData invasionGlobalSavedData,
+      PlayerList playerList,
+      long worldTime) {
 
     long start = System.currentTimeMillis();
 
@@ -48,7 +46,8 @@ public class Spawner
         continue;
       }
 
-      InvasionTemplate invasionTemplate = this.invasionTemplateFunction.apply(invasionData.getInvasionTemplateId());
+      InvasionTemplate invasionTemplate =
+          this.invasionTemplateFunction.apply(invasionData.getInvasionTemplateId());
 
       if (invasionTemplate == null) {
         // If this happens, the invasion id has changed since the invasion data was created.
@@ -66,7 +65,13 @@ public class Spawner
 
         if (waveData.getDelayTicks() <= 0) {
 
-          if (this.spawnerWave.attemptSpawnWave(start, player, invasionData.getInvasionUuid(), waveIndex, waveData, templateWave.secondaryMob)) {
+          if (this.spawnerWave.attemptSpawnWave(
+              start,
+              player,
+              invasionData.getInvasionUuid(),
+              waveIndex,
+              waveData,
+              templateWave.secondaryMob)) {
             return;
           }
         }

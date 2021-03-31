@@ -1,19 +1,17 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.loot;
 
+import java.io.File;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableManager;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.io.File;
-
 /**
- * Responsible for checking a custom folder for loot tables and deferring to
- * the default MC {@link LootTableManager} if no loot table is found.
+ * Responsible for checking a custom folder for loot tables and deferring to the default MC {@link
+ * LootTableManager} if no loot table is found.
  */
-public class CustomLootTableManager
-    extends LootTableManager {
+public class CustomLootTableManager extends LootTableManager {
 
   private final LootTableManager lootTableManager;
   private final boolean initialized;

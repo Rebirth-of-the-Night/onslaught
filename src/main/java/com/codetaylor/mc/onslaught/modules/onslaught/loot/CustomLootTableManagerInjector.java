@@ -2,16 +2,13 @@ package com.codetaylor.mc.onslaught.modules.onslaught.loot;
 
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.lib.MethodHandleHelper;
-import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTableManager;
-
 import java.io.File;
 import java.lang.invoke.MethodHandle;
 import java.util.logging.Level;
+import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootTableManager;
 
-/**
- * Responsible for injecting the custom loot table manager.
- */
+/** Responsible for injecting the custom loot table manager. */
 public class CustomLootTableManagerInjector {
 
   private static final MethodHandle world$lootTableGetter;
@@ -39,8 +36,10 @@ public class CustomLootTableManagerInjector {
   public void inject(World world) {
 
     try {
-      LootTableManager lootTableManager = (LootTableManager) world$lootTableGetter.invokeExact(world);
-      CustomLootTableManager customLootTableManager = new CustomLootTableManager(this.path, lootTableManager);
+      LootTableManager lootTableManager =
+          (LootTableManager) world$lootTableGetter.invokeExact(world);
+      CustomLootTableManager customLootTableManager =
+          new CustomLootTableManager(this.path, lootTableManager);
       world$lootTableSetter.invokeExact(world, (LootTableManager) customLootTableManager);
 
     } catch (Throwable throwable) {

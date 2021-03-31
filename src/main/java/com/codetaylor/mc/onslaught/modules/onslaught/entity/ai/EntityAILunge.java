@@ -1,5 +1,6 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.entity.ai;
 
+import java.util.UUID;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -7,16 +8,14 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 
-import java.util.UUID;
-
 /**
- * Responsible for temporarily increasing an entity's movement speed while within
- * range of their attack target.
+ * Responsible for temporarily increasing an entity's movement speed while within range of their
+ * attack target.
  */
-public class EntityAILunge
-    extends EntityAIBase {
+public class EntityAILunge extends EntityAIBase {
 
-  private static final UUID LUNGE_SPEED_BOOST_ID = UUID.fromString("f36a07f7-1f55-474d-a47f-ded262c548b4");
+  private static final UUID LUNGE_SPEED_BOOST_ID =
+      UUID.fromString("f36a07f7-1f55-474d-a47f-ded262c548b4");
 
   private final EntityLiving taskOwner;
   private final double speedModifier;
@@ -35,7 +34,8 @@ public class EntityAILunge
   @Override
   public boolean shouldExecute() {
 
-    this.attributeInstance = this.taskOwner.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
+    this.attributeInstance =
+        this.taskOwner.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
     // Suppressed because attribute can be null
     //noinspection ConstantConditions
     return (this.attributeInstance != null);
@@ -52,7 +52,8 @@ public class EntityAILunge
     } else {
 
       if (this.attributeInstance.getModifier(LUNGE_SPEED_BOOST_ID) == null) {
-        AttributeModifier attributeModifier = new AttributeModifier(LUNGE_SPEED_BOOST_ID, "Lunge speed boost", this.speedModifier, 2);
+        AttributeModifier attributeModifier =
+            new AttributeModifier(LUNGE_SPEED_BOOST_ID, "Lunge speed boost", this.speedModifier, 2);
         attributeModifier.setSaved(false);
         this.attributeInstance.applyModifier(attributeModifier);
       }

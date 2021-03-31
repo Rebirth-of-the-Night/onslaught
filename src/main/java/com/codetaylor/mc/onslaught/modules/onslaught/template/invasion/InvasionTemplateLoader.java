@@ -8,9 +8,9 @@ import java.util.Map;
 
 /**
  * Responsible for loading {@link InvasionTemplate}s from a list of json file paths.
- * <p>
- * Throws exceptions when a duplicate invasion key is used, an invasion contains
- * no waves, and when an invasion wave contains no mobs.
+ *
+ * <p>Throws exceptions when a duplicate invasion key is used, an invasion contains no waves, and
+ * when an invasion wave contains no mobs.
  */
 public class InvasionTemplateLoader {
 

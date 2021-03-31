@@ -6,9 +6,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-/**
- * Responsible for injecting a custom loot table manager.
- */
+/** Responsible for injecting a custom loot table manager. */
 public class LootTableManagerInjectionEventHandler {
 
   private final CustomLootTableManagerInjector injector;

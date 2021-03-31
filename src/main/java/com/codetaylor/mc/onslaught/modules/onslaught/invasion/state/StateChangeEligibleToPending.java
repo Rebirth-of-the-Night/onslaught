@@ -4,11 +4,12 @@ import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionStateChangedEvent;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.handler.InvasionUpdateEventHandler;
-import com.codetaylor.mc.onslaught.modules.onslaught.invasion.*;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.management.PlayerList;
-import net.minecraftforge.common.MinecraftForge;
-
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionCounter;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerDataFactory;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionTimestampFunction;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionWarningMessageTimestampFunction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -16,10 +17,11 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.IntSupplier;
 import java.util.logging.Level;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.management.PlayerList;
+import net.minecraftforge.common.MinecraftForge;
 
-/**
- * Responsible for transitioning a player's invasion state from eligible to pending.
- */
+/** Responsible for transitioning a player's invasion state from eligible to pending. */
 public class StateChangeEligibleToPending
     implements InvasionUpdateEventHandler.IInvasionUpdateComponent {
 
@@ -38,8 +40,7 @@ public class StateChangeEligibleToPending
       IntSupplier maxConcurrentInvasionsSupplier,
       InvasionCounter invasionCounter,
       InvasionTimestampFunction invasionTimestampFunction,
-      InvasionWarningMessageTimestampFunction invasionWarningMessageTimestampFunction
-  ) {
+      InvasionWarningMessageTimestampFunction invasionWarningMessageTimestampFunction) {
 
     this.eligiblePlayers = eligiblePlayers;
     this.invasionSelectorFunction = invasionSelectorFunction;
@@ -51,17 +52,21 @@ public class StateChangeEligibleToPending
   }
 
   @Override
-  public void update(int updateIntervalTicks, InvasionGlobalSavedData invasionGlobalSavedData, PlayerList playerList, long worldTime) {
+  public void update(
+      int updateIntervalTicks,
+      InvasionGlobalSavedData invasionGlobalSavedData,
+      PlayerList playerList,
+      long worldTime) {
 
     if (worldTime % 24000 > 1000) {
       return;
     }
 
     // Check that we don't exceed the max concurrent invasion value.
-    int concurrentInvasions = this.invasionCounter.count(
-        uuid -> invasionGlobalSavedData.getPlayerData(uuid).getInvasionState(),
-        playerList.getPlayers()
-    );
+    int concurrentInvasions =
+        this.invasionCounter.count(
+            uuid -> invasionGlobalSavedData.getPlayerData(uuid).getInvasionState(),
+            playerList.getPlayers());
     int maxConcurrentInvasions = this.maxConcurrentInvasionsSupplier.getAsInt();
 
     if (concurrentInvasions >= maxConcurrentInvasions) {
@@ -82,22 +87,24 @@ public class StateChangeEligibleToPending
         String invasionTemplateId = this.invasionSelectorFunction.apply(player);
 
         if (invasionTemplateId == null) {
-          ModOnslaught.LOG.log(Level.SEVERE, "Unable to select invasion for player: " + player.getName());
+          ModOnslaught.LOG.log(
+              Level.SEVERE, "Unable to select invasion for player: " + player.getName());
           continue;
         }
 
         long invasionTimestamp = this.invasionTimestampFunction.apply(worldTime);
-        long invasionWarningMessageTimestamp = this.invasionWarningMessageTimestampFunction.apply(invasionTemplateId, invasionTimestamp);
+        long invasionWarningMessageTimestamp =
+            this.invasionWarningMessageTimestampFunction.apply(
+                invasionTemplateId, invasionTimestamp);
 
         InvasionPlayerData data = invasionGlobalSavedData.getPlayerData(uuid);
-        InvasionPlayerData.InvasionData invasionData = this.invasionPlayerDataFactory
-            .create(
+        InvasionPlayerData.InvasionData invasionData =
+            this.invasionPlayerDataFactory.create(
                 invasionTemplateId,
                 UUID.randomUUID(),
                 player.getRNG(),
                 invasionTimestamp,
-                invasionWarningMessageTimestamp
-            );
+                invasionWarningMessageTimestamp);
         data.setInvasionState(InvasionPlayerData.EnumInvasionState.Pending);
         data.setInvasionData(invasionData);
         invasionGlobalSavedData.markDirty();
@@ -105,7 +112,8 @@ public class StateChangeEligibleToPending
         allowedInvasions -= 1;
 
         if (ModuleOnslaughtConfig.DEBUG.INVASION_STATE) {
-          String message = String.format("Set invasion state to %s for player %s", "Pending", player.getName());
+          String message =
+              String.format("Set invasion state to %s for player %s", "Pending", player.getName());
           ModOnslaught.LOG.fine(message);
           System.out.println(message);
 
@@ -115,7 +123,11 @@ public class StateChangeEligibleToPending
           }
         }
 
-        MinecraftForge.EVENT_BUS.post(new InvasionStateChangedEvent(player, InvasionPlayerData.EnumInvasionState.Eligible, InvasionPlayerData.EnumInvasionState.Pending));
+        MinecraftForge.EVENT_BUS.post(
+            new InvasionStateChangedEvent(
+                player,
+                InvasionPlayerData.EnumInvasionState.Eligible,
+                InvasionPlayerData.EnumInvasionState.Pending));
       }
 
       toRemove.add(uuid);

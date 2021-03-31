@@ -6,19 +6,16 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class is registered with the Gson instance used to deserialize
- * Onslaught json files. It is responsible for converting the json into
- * a {@link Stages} object. This adapter does not support serialization
- * and will throw an {@link UnsupportedOperationException} on write.
+ * This class is registered with the Gson instance used to deserialize Onslaught json files. It is
+ * responsible for converting the json into a {@link Stages} object. This adapter does not support
+ * serialization and will throw an {@link UnsupportedOperationException} on write.
  */
-public class StagesTypeAdapter
-    extends TypeAdapter<Stages> {
+public class StagesTypeAdapter extends TypeAdapter<Stages> {
 
   public static final StagesTypeAdapter INSTANCE = new StagesTypeAdapter();
 
@@ -42,7 +39,6 @@ public class StagesTypeAdapter
     Stages result;
 
     switch (type) {
-
       case "and":
         result = this.and(in);
         break;
@@ -82,7 +78,6 @@ public class StagesTypeAdapter
     JsonToken peek = in.peek();
 
     switch (peek) {
-
       case STRING:
         result.add(in.nextString());
         return true;

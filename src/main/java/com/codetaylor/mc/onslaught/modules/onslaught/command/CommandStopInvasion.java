@@ -3,6 +3,11 @@ package com.codetaylor.mc.onslaught.modules.onslaught.command;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionGlobalSavedData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionStopExecutor;
+import java.util.Collections;
+import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -11,17 +16,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Collections;
-import java.util.List;
-
-/**
- * Stops an invasion for a single player.
- */
-public class CommandStopInvasion
-    extends CommandBase {
+/** Stops an invasion for a single player. */
+public class CommandStopInvasion extends CommandBase {
 
   private static final String USAGE = "commands.onslaught.stop.usage";
   private static final String SUCCESS = "commands.onslaught.stop.success";
@@ -55,7 +51,8 @@ public class CommandStopInvasion
 
   @ParametersAreNonnullByDefault
   @Override
-  public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+  public void execute(MinecraftServer server, ICommandSender sender, String[] args)
+      throws CommandException {
 
     EntityPlayerMP player;
 
@@ -69,10 +66,7 @@ public class CommandStopInvasion
     this.stopInvasionForPlayer(sender, player);
   }
 
-  private void stopInvasionForPlayer(
-      ICommandSender sender,
-      EntityPlayerMP player
-  ) {
+  private void stopInvasionForPlayer(ICommandSender sender, EntityPlayerMP player) {
 
     InvasionGlobalSavedData invasionGlobalSavedData = InvasionGlobalSavedData.get(player.world);
     InvasionPlayerData playerData = invasionGlobalSavedData.getPlayerData(player.getUniqueID());
@@ -85,7 +79,8 @@ public class CommandStopInvasion
   @ParametersAreNonnullByDefault
   @Nonnull
   @Override
-  public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
+  public List<String> getTabCompletions(
+      MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
 
     if (args.length == 1) {
       return CommandBase.getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());

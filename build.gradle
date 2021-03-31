@@ -116,10 +116,18 @@ processResources {
     }
 }
 
+clean {
+    delete minecraft.runDir
+}
+
+runClient.doFirst {
+    copy {
+        from 'src/test/resources/config/templates'
+        into 'run/config/onslaught/templates'
+    }
+}
+
 test {
     useJUnitPlatform()
 }
 
-jar {
-    from sourceSets.api.output
-}

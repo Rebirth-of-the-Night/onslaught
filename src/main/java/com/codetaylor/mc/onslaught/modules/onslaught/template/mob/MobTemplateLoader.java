@@ -7,9 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Responsible for loading {@link MobTemplate}s from a list of json file paths.
- */
+/** Responsible for loading {@link MobTemplate}s from a list of json file paths. */
 public class MobTemplateLoader {
 
   private final MobTemplateAdapter adapter;

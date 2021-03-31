@@ -1,16 +1,12 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.predicate;
 
+import java.util.function.Predicate;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 
-import java.util.function.Predicate;
-
-/**
- * Responsible for testing a pillar of blocks for a valid ground spawn location.
- */
-public class SpawnPredicateGround
-    implements Predicate<EntityLiving> {
+/** Responsible for testing a pillar of blocks for a valid ground spawn location. */
+public class SpawnPredicateGround implements Predicate<EntityLiving> {
 
   private final BlockPos.MutableBlockPos blockPos;
   private final int lightMin;

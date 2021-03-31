@@ -1,6 +1,11 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
 
 import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaught;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.function.Function;
+import javax.annotation.Nonnull;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
@@ -8,38 +13,11 @@ import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 
-import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import java.util.function.Function;
-
-/**
- * Responsible for persisting all players' invasion data.
- */
-public class InvasionGlobalSavedData
-    extends WorldSavedData
+/** Responsible for persisting all players' invasion data. */
+public class InvasionGlobalSavedData extends WorldSavedData
     implements Function<UUID, InvasionPlayerData> {
 
   private static final String DATA_NAME = ModuleOnslaught.MOD_ID + "_InvasionData";
-
-  public static InvasionGlobalSavedData get(World world) {
-
-    MapStorage storage = world.getMapStorage();
-
-    if (storage == null) {
-      throw new RuntimeException("Null world storage");
-    }
-
-    InvasionGlobalSavedData instance = (InvasionGlobalSavedData) storage.getOrLoadData(InvasionGlobalSavedData.class, DATA_NAME);
-
-    if (instance == null) {
-      instance = new InvasionGlobalSavedData();
-      storage.setData(DATA_NAME, instance);
-    }
-    return instance;
-  }
-
   private final Map<UUID, InvasionPlayerData> playerDataMap;
 
   public InvasionGlobalSavedData() {
@@ -51,6 +29,24 @@ public class InvasionGlobalSavedData
 
     super(name);
     this.playerDataMap = new HashMap<>();
+  }
+
+  public static InvasionGlobalSavedData get(World world) {
+
+    MapStorage storage = world.getMapStorage();
+
+    if (storage == null) {
+      throw new RuntimeException("Null world storage");
+    }
+
+    InvasionGlobalSavedData instance =
+        (InvasionGlobalSavedData) storage.getOrLoadData(InvasionGlobalSavedData.class, DATA_NAME);
+
+    if (instance == null) {
+      instance = new InvasionGlobalSavedData();
+      storage.setData(DATA_NAME, instance);
+    }
+    return instance;
   }
 
   @Override

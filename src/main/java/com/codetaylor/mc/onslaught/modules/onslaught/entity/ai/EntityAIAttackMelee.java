@@ -1,5 +1,6 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.entity.ai;
 
+import javax.annotation.Nonnull;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -10,17 +11,13 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
 
-import javax.annotation.Nonnull;
-
-/**
- * Responsible for allowing passive entities to attack.
- */
-public class EntityAIAttackMelee
-    extends net.minecraft.entity.ai.EntityAIAttackMelee {
+/** Responsible for allowing passive entities to attack. */
+public class EntityAIAttackMelee extends net.minecraft.entity.ai.EntityAIAttackMelee {
 
   private final float attackDamage;
 
-  public EntityAIAttackMelee(EntityCreature creature, double speed, float attackDamage, boolean useLongMemory) {
+  public EntityAIAttackMelee(
+      EntityCreature creature, double speed, float attackDamage, boolean useLongMemory) {
 
     super(creature, speed, useLongMemory);
     this.attackDamage = attackDamage;
@@ -38,22 +35,28 @@ public class EntityAIAttackMelee
     }
   }
 
-  /**
-   * @see net.minecraft.entity.monster.EntityMob#attackEntityAsMob(Entity)
-   */
-  private void attackEntityAsMob(EntityCreature entityAttacker, @Nonnull EntityLivingBase entityTarget, float attackDamage) {
+  /** @see net.minecraft.entity.monster.EntityMob#attackEntityAsMob(Entity) */
+  private void attackEntityAsMob(
+      EntityCreature entityAttacker, @Nonnull EntityLivingBase entityTarget, float attackDamage) {
 
     int knockbackModifier = 0;
 
-    attackDamage += EnchantmentHelper.getModifierForCreature(entityAttacker.getHeldItemMainhand(), entityTarget.getCreatureAttribute());
+    attackDamage +=
+        EnchantmentHelper.getModifierForCreature(
+            entityAttacker.getHeldItemMainhand(), entityTarget.getCreatureAttribute());
     knockbackModifier += EnchantmentHelper.getKnockbackModifier(entityAttacker);
 
-    boolean wasAttacked = entityTarget.attackEntityFrom(DamageSource.causeMobDamage(entityAttacker), attackDamage);
+    boolean wasAttacked =
+        entityTarget.attackEntityFrom(DamageSource.causeMobDamage(entityAttacker), attackDamage);
 
     if (wasAttacked) {
 
       if (knockbackModifier > 0) {
-        entityTarget.knockBack(entityAttacker, (float) knockbackModifier * 0.5f, MathHelper.sin(entityAttacker.rotationYaw * 0.017453292f), -MathHelper.cos(entityAttacker.rotationYaw * 0.017453292f));
+        entityTarget.knockBack(
+            entityAttacker,
+            (float) knockbackModifier * 0.5f,
+            MathHelper.sin(entityAttacker.rotationYaw * 0.017453292f),
+            -MathHelper.cos(entityAttacker.rotationYaw * 0.017453292f));
         entityAttacker.motionX *= 0.6;
         entityAttacker.motionZ *= 0.6;
       }
@@ -67,10 +70,17 @@ public class EntityAIAttackMelee
       if (entityTarget instanceof EntityPlayer) {
         EntityPlayer entityplayer = (EntityPlayer) entityTarget;
         ItemStack heldItem = entityAttacker.getHeldItemMainhand();
-        ItemStack activeItem = entityplayer.isHandActive() ? entityplayer.getActiveItemStack() : ItemStack.EMPTY;
+        ItemStack activeItem =
+            entityplayer.isHandActive() ? entityplayer.getActiveItemStack() : ItemStack.EMPTY;
 
-        if (!heldItem.isEmpty() && !activeItem.isEmpty() && heldItem.getItem().canDisableShield(heldItem, activeItem, entityplayer, entityAttacker) && activeItem.getItem().isShield(activeItem, entityplayer)) {
-          float f1 = 0.25f + (float) EnchantmentHelper.getEfficiencyModifier(entityAttacker) * 0.05f;
+        if (!heldItem.isEmpty()
+            && !activeItem.isEmpty()
+            && heldItem
+                .getItem()
+                .canDisableShield(heldItem, activeItem, entityplayer, entityAttacker)
+            && activeItem.getItem().isShield(activeItem, entityplayer)) {
+          float f1 =
+              0.25f + (float) EnchantmentHelper.getEfficiencyModifier(entityAttacker) * 0.05f;
 
           if (entityAttacker.getRNG().nextFloat() < f1) {
             entityplayer.getCooldownTracker().setCooldown(activeItem.getItem(), 100);
@@ -83,9 +93,7 @@ public class EntityAIAttackMelee
     }
   }
 
-  /**
-   * @see Entity#applyEnchantments(EntityLivingBase, Entity)
-   */
+  /** @see Entity#applyEnchantments(EntityLivingBase, Entity) */
   @SuppressWarnings("JavadocReference")
   protected void applyEnchantments(EntityLivingBase entityAttacker, Entity entityTarget) {
 

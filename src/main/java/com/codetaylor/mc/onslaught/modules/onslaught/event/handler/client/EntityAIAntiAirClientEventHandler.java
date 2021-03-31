@@ -11,8 +11,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * Responsible for preventing a player from sneaking on a ladder if being
- * pulled down by AntiAir.
+ * Responsible for preventing a player from sneaking on a ladder if being pulled down by AntiAir.
  */
 public class EntityAIAntiAirClientEventHandler {
 

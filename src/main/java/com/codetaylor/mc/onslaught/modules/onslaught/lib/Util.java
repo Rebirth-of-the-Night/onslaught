@@ -2,9 +2,13 @@ package com.codetaylor.mc.onslaught.modules.onslaught.lib;
 
 public final class Util {
 
+  private Util() {
+    //
+  }
+
   /**
-   * Evaluates the input array as either a single, fixed value or two values: a
-   * min and max. Returns an array of two values, min and max.
+   * Evaluates the input array as either a single, fixed value or two values: a min and max. Returns
+   * an array of two values, min and max.
    *
    * @param range the input array
    * @return an array of two values, min and max
@@ -23,9 +27,5 @@ public final class Util {
     }
 
     return result;
-  }
-
-  private Util() {
-    //
   }
 }

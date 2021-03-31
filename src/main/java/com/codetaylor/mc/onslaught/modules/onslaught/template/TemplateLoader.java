@@ -10,18 +10,15 @@ import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionT
 import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplateLoader;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.mob.MobTemplateRegistry;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.logging.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-/**
- * Responsible for loading mob templates and invasion templates into the data store.
- */
+/** Responsible for loading mob templates and invasion templates into the data store. */
 public class TemplateLoader {
 
   private static final Logger LOGGER = LogManager.getLogger(TemplateLoader.class);
@@ -41,8 +38,7 @@ public class TemplateLoader {
       FilePathCreator filePathCreator,
       JsonFileLocator jsonFileLocator,
       MobTemplateLoader mobTemplateLoader,
-      InvasionTemplateLoader invasionTemplateLoader
-  ) {
+      InvasionTemplateLoader invasionTemplateLoader) {
 
     this.mobTemplateRegistryConsumer = mobTemplateRegistryConsumer;
     this.invasionTemplateRegistryConsumer = invasionTemplateRegistryConsumer;
@@ -55,8 +51,7 @@ public class TemplateLoader {
 
   public boolean load() {
 
-    return this.loadMobTemplateData()
-        && this.loadInvasionTemplateData();
+    return this.loadMobTemplateData() && this.loadInvasionTemplateData();
   }
 
   private boolean loadMobTemplateData() {
@@ -71,7 +66,8 @@ public class TemplateLoader {
       MobTemplateRegistry mobTemplateRegistry = new MobTemplateRegistry(mobTemplateMap);
       this.mobTemplateRegistryConsumer.accept(mobTemplateRegistry);
       long elapsed = System.currentTimeMillis() - start;
-      ModOnslaught.LOG.info(String.format("Loaded %d mob templates in %d ms", mobTemplateMap.size(), elapsed));
+      ModOnslaught.LOG.info(
+          String.format("Loaded %d mob templates in %d ms", mobTemplateMap.size(), elapsed));
       return true;
 
     } catch (Exception e) {
@@ -93,11 +89,15 @@ public class TemplateLoader {
       long start = System.currentTimeMillis();
       this.filePathCreator.initialize(invasionTemplatePath);
       List<Path> jsonFilePaths = this.jsonFileLocator.locate(invasionTemplatePath);
-      Map<String, InvasionTemplate> invasionTemplateMap = this.invasionTemplateLoader.load(jsonFilePaths);
-      InvasionTemplateRegistry invasionTemplateRegistry = new InvasionTemplateRegistry(invasionTemplateMap);
+      Map<String, InvasionTemplate> invasionTemplateMap =
+          this.invasionTemplateLoader.load(jsonFilePaths);
+      InvasionTemplateRegistry invasionTemplateRegistry =
+          new InvasionTemplateRegistry(invasionTemplateMap);
       this.invasionTemplateRegistryConsumer.accept(invasionTemplateRegistry);
       long elapsed = System.currentTimeMillis() - start;
-      ModOnslaught.LOG.info(String.format("Loaded %d invasion templates in %d ms", invasionTemplateMap.size(), elapsed));
+      ModOnslaught.LOG.info(
+          String.format(
+              "Loaded %d invasion templates in %d ms", invasionTemplateMap.size(), elapsed));
       return true;
 
     } catch (Exception e) {

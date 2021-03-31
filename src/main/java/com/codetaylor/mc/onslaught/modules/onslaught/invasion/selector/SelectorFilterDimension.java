@@ -3,17 +3,15 @@ package com.codetaylor.mc.onslaught.modules.onslaught.invasion.selector;
 import com.codetaylor.mc.athenaeum.util.ArrayHelper;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateSelectorDimension;
-
 import java.util.Map;
 import java.util.function.IntSupplier;
 import java.util.function.Predicate;
 
 /**
- * Responsible for filtering out invasion templates that do not match the
- * dimension id returned by the given dimension id supplier.
+ * Responsible for filtering out invasion templates that do not match the dimension id returned by
+ * the given dimension id supplier.
  */
-public class SelectorFilterDimension
-    implements Predicate<Map.Entry<String, InvasionTemplate>> {
+public class SelectorFilterDimension implements Predicate<Map.Entry<String, InvasionTemplate>> {
 
   private final IntSupplier dimensionSupplier;
 

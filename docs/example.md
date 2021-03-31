@@ -8,7 +8,7 @@ Here is an example of a full, working invasion with an initial wave of zombies, 
 
 ## loot/onslaught/zombie_boss.json
 
-```js
+```json
 {
   "pools": [
     {
@@ -52,7 +52,7 @@ Here is an example of a full, working invasion with an initial wave of zombies, 
 
 ## templates/invasion/zombie_horde.json
 
-```js
+```json
 {
   "zombie": {
     "name": "Zombie Horde",
@@ -154,7 +154,7 @@ Here is an example of a full, working invasion with an initial wave of zombies, 
 
 ## templates/mob/zombies.json
 
-```js
+```json
 {
   "zombie": {
     "id": "minecraft:zombie"
