@@ -5,8 +5,6 @@ import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.init.SoundEvents;
-import net.minecraftforge.client.event.sound.SoundEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 
 /**
@@ -21,35 +19,38 @@ public class EntityAIOffscreenTeleport extends EntityAIBase {
   /** the range (sq) that the target must breach to try to teleport */
   private final int teleportThresholdSq;
 
-  /** the range the mob will teleport to */
-  private final int closeToRange;
+  /** the factor to apply to the vector the mob will roughly teleport to. */
+  private final float teleportFactor;
 
   /** may the mob breach not just space but dimension to chase its prey */
   private final boolean ableToDimHop;
 
-  /** internal counter to stagger the checking to teleport. */
-  private int counter;
+  /** 1:X chance for this task to run */
+  private static int chanceOutOfTicks = 20;
 
-  /** total ticks */
-  private static final int TICK_PERIOD = 5;
+  public static int getChanceOutOfTicks() {
+    return chanceOutOfTicks;
+  }
 
-  private boolean telported = false;
+  public static void setChanceOutOfTicks(int chanceOutOfTicks) {
+    EntityAIOffscreenTeleport.chanceOutOfTicks = chanceOutOfTicks;
+  }
+
+  private boolean teleported = false;
 
   public EntityAIOffscreenTeleport(
-      EntityLiving taskOwner, int rangeThreshold, int closeToRange, boolean ableToDimHop) {
+      EntityLiving taskOwner, int rangeThreshold, float teleportFactor, boolean ableToDimHop) {
     this.taskOwner = taskOwner;
     this.teleportThresholdSq = rangeThreshold * rangeThreshold;
-    this.closeToRange = closeToRange;
+    this.teleportFactor = teleportFactor;
     this.ableToDimHop = ableToDimHop;
-    this.counter = taskOwner.getRNG().nextInt(TICK_PERIOD);
   }
 
   /** Returns whether the EntityAIBase should begin execution. */
   public boolean shouldExecute() {
-    if (counter++ < TICK_PERIOD) {
+    if (0 != taskOwner.getRNG().nextInt(chanceOutOfTicks)) {
       return false;
     }
-    counter = 0;
 
     EntityLivingBase target = taskOwner.getAttackTarget();
 
@@ -64,35 +65,32 @@ public class EntityAIOffscreenTeleport extends EntityAIBase {
     return taskOwner.getDistanceSq(target) >= teleportThresholdSq;
   }
 
+  public static double towards(double a, double b, float f){
+    return ((b - a) * f) + a;
+  }
+
   /** Execute a one shot task or start executing a continuous task */
   public void startExecuting() {
     EntityLivingBase target = taskOwner.getAttackTarget();
     if (target == null) {
-      System.out.println("no target");
       return;
     }
 
-    int offsetX = taskOwner.getRNG().nextBoolean() ? closeToRange : -closeToRange;
-    int offsetZ = taskOwner.getRNG().nextBoolean() ? closeToRange : -closeToRange;
+    double destX = towards(taskOwner.posX, target.posX, teleportFactor);
+    double destY = towards(taskOwner.posY, target.posY, teleportFactor);
+    double destZ = towards(taskOwner.posZ, target.posZ, teleportFactor);
 
-    double teleX = target.posX + offsetX;
-    double teleY = target.posY + 4;
-    double teleZ = target.posZ + offsetZ;
-
-    EnderTeleportEvent event = new EnderTeleportEvent(taskOwner, teleX, teleY, teleZ, 0);
+    EnderTeleportEvent event = new EnderTeleportEvent(taskOwner, destX, destY, destZ, 0);
     boolean wasCanceled = EVENT_BUS.post(event);
-    System.out.println("was canceled:" + wasCanceled);
     if (wasCanceled) {
       return;
     }
 
     taskOwner.setWorld(target.getEntityWorld());
-    telported = taskOwner.attemptTeleport(teleX, teleY, teleZ);
-    if (telported) {
-      taskOwner.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, .4F);
-      ((EntityLiving)taskOwner).playLivingSound();
+    teleported = taskOwner.attemptTeleport(destX, destY, destZ);
+    if (teleported) {
+      taskOwner.playLivingSound();
     }
-    System.out.println("was teleported:" + telported);
   }
 
   /** Reset the task's internal state. Called when this task is interrupted by another one */
@@ -100,7 +98,7 @@ public class EntityAIOffscreenTeleport extends EntityAIBase {
 
   /** Returns whether an in-progress EntityAIBase should continue executing */
   public boolean shouldContinueExecuting() {
-    return !telported;
+    return !teleported;
   }
 
   /** Keep ticking a continuous task that has already been started */

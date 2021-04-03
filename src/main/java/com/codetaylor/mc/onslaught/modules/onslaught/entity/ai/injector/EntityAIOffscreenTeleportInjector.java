@@ -7,6 +7,6 @@ import net.minecraft.nbt.NBTTagCompound;
 public class EntityAIOffscreenTeleportInjector extends EntityAIInjectorBase {
   @Override
   public void inject(EntityLiving entity, NBTTagCompound tag) {
-    entity.tasks.addTask(-20, new EntityAIOffscreenTeleport(entity, 64, 32, true));
+    entity.tasks.addTask(-20, new EntityAIOffscreenTeleport(entity, 64, 1.5f, true));
   }
 }

@@ -14,6 +14,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandStopInvasion
 import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandSummon;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.EntityAIChaseLongDistance;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.EntityAIChaseLongDistanceGhast;
+import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.EntityAIOffscreenTeleport;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.EntityAIPlayerTarget;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector.EntityAIAntiAirInjector;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector.EntityAIAttackMeleeInjector;
@@ -214,7 +215,8 @@ public class ModuleOnslaught extends ModuleBase {
     Class<?>[] entityAIToRemoveOnCleanup = {
       EntityAIPlayerTarget.class,
       EntityAIChaseLongDistance.class,
-      EntityAIChaseLongDistanceGhast.class
+      EntityAIChaseLongDistanceGhast.class,
+      EntityAIOffscreenTeleport.class
     };
 
     // -------------------------------------------------------------------------
