@@ -38,6 +38,9 @@ public final class Tag {
   public static final String AI_PARAM_SPEED = "Speed";
   public static final String AI_PARAM_SPEED_MODIFIER = "SpeedModifier";
   public static final String AI_PARAM_UUID = "UUID";
+  public static final String AI_PARAM_TELE_THRESHOLD = "TeleportDistance";
+  public static final String AI_PARAM_TELE_FACTOR = "TeleportFactor";
+  public static final String AI_PARAM_DIM_HOP = "DimensionHopping";
 
   public static final String INVASION_DATA = "InvasionData";
   public static final String INVASION_PLAYER_UUID = "PlayerUUID";

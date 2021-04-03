@@ -3,7 +3,7 @@ package com.codetaylor.mc.onslaught.modules.onslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateWave;
 import net.minecraftforge.common.config.Config;
 
-@Config(modid = ModuleOnslaught.MOD_ID, name = ModuleOnslaught.MOD_ID + "/" + "onslaught")
+@Config(modid = ModuleOnslaught.MOD_ID)
 public class ModuleOnslaughtConfig {
 
   public static Debug DEBUG = new Debug();
@@ -203,6 +203,8 @@ public class ModuleOnslaughtConfig {
     public AttackMelee ATTACK_MELEE = new AttackMelee();
     public LongDistanceChase LONG_DISTANCE_CHASE = new LongDistanceChase();
     public Mining MINING = new Mining();
+    @Config.Name("Offscreen Teleport")
+    public OffscreenTeleport OFFSCREEN_TELEPORT = new OffscreenTeleport();
 
     public static class AntiAir {
 
@@ -410,6 +412,34 @@ public class ModuleOnslaughtConfig {
       })
       @Config.RangeDouble(min = 0)
       public double DEFAULT_SPEED_MODIFIER = 1;
+    }
+
+    public static class OffscreenTeleport {
+      @Config.Comment({
+        "The default offscreen teleport range for mobs to trigger a relocate.",
+        "Can be overridden in a mob template or with NBT.",
+        "Default: " + 64
+      })
+      @Config.RangeInt(min = 1)
+      public int DEFAULT_RANGE = 64;
+
+      @Config.Comment({
+        "The default teleportation factor to 'move closer' to the target.",
+        "0.5 => move half the distance",
+        "1.0 => move directly on top of target",
+        "1.5 => move to the target, then half again to flank the target.",
+        "Can be overridden in a mob template or with NBT.",
+        "Default: " + 1.5
+      })
+      @Config.RangeDouble(min = 0, max = 2)
+      public double DEFAULT_FACTOR = 1.5;
+
+      @Config.Comment({
+        "The default ability to teleport across dimensions to chase the target",
+        "Can be overridden in a mob template or with NBT.",
+        "Default: " + true
+      })
+      public boolean DEFAULT_DIM_HOPPING = true;
     }
   }
 }

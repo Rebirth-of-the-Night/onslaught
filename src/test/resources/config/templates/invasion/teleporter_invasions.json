@@ -1,0 +1,62 @@
+{
+  "teleport.defaults": {
+    "name": "Default Teleports",
+    "selector": {
+      "weight": 1,
+      "dimension": {
+        "type": "include",
+        "dimensions": [
+          0
+        ]
+      }
+    },
+    "waves": [
+      {
+        "groups": [
+          {
+            "weight": 1,
+            "forceSpawn": true,
+            "mobs": [
+              {
+                "id": "teleporter.default",
+                "count": [
+                  5
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "teleport.flankers": {
+    "name": "Flanking Teleports",
+    "selector": {
+      "weight": 1,
+      "dimension": {
+        "type": "include",
+        "dimensions": [
+          0
+        ]
+      }
+    },
+    "waves": [
+      {
+        "groups": [
+          {
+            "weight": 1,
+            "forceSpawn": true,
+            "mobs": [
+              {
+                "id": "teleporter.flanker",
+                "count": [
+                  5
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

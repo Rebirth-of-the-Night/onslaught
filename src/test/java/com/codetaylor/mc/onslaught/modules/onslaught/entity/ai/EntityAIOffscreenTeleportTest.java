@@ -1,11 +1,11 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.entity.ai;
 
 import static com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.EntityAIOffscreenTeleport.towards;
-import static net.minecraftforge.common.MinecraftForge.EVENT_BUS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Mockito.CALLS_REAL_METHODS;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -14,7 +14,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.Random;
 import net.minecraft.entity.EntityLiving;
-import net.minecraftforge.fml.common.eventhandler.EventBus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +23,7 @@ class EntityAIOffscreenTeleportTest {
 
   @BeforeEach
   void createMobAndTarget() {
-    EntityAIOffscreenTeleport.setChanceOutOfTicks(1);
+    EntityAIOffscreenTeleport.setRunChanceOutcomes(1);
 
     mob = mock(EntityLiving.class, CALLS_REAL_METHODS);
     target = mock(EntityLiving.class, CALLS_REAL_METHODS);
@@ -59,9 +58,10 @@ class EntityAIOffscreenTeleportTest {
     target.posY = 20;
     target.posZ = -50;
 
-    EntityAIOffscreenTeleport task = new EntityAIOffscreenTeleport(mob, 100, 0.5f, false);
-
+    EntityAIOffscreenTeleport task = spy(new EntityAIOffscreenTeleport(mob, 100, 0.5f, false));
     doReturn(true).when(mob).attemptTeleport(anyDouble(), anyDouble(), anyDouble());
+    doReturn(null).when(task).invisibilityEffect();
+    doNothing().when(mob).addPotionEffect(any());
 
     task.startExecuting();
 
