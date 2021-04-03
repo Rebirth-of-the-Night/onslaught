@@ -8,9 +8,9 @@ Each task exposes some optionally configurable properties. If you omit any of th
 defaults from the mod's config file will be used: `config/onslaught/onslaught.cfg`.
 
 !!! warning "Task Priority"
-Each task does expose a configurable priority, however, we recommended that you omit the `Priority`
-tag and let the mod use the defaults. The default priorities should work for most mobs and changing
-them may result in undesirable behavior and performance hits.
+    Each task does expose a configurable priority, however, we recommended that you omit the `Priority`
+    tag and let the mod use the defaults. The default priorities should work for most mobs and changing
+    them may result in undesirable behavior and performance hits.
 
 ## AntiAir
 
@@ -55,9 +55,9 @@ The mod's config file contains additional options to:
 The `AttackMelee` task allows a passive mob to attack.
 
 !!! note This task will only work with mobs that can be given an attack target. For example,
-attaching this task to a Pig will do nothing because the Pig does not naturally target entities to
-attack. This task will work with mobs spawned by the invasion system because they are given the
-ability to persistently target the invaded player.
+    attaching this task to a Pig will do nothing because the Pig does not naturally target entities to
+    attack. This task will work with mobs spawned by the invasion system because they are given the
+    ability to persistently target the invaded player.
 
 key | type | range | default | description
 :---|:---|:---|:---|:---
@@ -93,8 +93,8 @@ the invaded player over a long distance. This task will do nothing without the T
 because the mob will never have a long-distance target.
 
 !!! warning This task is automatically applied to mobs spawned by an invasion and should not be
-manually applied unless you want to change the task's default properties. This task can be applied
-manually along with the `TargetPlayer` task for testing purposes.
+    manually applied unless you want to change the task's default properties. This task can be applied
+    manually along with the `TargetPlayer` task for testing purposes.
 
 key | type | range | default | description
  :---|:---|:---|:---|:---
@@ -135,9 +135,9 @@ RangeMin      | double  | [0,max) | 2    | minimum range required to counteratta
 RangeMax      | double  | (min,-) | 4    | maximum range required to counterattack
 
 !!! note The `Chance` parameter will not prevent the task from executing, but it may delay or vary
-the timing of its execution. Think of it as more of a random delay than a chance to occur. Each tick
-after the mob is attacked, the logic rolls against the chance parameter to determine if the counter
-fires.
+    the timing of its execution. Think of it as more of a random delay than a chance to occur. Each tick
+    after the mob is attacked, the logic rolls against the chance parameter to determine if the counter
+    fires.
 
 ```json
 {
@@ -273,8 +273,8 @@ SpeedModifier | double | [0,-) | 1  | multiplicative mining speed modifier
 The `TargetPlayer` task will cause a mob to persistently target the given player by UUID.
 
 !!! warning This task is automatically applied to mobs spawned by an invasion and should not be
-manually applied. This task can be applied manually along with the `ChaseLongDistance` task for
-testing purposes.
+    manually applied. This task can be applied manually along with the `ChaseLongDistance` task for
+    testing purposes.
 
 key | type | range | default | description
 :---|:---|:---|:---|:---
