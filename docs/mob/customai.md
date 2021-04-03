@@ -4,10 +4,13 @@ Onslaught contains several custom AI tasks that can be assigned to entities usin
 
 All custom AI NBT needs to be placed inside the `ForgeData/Onslaught/CustomAI` tag.
 
-Each task exposes some optionally configurable properties. If you omit any of the properties, defaults from the mod's config file will be used: `config/onslaught/onslaught.cfg`.
+Each task exposes some optionally configurable properties. If you omit any of the properties,
+defaults from the mod's config file will be used: `config/onslaught/onslaught.cfg`.
 
 !!! warning "Task Priority"
-    Each task does expose a configurable priority, however, we recommended that you omit the `Priority` tag and let the mod use the defaults. The default priorities should work for most mobs and changing them may result in undesirable behavior and performance hits.
+    Each task does expose a configurable priority, however, we recommended that you omit the `Priority`
+    tag and let the mod use the defaults. The default priorities should work for most mobs and changing
+    them may result in undesirable behavior and performance hits.
 
 ## AntiAir
 
@@ -20,7 +23,7 @@ Range         | int     | [1,-) | 128  | range within which a mob will pull the 
 SightRequired | boolean | N/A   | true | does the mob need to have sight of the player to pull them down
 MotionY       | double  | (-,0] | -0.4 | the Y axis force applied to the player
 
-```js
+```json
 {
   "zombie_antiair": {
     "id": "minecraft:zombie",
@@ -45,22 +48,24 @@ MotionY       | double  | (-,0] | -0.4 | the Y axis force applied to the player
 The mod's config file contains additional options to:
 
 * set the number of ticks that the player is allowed to be in the air, and
-* toggle summing the downward force of all affecting mobs or using only the single largest force. 
+* toggle summing the downward force of all affecting mobs or using only the single largest force.
 
 ## AttackMelee
 
 The `AttackMelee` task allows a passive mob to attack.
 
-!!! note
-    This task will only work with mobs that can be given an attack target. For example, attaching this task to a Pig will do nothing because the Pig does not naturally target entities to attack. This task will work with mobs spawned by the invasion system because they are given the ability to persistently target the invaded player.
-    
+!!! note This task will only work with mobs that can be given an attack target. For example,
+    attaching this task to a Pig will do nothing because the Pig does not naturally target entities to
+    attack. This task will work with mobs spawned by the invasion system because they are given the
+    ability to persistently target the invaded player.
+
 key | type | range | default | description
 :---|:---|:---|:---|:---
 Priority      | int     | N/A   | -3 | task priority
 Speed         | double  | [0,-) | 1  | movement speed when attacking
 AttackDamage  | int     | [0,-) | 1  | attack damage in half-hearts
 
-```js
+```json
 {
   "pig_attackmelee": {
     "id": "minecraft:pig",
@@ -83,17 +88,20 @@ AttackDamage  | int     | [0,-) | 1  | attack damage in half-hearts
 
 ## ChaseLongDistance
 
-The `ChaseLongDistance` task operates in tandem with the TargetPlayer task to allow mobs to target the invaded player over a long distance. This task will do nothing without the TargetPlayer task because the mob will never have a long-distance target. 
+The `ChaseLongDistance` task operates in tandem with the TargetPlayer task to allow mobs to target
+the invaded player over a long distance. This task will do nothing without the TargetPlayer task
+because the mob will never have a long-distance target.
 
-!!! warning
-    This task is automatically applied to mobs spawned by an invasion and should not be manually applied unless you want to change the task's default properties. This task can be applied manually along with the `TargetPlayer` task for testing purposes.
-    
- key | type | range | default | description
+!!! warning This task is automatically applied to mobs spawned by an invasion and should not be
+    manually applied unless you want to change the task's default properties. This task can be applied
+    manually along with the `TargetPlayer` task for testing purposes.
+
+key | type | range | default | description
  :---|:---|:---|:---|:---
- Priority      | int     | N/A   | -10 | task priority
- Speed         | double  | [0,-) | 1   | movement speed when out of range
+Priority      | int     | N/A   | -10 | task priority
+Speed         | double  | [0,-) | 1   | movement speed when out of range
 
-```js
+```json
 {
   "zombie_chaselongdistance": {
     "id": "minecraft:zombie",
@@ -126,10 +134,12 @@ Chance        | double  | [0,1]   | 1    | the chance of counterattacking per ti
 RangeMin      | double  | [0,max) | 2    | minimum range required to counterattack
 RangeMax      | double  | (min,-) | 4    | maximum range required to counterattack
 
-!!! note
-    The `Chance` parameter will not prevent the task from executing, but it may delay or vary the timing of its execution. Think of it as more of a random delay than a chance to occur. Each tick after the mob is attacked, the logic rolls against the chance parameter to determine if the counter fires.
+!!! note The `Chance` parameter will not prevent the task from executing, but it may delay or vary
+    the timing of its execution. Think of it as more of a random delay than a chance to occur. Each tick
+    after the mob is attacked, the logic rolls against the chance parameter to determine if the counter
+    fires.
 
-```js
+```json
 {
   "zombie_counterattack": {
     "id": "minecraft:zombie",
@@ -169,7 +179,7 @@ ExplosionStrength   | double  | [1,-)   | 3     | explosion strength
 ExplosionCausesFire | boolean | N/A     | false | does the explosion cause fires
 ExplosionDamaging   | boolean | N/A     | true  | does the explosion break blocks
 
-```js
+```json
 {
   "zombie_explodewhenstuck": {
     "id": "minecraft:zombie",
@@ -206,7 +216,7 @@ Priority      | int    | N/A   | -15 | task priority
 Range         | int    | [1,-) | 6   | the range within which a mob will increase its speed
 SpeedModifier | double | [0,-) | 0.3 | multiplicative speed modifier
 
-```js
+```json
 {
   "zombie_lunge": {
     "id": "minecraft:zombie",
@@ -237,7 +247,7 @@ Priority      | int    | N/A   | -9 | task priority
 Range         | int    | [1,-) | 4  | the range within which a mob will break blocks
 SpeedModifier | double | [0,-) | 1  | multiplicative mining speed modifier
 
-```js
+```json
 {
   "zombie_mining": {
     "id": "minecraft:zombie",
@@ -262,15 +272,17 @@ SpeedModifier | double | [0,-) | 1  | multiplicative mining speed modifier
 
 The `TargetPlayer` task will cause a mob to persistently target the given player by UUID.
 
-!!! warning
-    This task is automatically applied to mobs spawned by an invasion and should not be manually applied. This task can be applied manually along with the `ChaseLongDistance` task for testing purposes.
+!!! warning This task is automatically applied to mobs spawned by an invasion and should not be
+    manually applied. This task can be applied manually along with the `ChaseLongDistance` task for
+    testing purposes.
 
 key | type | range | default | description
 :---|:---|:---|:---|:---
 Priority | int    | N/A | 10  | task priority
 UUID     | string | N/A | N/A | the UUID of the player to persistently target
 
-```js
+```json
+{
   "zombie_targetplayer": {
     "id": "minecraft:zombie",
     "nbt": {
@@ -280,6 +292,48 @@ UUID     | string | N/A | N/A | the UUID of the player to persistently target
             "TargetPlayer": {
               "Priority": 10,
               "UUID": "46562dd7-ada9-4af8-b88c-3a0f2d3e8860"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+## Offscreen Teleport
+
+The `OffscreenTeleport` task allows the mob to teleport closer if the target gets too far. If
+triggered, the mob will briefly disappear and reappear, and emitting its ambient noise.
+
+The **TeleportFactor** will move the mob closer by that fraction of the distance from the target.
+Values less than one moves the mob a portion of the distance to the player. Values greater than one
+will put them on the other side of the player when teleporting. The different ranges produce the
+following:
+
+* `.5` a **Chaser**, always not far behind
+* `1.0` a **Jump Scare**, suddenly appearing if you try to flee
+* `1.5` a **Flanker**, cuts you off
+
+key | type | range | default | description
+:---|:---|:---|:---|:---
+TeleportDistance | int    | - | 64  | Distance in blocks to start teleporting
+TeleportFactor     | double | -| .5 | Factor to move closer
+DimensionHopping | boolean | -| true | Attempt to hop into the player's dimension if in another one
+
+```json
+{
+  "teleporter.flanker": {
+    "id": "minecraft:husk",
+    "nbt": {
+      "CustomName": "Flanking Husk",
+      "ForgeData": {
+        "Onslaught": {
+          "CustomAI": {
+            "OffscreenTeleport": {
+              "TeleportDistance": 32,
+              "TeleportFactor": 1.3,
+              "DimensionHopping": true
             }
           }
         }

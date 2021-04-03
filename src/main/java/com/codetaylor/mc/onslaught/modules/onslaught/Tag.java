@@ -10,6 +10,7 @@ public final class Tag {
   public static final String EXTRA_LOOT_TABLES = "ExtraLootTables";
   public static final String ONSLAUGHT = "Onslaught";
 
+  public static final String AI_OFFSCREEN_TELEPORT = "OffscreenTeleport";
   public static final String AI_ANTI_AIR = "AntiAir";
   public static final String AI_ATTACK_MELEE = "AttackMelee";
   public static final String AI_CHASE_LONG_DISTANCE = "ChaseLongDistance";
@@ -37,6 +38,9 @@ public final class Tag {
   public static final String AI_PARAM_SPEED = "Speed";
   public static final String AI_PARAM_SPEED_MODIFIER = "SpeedModifier";
   public static final String AI_PARAM_UUID = "UUID";
+  public static final String AI_PARAM_TELE_THRESHOLD = "TeleportDistance";
+  public static final String AI_PARAM_TELE_FACTOR = "TeleportFactor";
+  public static final String AI_PARAM_DIM_HOP = "DimensionHopping";
 
   public static final String INVASION_DATA = "InvasionData";
   public static final String INVASION_PLAYER_UUID = "PlayerUUID";

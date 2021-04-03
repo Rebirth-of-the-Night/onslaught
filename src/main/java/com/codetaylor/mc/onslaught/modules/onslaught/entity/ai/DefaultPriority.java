@@ -4,6 +4,7 @@ package com.codetaylor.mc.onslaught.modules.onslaught.entity.ai;
 public final class DefaultPriority {
 
   // AI Tasks
+  public static final int OFFSCREEN_TELEPORT = -20;
   public static final int LUNGE = -15;
   public static final int CHASE_LONG_DISTANCE = -10;
   public static final int MINING = -9;

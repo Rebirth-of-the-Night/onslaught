@@ -14,6 +14,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandStopInvasion
 import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandSummon;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.EntityAIChaseLongDistance;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.EntityAIChaseLongDistanceGhast;
+import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.EntityAIOffscreenTeleport;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.EntityAIPlayerTarget;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector.EntityAIAntiAirInjector;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector.EntityAIAttackMeleeInjector;
@@ -23,6 +24,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector.EntityAI
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector.EntityAIInjectorBase;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector.EntityAILungeInjector;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector.EntityAIMiningInjector;
+import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector.EntityAIOffscreenTeleportInjector;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.ai.injector.EntityAIPlayerTargetInjector;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.EffectApplicator;
 import com.codetaylor.mc.onslaught.modules.onslaught.entity.factory.LootTableApplicator;
@@ -205,14 +207,16 @@ public class ModuleOnslaught extends ModuleBase {
               new EntityAICounterAttackInjector(),
               new EntityAIExplodeWhenStuckInjector(),
               new EntityAILungeInjector(),
-              new EntityAIAntiAirInjector()
+              new EntityAIAntiAirInjector(),
+              new EntityAIOffscreenTeleportInjector()
             }));
 
     // The entity AI classes to strip from mobs during invasion cleanup
     Class<?>[] entityAIToRemoveOnCleanup = {
       EntityAIPlayerTarget.class,
       EntityAIChaseLongDistance.class,
-      EntityAIChaseLongDistanceGhast.class
+      EntityAIChaseLongDistanceGhast.class,
+      EntityAIOffscreenTeleport.class
     };
 
     // -------------------------------------------------------------------------
