@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.1.0
+
+* **Added:**
+    * OffscreenTeleport AI
+    
+* **Changed:**
+    * Invasion Bar scale and presentation
+    
+* **Fixed:**
+    * Air spawn type now spawns above, if possible
+
 ## 1.0.2
 
 * **Bug Fixes:**
