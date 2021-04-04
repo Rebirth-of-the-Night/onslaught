@@ -1,0 +1,145 @@
+{
+  "fliers.freefall": {
+    "name": "Husktigee Airmen",
+    "selector": {
+      "weight": 1,
+      "dimension": {
+        "type": "include",
+        "dimensions": [
+          0
+        ]
+      }
+    },
+    "waves": [
+      {
+        "delayTicks": [
+          100
+        ],
+        "groups": [
+          {
+            "weight": 1,
+            "forceSpawn": true,
+            "mobs": [
+              {
+                "id": "husky_airman",
+                "count": [
+                  5
+                ],
+                "spawn": {
+                  "type": "air",
+                  "light": [
+                    0,
+                    14
+                  ],
+                  "rangeXZ": [
+                    4,
+                    16
+                  ],
+                  "rangeY": 16,
+                  "stepRadius": 4,
+                  "sampleDistance": 2
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "delayTicks": [
+          100
+        ],
+        "groups": [
+          {
+            "weight": 1,
+            "forceSpawn": true,
+            "mobs": [
+              {
+                "id": "husky_airman",
+                "count": [
+                  5
+                ],
+                "spawn": {
+                  "type": "air",
+                  "light": [
+                    0,
+                    14
+                  ],
+                  "rangeXZ": [
+                    4,
+                    16
+                  ],
+                  "rangeY": 16,
+                  "stepRadius": 4,
+                  "sampleDistance": 2
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "delayTicks": [
+          100
+        ],
+        "groups": [
+          {
+            "weight": 1,
+            "forceSpawn": true,
+            "mobs": [
+              {
+                "id": "husky_airman",
+                "count": [
+                  5
+                ],
+                "spawn": {
+                  "type": "air",
+                  "light": [
+                    0,
+                    14
+                  ],
+                  "rangeXZ": [
+                    4,
+                    16
+                  ],
+                  "rangeY": 16,
+                  "stepRadius": 4,
+                  "sampleDistance": 2
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "fliers.blaze": {
+    "name": "A Blazing Invasion",
+    "selector": {
+      "weight": 1,
+      "dimension": {
+        "type": "include",
+        "dimensions": [
+          0
+        ]
+      }
+    },
+    "waves": [
+      {
+        "groups": [
+          {
+            "weight": 1,
+            "forceSpawn": true,
+            "mobs": [
+              {
+                "id": "blaze",
+                "count": [
+                  5
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
