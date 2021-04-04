@@ -1,9 +1,11 @@
 package com.codetaylor.mc.onslaught.modules.onslaught;
 
+import static com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaught.MOD_ID;
+
 import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateWave;
 import net.minecraftforge.common.config.Config;
 
-@Config(modid = ModuleOnslaught.MOD_ID)
+@Config(modid = MOD_ID, name = MOD_ID + '/' + MOD_ID)
 public class ModuleOnslaughtConfig {
 
   public static Debug DEBUG = new Debug();
@@ -203,6 +205,7 @@ public class ModuleOnslaughtConfig {
     public AttackMelee ATTACK_MELEE = new AttackMelee();
     public LongDistanceChase LONG_DISTANCE_CHASE = new LongDistanceChase();
     public Mining MINING = new Mining();
+
     @Config.Name("Offscreen Teleport")
     public OffscreenTeleport OFFSCREEN_TELEPORT = new OffscreenTeleport();
 

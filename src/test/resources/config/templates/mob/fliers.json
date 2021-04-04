@@ -1,0 +1,16 @@
+{
+  "husky_airman": {
+    "id": "minecraft:husk",
+    "effects": [
+      {
+        "id": "minecraft:glowing",
+        "duration": 9999,
+        "amplifier": 0,
+        "showParticles": true
+      }
+    ]
+  },
+  "blaze": {
+    "id": "minecraft:blaze"
+  }
+}

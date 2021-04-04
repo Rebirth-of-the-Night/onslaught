@@ -27,7 +27,7 @@ public class SpawnPredicateAir implements Predicate<EntityLiving> {
     double verticalMin = Math.max(0, -this.verticalRange + entity.posY);
     double verticalMax = Math.min(255, this.verticalRange + entity.posY);
 
-    for (double y = verticalMin; y <= verticalMax; y++) {
+    for (double y = verticalMax; y >= verticalMin; y--) {
       entity.setPosition(entity.posX, y, entity.posZ);
 
       if (this.testEntityPosition(entity)) {
