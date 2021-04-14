@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.0
+
+* **Added:**
+    * Beneath Spawn Type
+
+* **Changed:**
+    * Ground Spawn Type spawns high to low
+    
 ## 1.1.0
 
 * **Added:**
