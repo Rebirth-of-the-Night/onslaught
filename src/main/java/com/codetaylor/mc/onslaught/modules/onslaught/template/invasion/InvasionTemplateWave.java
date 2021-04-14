@@ -25,7 +25,8 @@ public class InvasionTemplateWave {
      */
 
     ground,
-    air
+    air,
+    beneath
   }
 
   public static class Group {
