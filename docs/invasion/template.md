@@ -563,12 +563,18 @@ This defines how the spawner will try to spawn a mob.
 
 key | type | optional | default| description
 :---|:---|:---|:---|:---
-type    | string             | yes | config | defines the spawn type, value values are `ground` and `air`
+type    | string             | yes | config | defines the spawn type, value values are `ground`, `air`, and `beneath`
 light   | int[min, max]      | yes | config | defines the light range to spawn the mob in
 rangeXZ | int[min, max]      | yes | config | defines how far away from the player to try and spawn the mob
 rangeY  | int                | yes | config | defines how far +/- Y to try and spawn the mob
 stepRadius     | int         | yes | config | defines the step radius for the spawn sampler
 sampleDistance | int         | yes | config | defines the sample distance for the spawn sampler
+
+Spawn Type | Description
+---------- | -----------
+ground     | Spawns on solid ground, preferring higher elevations
+air        | Spawns in air, preferring the air
+beneath    | Spawns on solid ground, preferring lower elevations
 
 ```json
 {

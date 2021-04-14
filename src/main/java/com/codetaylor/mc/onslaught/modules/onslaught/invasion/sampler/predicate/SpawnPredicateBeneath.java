@@ -6,14 +6,14 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 
 /** Responsible for testing a pillar of blocks for a valid ground spawn location. */
-public class SpawnPredicateGround implements Predicate<EntityLiving> {
+public class SpawnPredicateBeneath implements Predicate<EntityLiving> {
 
   private final BlockPos.MutableBlockPos blockPos;
   private final int lightMin;
   private final int lightMax;
   private final int verticalRange;
 
-  public SpawnPredicateGround(int lightMin, int lightMax, int verticalRange) {
+  public SpawnPredicateBeneath(int lightMin, int lightMax, int verticalRange) {
 
     super();
     this.blockPos = new BlockPos.MutableBlockPos();
@@ -28,7 +28,7 @@ public class SpawnPredicateGround implements Predicate<EntityLiving> {
     double verticalMin = Math.max(0, -this.verticalRange + entity.posY);
     double verticalMax = Math.min(255, this.verticalRange + entity.posY);
 
-    for (double y = verticalMax; y >= verticalMin; y--) {
+    for (double y = verticalMin; y <= verticalMax; y++) {
       entity.setPosition(entity.posX, y, entity.posZ);
 
       if (this.testEntityPosition(entity)) {

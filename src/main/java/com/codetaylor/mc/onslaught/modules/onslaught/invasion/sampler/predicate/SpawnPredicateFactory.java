@@ -26,6 +26,12 @@ public class SpawnPredicateFactory {
           return new SpawnPredicateAir(light[0], light[1], spawnData.rangeY);
         }
 
+      case beneath:
+      {
+        int[] light = Util.evaluateRangeArray(spawnData.light);
+        return new SpawnPredicateBeneath(light[0], light[1], spawnData.rangeY);
+      }
+
       default:
         throw new IllegalArgumentException("Unknown spawn type: " + spawnData.type);
     }
