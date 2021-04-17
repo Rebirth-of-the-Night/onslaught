@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.1
+
+* **Fixed**
+    * Server crash from client only method
+
 ## 1.2.0
 
 * **Added:**
