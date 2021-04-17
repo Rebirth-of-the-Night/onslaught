@@ -191,7 +191,11 @@ public class EntityAIMining extends EntityAIBase {
         });
 
     for (AxisAlignedBB collisionBox : collisionBoxes) {
-      BlockPos pos = new BlockPos(collisionBox.getCenter());
+      BlockPos pos =
+          new BlockPos(
+              collisionBox.minX + (collisionBox.maxX - collisionBox.minX) * 0.5D,
+              collisionBox.minY + (collisionBox.maxY - collisionBox.minY) * 0.5D,
+              collisionBox.minZ + (collisionBox.maxZ - collisionBox.minZ) * 0.5D);
 
       if (!world.isAirBlock(pos)) {
 
