@@ -53,12 +53,14 @@ public class EntityAIAntiAir extends EntityAIBase {
     }
 
     IAntiAirPlayerData data = CapabilityAntiAir.get((EntityPlayer) target);
+    
+    if (data != null) {
+      if (ModuleOnslaughtConfig.CUSTOM_AI.ANTI_AIR.CUMULATIVE_MOTION_Y) {
+        data.setMotionY(data.getMotionY() + this.motionY);
 
-    if (ModuleOnslaughtConfig.CUSTOM_AI.ANTI_AIR.CUMULATIVE_MOTION_Y) {
-      data.setMotionY(data.getMotionY() + this.motionY);
-
-    } else if (this.motionY < data.getMotionY()) {
-      data.setMotionY(this.motionY);
+      } else if (this.motionY < data.getMotionY()) {
+        data.setMotionY(this.motionY);
+      }
     }
   }
 }
