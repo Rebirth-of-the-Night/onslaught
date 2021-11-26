@@ -94,8 +94,10 @@ public class EntityInvasionDataRemover implements Consumer<EntityLiving> {
       }
     }
 
-    for (EntityAIBase entityAIBase : tasksToRemove) {
-      tasks.removeTask(entityAIBase);
+    synchronized (tasks.executingTaskEntries) {
+      for (EntityAIBase entityAIBase : tasksToRemove) {
+        tasks.removeTask(entityAIBase);
+      }
     }
   }
 }

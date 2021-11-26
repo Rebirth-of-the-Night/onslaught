@@ -57,7 +57,7 @@ public class ModOnslaught {
 
     // --- MODULES ---
 
-    this.moduleManager.registerModules(ModuleOnslaught.class);
+    registerModule(ModuleOnslaught.class);
 
     // --- POST ---
 

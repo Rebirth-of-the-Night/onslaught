@@ -22,6 +22,7 @@ public class CapabilityAntiAirProvider implements ICapabilitySerializable<NBTTag
     return (capability == CapabilityAntiAir.INSTANCE);
   }
 
+  @SuppressWarnings("unchecked")
   @Nullable
   @Override
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
