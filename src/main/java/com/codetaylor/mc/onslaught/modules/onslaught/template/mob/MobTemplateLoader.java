@@ -22,17 +22,21 @@ public class MobTemplateLoader {
     Map<String, MobTemplate> result = new HashMap<>();
 
     for (Path path : pathList) {
-      String content = new String(Files.readAllBytes(path));
-      Map<String, MobTemplate> adapt = this.adapter.adapt(content);
+      try {
+        String content = new String(Files.readAllBytes(path));
+        Map<String, MobTemplate> adapt = this.adapter.adapt(content);
 
-      for (Map.Entry<String, MobTemplate> entry : adapt.entrySet()) {
-        String key = entry.getKey();
+        for (Map.Entry<String, MobTemplate> entry : adapt.entrySet()) {
+          String key = entry.getKey();
 
-        if (result.containsKey(key)) {
-          throw new IOException("Duplicate mob template key: " + key);
+          if (result.containsKey(key)) {
+            throw new IOException(String.format("Duplicate mob template key: %s", key));
+          }
+
+          result.put(key, entry.getValue());
         }
-
-        result.put(key, entry.getValue());
+      } catch (Exception e) {
+        throw new RuntimeException("Exception loading mob template for file " + path.toString(), e);
       }
     }
 

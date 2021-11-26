@@ -60,18 +60,21 @@ public class TemplateLoader {
 
     try {
       long start = System.currentTimeMillis();
+
       this.filePathCreator.initialize(mobTemplatePath);
       List<Path> jsonFilePaths = this.jsonFileLocator.locate(mobTemplatePath);
       Map<String, MobTemplate> mobTemplateMap = this.mobTemplateLoader.load(jsonFilePaths);
       MobTemplateRegistry mobTemplateRegistry = new MobTemplateRegistry(mobTemplateMap);
       this.mobTemplateRegistryConsumer.accept(mobTemplateRegistry);
+
       long elapsed = System.currentTimeMillis() - start;
+
       ModOnslaught.LOG.info(
           String.format("Loaded %d mob templates in %d ms", mobTemplateMap.size(), elapsed));
       return true;
-
     } catch (Exception e) {
       String message = "Error loading mob template data";
+
       ModOnslaught.LOG.log(Level.SEVERE, message);
       ModOnslaught.LOG.log(Level.SEVERE, e.getMessage(), e);
       LOGGER.error(message);
@@ -87,6 +90,7 @@ public class TemplateLoader {
 
     try {
       long start = System.currentTimeMillis();
+
       this.filePathCreator.initialize(invasionTemplatePath);
       List<Path> jsonFilePaths = this.jsonFileLocator.locate(invasionTemplatePath);
       Map<String, InvasionTemplate> invasionTemplateMap =
@@ -94,14 +98,16 @@ public class TemplateLoader {
       InvasionTemplateRegistry invasionTemplateRegistry =
           new InvasionTemplateRegistry(invasionTemplateMap);
       this.invasionTemplateRegistryConsumer.accept(invasionTemplateRegistry);
+
       long elapsed = System.currentTimeMillis() - start;
+
       ModOnslaught.LOG.info(
           String.format(
               "Loaded %d invasion templates in %d ms", invasionTemplateMap.size(), elapsed));
       return true;
-
     } catch (Exception e) {
       String message = "Error loading invasion template data";
+
       ModOnslaught.LOG.log(Level.SEVERE, message);
       ModOnslaught.LOG.log(Level.SEVERE, e.getMessage(), e);
       LOGGER.error(message);
