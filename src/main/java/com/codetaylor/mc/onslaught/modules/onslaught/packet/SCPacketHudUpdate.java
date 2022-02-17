@@ -13,7 +13,6 @@ public class SCPacketHudUpdate implements IMessage {
 
   private List<InvasionHudRenderInfo> invasionHudRenderInfoList;
 
-  @SuppressWarnings("unused")
   public SCPacketHudUpdate() {
     // serialization
   }

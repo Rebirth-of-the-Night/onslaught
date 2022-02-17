@@ -40,7 +40,6 @@ public class ModOnslaught {
         }
       };
   public static Logger LOG;
-  @SuppressWarnings("unused")
   @Mod.Instance
   public static ModOnslaught INSTANCE;
   private final ModuleManager moduleManager;

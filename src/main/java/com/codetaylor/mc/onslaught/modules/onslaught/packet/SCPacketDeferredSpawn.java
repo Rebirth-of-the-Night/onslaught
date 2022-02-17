@@ -19,7 +19,6 @@ public class SCPacketDeferredSpawn
   private double y;
   private double z;
 
-  @SuppressWarnings("unused")
   public SCPacketDeferredSpawn() {
     // serialization
   }

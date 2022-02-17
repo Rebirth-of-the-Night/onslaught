@@ -23,7 +23,6 @@ public class SCPacketAntiAir
   private double motionY;
   private double motionZ;
 
-  @SuppressWarnings("unused")
   public SCPacketAntiAir() {
     // serialization
   }
