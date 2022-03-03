@@ -35,7 +35,7 @@ ext {
     ]
 
     manifest = [
-            attributesEnabled: false,
+            attributesEnabled: true,
             attributes       : [
                     'Specification-Title'     : 'Onslaught',
                     'Specification-Vendor'    : 'Rebirth of the Night',
