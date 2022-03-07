@@ -6,6 +6,7 @@ import com.codetaylor.mc.athenaeum.network.IPacketService;
 import com.codetaylor.mc.onslaught.ModOnslaught;
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.AntiAirPlayerData;
 import com.codetaylor.mc.onslaught.modules.onslaught.capability.IAntiAirPlayerData;
+import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandGetInvasion;
 import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandReload;
 import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandStartInvasion;
 import com.codetaylor.mc.onslaught.modules.onslaught.command.CommandStartRandomInvasion;
@@ -444,7 +445,8 @@ public class ModuleOnslaught extends ModuleBase {
               () -> templateStore.getInvasionTemplateRegistry().getIdList()),
           new CommandStartRandomInvasion(invasionCommandStarter, invasionSelectorFunction),
           new CommandStopInvasion(invasionStopActiveExecutor),
-          new CommandStopAllInvasion(invasionStopActiveExecutor)
+          new CommandStopAllInvasion(invasionStopActiveExecutor),
+          new CommandGetInvasion()
         };
   }
 

@@ -23,6 +23,12 @@ commands.onslaught.stop.success=Invasion stopped for player %s
 commands.onslaught.stopall.usage=/ostopall
 commands.onslaught.stopall.success=Stopped all active invasions
 
+commands.onslaught.get.usage=/oget [player]
+commands.onslaught.get.noinvasiondata=No invasion data for player!
+commands.onslaught.get.state=Invasion state: %s - Eligibility timer: %s
+commands.onslaught.get.invalidinvasion=Invalid invasion for player!
+commands.onslaught.get.datatemplate=Invasion data: %s
+
 message.onslaught.invasion.warn=The anticipation of impending dread hangs thick in the air.
 message.onslaught.invasion.begin=The onslaught has begun!
 message.onslaught.invasion.end=The onslaught is over!
