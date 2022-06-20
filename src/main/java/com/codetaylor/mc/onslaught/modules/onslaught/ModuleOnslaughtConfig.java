@@ -415,6 +415,12 @@ public class ModuleOnslaughtConfig {
       })
       @Config.RangeDouble(min = 0)
       public double DEFAULT_SPEED_MODIFIER = 1;
+
+      @Config.Comment({
+        "The ablity for mobs to be able to mine blocks without requiring the necessary tool level.",
+        "Default: " + true
+      })
+      public boolean MINE_WITHOUT_REQUIRED_TOOL = true;
     }
 
     public static class OffscreenTeleport {

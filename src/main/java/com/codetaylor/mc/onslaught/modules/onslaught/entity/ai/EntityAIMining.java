@@ -2,6 +2,9 @@ package com.codetaylor.mc.onslaught.modules.onslaught.entity.ai;
 
 import java.util.List;
 import javax.annotation.Nullable;
+
+import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -127,8 +130,13 @@ public class EntityAIMining extends EntityAIBase {
         this.getBlockStrength(blockState, this.taskOwner, world, this.blockTarget)
             * (this.blockBreakTickCounter + 1);
 
+    boolean canHarvest = this.canHarvest(blockState, this.taskOwner);
+    if (!ModuleOnslaughtConfig.CUSTOM_AI.MINING.MINE_WITHOUT_REQUIRED_TOOL && !canHarvest) {
+      this.resetTask();
+      return;
+    }
+
     if (blockStrength >= 1) {
-      boolean canHarvest = this.canHarvest(blockState, this.taskOwner);
       world.destroyBlock(this.blockTarget, canHarvest);
       navigator.setPath(
           navigator.getPathToEntityLiving(this.attackTarget),
@@ -207,6 +215,10 @@ public class EntityAIMining extends EntityAIBase {
         }
 
         if (this.taskOwner.getDistanceSq(pos) > this.rangeSq) {
+          continue;
+        }
+
+        if (!ModuleOnslaughtConfig.CUSTOM_AI.MINING.MINE_WITHOUT_REQUIRED_TOOL && !this.canHarvest(world.getBlockState(pos), this.taskOwner)) {
           continue;
         }
 
