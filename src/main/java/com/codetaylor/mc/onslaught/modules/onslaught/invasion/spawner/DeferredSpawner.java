@@ -71,7 +71,7 @@ public class DeferredSpawner implements InvasionUpdateEventHandler.IInvasionUpda
       if (deferredSpawnData.getTicksRemaining() <= 0) {
         EntityPlayerMP player = playerList.getPlayerByUUID(deferredSpawnData.getPlayerUuid());
 
-        if (!player.isDead
+        if (player != null && !player.isDead
             && player.world.provider.getDimension() == deferredSpawnData.getDimensionId()) {
           this.attemptSpawn(player.world, deferredSpawnData);
         }
