@@ -21,6 +21,7 @@ public class ModuleOnslaughtConfig {
     public boolean INVASION_SPAWN_SAMPLER = false;
     public boolean INVASION_DATA_UPDATES = false;
     public boolean INVASION_SELECTOR = false;
+    public boolean INVASION_COMMANDS = false;
   }
 
   public static class Client {

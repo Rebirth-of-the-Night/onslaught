@@ -1,5 +1,7 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.event.handler;
 
+import com.codetaylor.mc.onslaught.ModOnslaught;
+import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionEntityKilledEvent;
 import com.codetaylor.mc.onslaught.modules.onslaught.event.InvasionStateChangedEvent;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionCommandExecutor;
@@ -28,6 +30,14 @@ public class InvasionCommandEventHandler {
   public void on(InvasionStateChangedEvent event) {
 
     InvasionPlayerData.EnumInvasionState currentState = event.getCurrentState();
+
+    if (ModuleOnslaughtConfig.DEBUG.INVASION_COMMANDS) {
+      String message = String.format(
+          "Invasion state changed from %s to %s for player %s, querying start/end commands",
+          event.getPreviousState(), currentState, event.getPlayer().getName());
+      ModOnslaught.LOG.fine(message);
+      System.out.println(message);
+    }
 
     if (currentState == InvasionPlayerData.EnumInvasionState.Active) {
       this.commandExecutorStart.execute(event.getPlayer());

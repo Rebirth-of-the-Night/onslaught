@@ -1,5 +1,7 @@
 package com.codetaylor.mc.onslaught.modules.onslaught.invasion;
 
+import com.codetaylor.mc.onslaught.ModOnslaught;
+import com.codetaylor.mc.onslaught.modules.onslaught.ModuleOnslaughtConfig;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplate;
 import com.codetaylor.mc.onslaught.modules.onslaught.template.invasion.InvasionTemplateCommandStaged;
 import java.util.function.Function;
@@ -40,6 +42,14 @@ public class InvasionCommandExecutorStaged {
 
     float percentComplete = this.invasionCompletionPercentageCalculator.calculate(invasionData);
     MinecraftServer minecraftServer = player.world.getMinecraftServer();
+
+    if (ModuleOnslaughtConfig.DEBUG.INVASION_COMMANDS) {
+      String message = String.format(
+          "Invasion with id %s is %d percent complete, querying %d staged commands",
+          invasionData.getInvasionTemplateId(), percentComplete, stagedCommands.length);
+      ModOnslaught.LOG.fine(message);
+      System.out.println(message);
+    }
 
     for (int i = 0; i < stagedCommands.length; i++) {
 
