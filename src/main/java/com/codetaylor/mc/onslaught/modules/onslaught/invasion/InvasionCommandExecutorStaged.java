@@ -45,7 +45,7 @@ public class InvasionCommandExecutorStaged {
 
     if (ModuleOnslaughtConfig.DEBUG.INVASION_COMMANDS) {
       String message = String.format(
-          "Invasion with id %s is %d percent complete, querying %d staged commands",
+          "Invasion with id %s is %f percent complete, querying %d staged commands",
           invasionData.getInvasionTemplateId(), percentComplete, stagedCommands.length);
       ModOnslaught.LOG.fine(message);
       System.out.println(message);

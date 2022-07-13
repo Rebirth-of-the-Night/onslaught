@@ -70,7 +70,9 @@ public class TemplateLoader {
       long elapsed = System.currentTimeMillis() - start;
 
       ModOnslaught.LOG.info(
-          String.format("Loaded %d mob templates in %d ms", mobTemplateMap.size(), elapsed));
+          String.format(
+              "Loaded %d mob templates in %d ms", 
+              mobTemplateMap.size(), elapsed));
       return true;
     } catch (Exception e) {
       String message = "Error loading mob template data";
