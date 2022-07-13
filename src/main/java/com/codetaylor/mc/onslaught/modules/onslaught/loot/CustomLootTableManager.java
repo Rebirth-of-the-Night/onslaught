@@ -3,6 +3,10 @@ package com.codetaylor.mc.onslaught.modules.onslaught.loot;
 import java.io.File;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import com.codetaylor.mc.onslaught.ModOnslaught;
+import com.google.gson.JsonSyntaxException;
+
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableManager;
@@ -42,7 +46,12 @@ public class CustomLootTableManager extends LootTableManager {
 
     if (this.initialized) {
       super.reloadLootTables();
-      this.lootTableManager.reloadLootTables();
+
+      try {
+        this.lootTableManager.reloadLootTables();
+      } catch (JsonSyntaxException e) {
+        ModOnslaught.LOG.warning(e.getMessage());
+      }
     }
   }
 }
