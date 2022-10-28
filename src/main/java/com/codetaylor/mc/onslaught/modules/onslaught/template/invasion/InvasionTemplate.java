@@ -7,5 +7,6 @@ public class InvasionTemplate {
   public InvasionTemplateSelector selector = new InvasionTemplateSelector();
   public InvasionTemplateMessages messages = new InvasionTemplateMessages();
   public InvasionTemplateCommands commands = new InvasionTemplateCommands();
+  public InvasionTemplateEarlyEnd earlyEnd = new InvasionTemplateEarlyEnd();
   public InvasionTemplateWave[] waves = new InvasionTemplateWave[0];
 }

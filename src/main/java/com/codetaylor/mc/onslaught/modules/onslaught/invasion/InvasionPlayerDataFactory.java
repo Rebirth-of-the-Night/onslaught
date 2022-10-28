@@ -33,6 +33,7 @@ public class InvasionPlayerDataFactory {
       UUID invasionUuid,
       Random random,
       long timestamp,
+      long maxInvasionDuration,
       long warningMessageTimestamp) {
 
     InvasionTemplate invasionTemplate = this.invasionTemplateFunction.apply(templateId);
@@ -47,6 +48,8 @@ public class InvasionPlayerDataFactory {
     invasionData.setInvasionName(invasionTemplate.name);
     invasionData.setInvasionUuid(invasionUuid);
     invasionData.setTimestamp(timestamp);
+    invasionData.setTimeToEnd(invasionTemplate.earlyEnd.maxInvasionDuration);
+    invasionData.setEarlyEndMessage(invasionTemplate.earlyEnd.message);
     invasionData.setWarningMessageTimestamp(warningMessageTimestamp);
 
     for (InvasionTemplateWave waveTemplate : invasionTemplate.waves) {
