@@ -1,6 +1,10 @@
 {
   "zombie": {
     "name": "Zombie Horde",
+    "earlyEnd": {
+      "maxInvasionDuration": 300,
+      "message": "The zombie horde got bored and scattered..."
+    },
     "selector": {
       "weight": 1,
       "dimension": {

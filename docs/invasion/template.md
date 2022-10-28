@@ -11,16 +11,20 @@ is unique across all files.
 key | type | description
 :---|:---|:---
 name     | string   | defines the name of the invasion to show on progress bars
-selector | Selector | defines the selector logic to use when selecting an invasion
-messages | Messages | defines the messages sent to an invaded player
-commands | Commands | defines the commands executed by the invasion
-waves    | Waves[]  | defines the waves spawned by the invasion
+selector | [Selector](#selector) | defines the selector logic to use when selecting an invasion
+messages | [Messages](#messages) | defines the messages sent to an invaded player
+commands | [Commands](#commands) | defines the commands executed by the invasion
+waves    | [Waves[]](#waves) | defines the waves spawned by the invasion
+earlyEnd | [EarlyEnd](#earlyend) | defines the maximum duration of the invasion
 
 ```json
 {
   "unique_invasion_id": {
     "name": "Invasion Name",
     "selector": {
+      ...
+    }, 
+    "earlyEnd": {
       ...
     },
     "messages": {
@@ -43,6 +47,24 @@ the invasion definition in Onslaught's `ostart` command.
 The `name` key is optional and if omitted, defaults to `""` which will prevent the name from being
 displayed on the progress bar.
 
+## EarlyEnd
+
+An optional object, allowing to end an invasion if the player doesn't manage to kill all mobs within this timeframe. 
+
+key | type | description
+:---|:---|:---
+maxInvasionDuration  | int | defines the maximum duration of this invasion **in seconds** (not in ticks!).
+message | String | an optional, additional message which is sent when the timer is reached
+
+The `message` key is optional, if specified, its content is sent as message to the player, alongside the usual invasion end message.
+```json
+{
+  "earlyEnd": {
+   "maxInvasionDuration": 300,
+    "message": "The zombie horde got bored and scattered..."
+  },
+}
+```
 ## Selector
 
 The `selector` object defines the logic used to select an invasion for a player.

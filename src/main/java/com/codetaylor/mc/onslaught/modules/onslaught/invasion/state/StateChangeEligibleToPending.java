@@ -17,6 +17,8 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.IntSupplier;
 import java.util.logging.Level;
+
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionMaxDurationFunction;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.management.PlayerList;
 import net.minecraftforge.common.MinecraftForge;
@@ -31,6 +33,7 @@ public class StateChangeEligibleToPending
   private final IntSupplier maxConcurrentInvasionsSupplier;
   private final InvasionCounter invasionCounter;
   private final InvasionTimestampFunction invasionTimestampFunction;
+  private final InvasionMaxDurationFunction maxInvasionDurationFunction;
   private final InvasionWarningMessageTimestampFunction invasionWarningMessageTimestampFunction;
 
   public StateChangeEligibleToPending(
@@ -40,6 +43,7 @@ public class StateChangeEligibleToPending
       IntSupplier maxConcurrentInvasionsSupplier,
       InvasionCounter invasionCounter,
       InvasionTimestampFunction invasionTimestampFunction,
+      InvasionMaxDurationFunction maxInvasionDurationFunction,
       InvasionWarningMessageTimestampFunction invasionWarningMessageTimestampFunction) {
 
     this.eligiblePlayers = eligiblePlayers;
@@ -48,6 +52,7 @@ public class StateChangeEligibleToPending
     this.maxConcurrentInvasionsSupplier = maxConcurrentInvasionsSupplier;
     this.invasionCounter = invasionCounter;
     this.invasionTimestampFunction = invasionTimestampFunction;
+    this.maxInvasionDurationFunction = maxInvasionDurationFunction;
     this.invasionWarningMessageTimestampFunction = invasionWarningMessageTimestampFunction;
   }
 
@@ -93,6 +98,7 @@ public class StateChangeEligibleToPending
         }
 
         long invasionTimestamp = this.invasionTimestampFunction.apply(worldTime);
+        long maxInvasionDuration = this.maxInvasionDurationFunction.apply(worldTime);
         long invasionWarningMessageTimestamp =
             this.invasionWarningMessageTimestampFunction.apply(
                 invasionTemplateId, invasionTimestamp);
@@ -104,6 +110,7 @@ public class StateChangeEligibleToPending
                 UUID.randomUUID(),
                 player.getRNG(),
                 invasionTimestamp,
+                maxInvasionDuration,
                 invasionWarningMessageTimestamp);
         data.setInvasionState(InvasionPlayerData.EnumInvasionState.Pending);
         data.setInvasionData(invasionData);

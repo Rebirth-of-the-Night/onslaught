@@ -66,6 +66,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionSpawnDataC
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionStopExecutor;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionTimestampFunction;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionWarningMessageTimestampFunction;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.InvasionMaxDurationFunction;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.render.InvasionHudRenderInfo;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.render.client.InvasionHudRenderer;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.sampler.SpawnSampler;
@@ -77,6 +78,7 @@ import com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner.DeferredSp
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner.DeferredSpawnData;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner.DeferredSpawnEffectApplicator;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner.DeferredSpawner;
+import com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner.EarlyEndTimer;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner.EntityInvasionDataInjector;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner.Spawner;
 import com.codetaylor.mc.onslaught.modules.onslaught.invasion.spawner.SpawnerMob;
@@ -302,6 +304,7 @@ public class ModuleOnslaught extends ModuleBase {
                       () -> ModuleOnslaughtConfig.INVASION.MAX_CONCURRENT_INVASIONS,
                       new InvasionCounter(),
                       new InvasionTimestampFunction(),
+                      new InvasionMaxDurationFunction(),
                       new InvasionWarningMessageTimestampFunction(
                           idToInvasionTemplateFunction,
                           () -> ModuleOnslaughtConfig.INVASION.DEFAULT_MESSAGE_WARNING_TICKS))),
@@ -317,6 +320,11 @@ public class ModuleOnslaught extends ModuleBase {
 
               new InvasionUpdateEventHandler.InvasionTimedUpdateComponent(
                   19, new WaveDelayTimer(new ActiveWavePredicate())),
+
+              // Early End Timer----------------------------------------------
+
+              new InvasionUpdateEventHandler.InvasionTimedUpdateComponent(
+                  20, new EarlyEndTimer(invasionPlayerTimerValueSupplier)),
 
               // Spawns ------------------------------------------------------
 

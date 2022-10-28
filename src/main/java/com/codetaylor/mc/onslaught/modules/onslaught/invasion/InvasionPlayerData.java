@@ -163,6 +163,10 @@ public class InvasionPlayerData implements INBTSerializable<NBTTagCompound> {
     private UUID invasionUuid;
     /** The timestamp after which the invasion becomes active. */
     private long timestamp;
+    /** The timestamp after which the invasion becomes cancelled early. If the value is -1 (default), this has no effect */
+    private long timeToEnd;
+    /** If this invasion was ended because timeToEnd was reached, this message is also send to the player. */
+    private String earlyEndMessage;
     /**
      * The timestamp after which the warning message is sent. If the value is -1, the message will
      * not be sent.
@@ -211,6 +215,24 @@ public class InvasionPlayerData implements INBTSerializable<NBTTagCompound> {
       this.timestamp = timestamp;
     }
 
+    public long getTimeToEnd() {
+
+      return this.timeToEnd;
+    }
+
+    public void setTimeToEnd(long timeToEnd) {
+
+      this.timeToEnd = timeToEnd;
+    }
+
+    public String getEarlyEndMessage() {
+      return earlyEndMessage;
+    }
+
+    public void setEarlyEndMessage(String earlyEndMessage) {
+      this.earlyEndMessage = earlyEndMessage;
+    }
+
     public long getWarningMessageTimestamp() {
 
       return this.warningMessageTimestamp;
@@ -250,6 +272,10 @@ public class InvasionPlayerData implements INBTSerializable<NBTTagCompound> {
           + this.invasionUuid
           + ", timestamp="
           + this.timestamp
+          + ", timeToEnd="
+          + this.timeToEnd
+          + ", earlyEndMessage="
+          + this.earlyEndMessage
           + ", warningMessageTimestamp="
           + this.warningMessageTimestamp
           + ", stagedCommandFlags="
@@ -266,7 +292,9 @@ public class InvasionPlayerData implements INBTSerializable<NBTTagCompound> {
       tag.setString("invasionTemplateId", this.invasionTemplateId);
       tag.setString("invasionName", this.invasionName);
       tag.setString("invasionUuid", this.invasionUuid.toString());
+      tag.setString("earlyEndMessage", this.earlyEndMessage);
       tag.setLong("timestamp", this.timestamp);
+      tag.setLong("timeToEnd", this.timeToEnd);
       tag.setLong("warningMessageTimestamp", this.warningMessageTimestamp);
       tag.setLong("stagedCommandFlags", this.stagedCommandFlags);
 
@@ -288,6 +316,8 @@ public class InvasionPlayerData implements INBTSerializable<NBTTagCompound> {
       this.invasionName = tag.getString("invasionName");
       this.invasionUuid = UUID.fromString(tag.getString("invasionUuid"));
       this.timestamp = tag.getLong("timestamp");
+      this.timeToEnd = tag.hasKey("timeToEnd") ? tag.getLong("timeToEnd") : -1;
+      this.earlyEndMessage = tag.hasKey("earlyEndMessage") ? tag.getString("earlyEndMessage") : "";
       this.warningMessageTimestamp = tag.getLong("warningMessageTimestamp");
       this.stagedCommandFlags = tag.getLong("stagedCommandFlags");
 
