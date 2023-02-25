@@ -512,8 +512,8 @@ spawned immediately after a player defeats all previous waves.
 
 key | type | optional | default| description
 :---|:---|:---|:---|:---
-delayTicks   | int[min, max] *
-delayTicks   | or* int[fixed] | yes | `[0]` | defines how long to wait to spawn this wave after the invasions starts
+delayTicks   | int[min, max] | yes | `[0,0]` | defines how long to wait to spawn this wave after the invasions starts
+delayTicks   | int[fixed] | yes | `[0]` | defines how long to wait to spawn this wave after the invasions starts
 groups       | Group[]       | no  | - | defines an array of groups, one will be selected
 secondaryMob | SecondaryMob  | yes | config | defines a secondary mob to spawn when the primary mob spawn fails
 
